@@ -4,6 +4,8 @@ enum LoginStatus { initial, loading, success, error }
 
 enum ProfileStatus { initial, loading, success, error }
 
+enum LogoutStatus { initial, loading, success, error }
+
 class AuthState extends Equatable {
   final LoginStatus loginStatus;
   final Response? loginResponse;
@@ -11,6 +13,9 @@ class AuthState extends Equatable {
   final ProfileStatus profileStatus;
   final Profile? profile;
   final dynamic profileError;
+  final LogoutStatus logoutStatus;
+  final Response? logoutResponse;
+  final dynamic logoutError;
 
   const AuthState({
     this.loginStatus = LoginStatus.initial,
@@ -19,6 +24,9 @@ class AuthState extends Equatable {
     this.profileStatus = ProfileStatus.initial,
     this.profile,
     this.profileError,
+    this.logoutStatus = LogoutStatus.initial,
+    this.logoutResponse,
+    this.logoutError,
   });
 
   AuthState copyWith({
@@ -28,6 +36,9 @@ class AuthState extends Equatable {
     ProfileStatus? profileStatus,
     Profile? profile,
     dynamic profileError,
+    LogoutStatus? logoutStatus,
+    Response? logoutResponse,
+    dynamic logoutError,
   }) {
     return AuthState(
       loginStatus: loginStatus ?? this.loginStatus,
@@ -36,6 +47,9 @@ class AuthState extends Equatable {
       profileStatus: profileStatus ?? this.profileStatus,
       profile: profile,
       profileError: profileError ?? this.profileError,
+      logoutStatus: logoutStatus ?? this.logoutStatus,
+      logoutResponse: logoutResponse,
+      logoutError: logoutError ?? this.logoutError,
     );
   }
 
@@ -47,5 +61,8 @@ class AuthState extends Equatable {
     profileStatus,
     profile,
     profileError,
+    logoutStatus,
+    logoutResponse,
+    logoutError,
   ];
 }
