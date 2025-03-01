@@ -6,6 +6,7 @@ import 'package:epenting/app/widgets/base_iconbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardPage extends StatefulWidget {
@@ -105,7 +106,10 @@ class _OnboardPageState extends State<OnboardPage> {
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeInOutCubic,
                 width: double.infinity,
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 16,
+                ),
                 color:
                     currentPage == 0
                         ? Colors.blue.shade600
@@ -155,8 +159,8 @@ class _OnboardPageState extends State<OnboardPage> {
                                 : ValueKey('check'),
                         icon:
                             currentPage == 0
-                                ? Icons.chevron_right
-                                : Icons.check,
+                                ? MingCute.right_line
+                                : MingCute.check_line,
                         size: 20.sp,
                         color: Colors.white,
                         onPressed: _onPressedNextFinish,

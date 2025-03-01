@@ -1,6 +1,7 @@
 import 'package:epenting/app/widgets/base_iconbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class StatusGiziHeader extends StatelessWidget {
   const StatusGiziHeader({super.key});
@@ -20,7 +21,7 @@ class StatusGiziHeader extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               child: Center(
                 child: BaseIconButton(
-                  icon: Icons.arrow_back,
+                  icon: MingCute.arrow_left_line,
                   size: 20.sp,
                   color: Colors.black,
                   onPressed: () {
@@ -59,7 +60,7 @@ class StatusGiziHeader extends StatelessWidget {
             elevation: 1,
             child: Padding(
               padding: const EdgeInsets.all(8),
-              child: Center(child: Icon(Icons.speed, size: 20.sp)),
+              child: Center(child: Icon(MingCute.dashboard_line, size: 20.sp)),
             ),
           ),
         ],

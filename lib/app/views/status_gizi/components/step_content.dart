@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:group_button/group_button.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 Widget firstStepContent({
@@ -421,7 +422,7 @@ Widget fifthStepContent({
                                       width: double.infinity,
                                       child: BaseButtonIcon(
                                         label: 'Cek Ulang',
-                                        icon: Icons.refresh,
+                                        icon: MingCute.refresh_3_line,
                                         bgColor: AppColors.orangeColor,
                                         fgColor: Colors.white,
                                         onPressed: onPressedRecheck,
