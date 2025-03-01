@@ -1,12 +1,13 @@
 import 'package:epenting/app/configs/get_it/service_locator.dart';
 import 'package:epenting/app/configs/router/fade_transition.dart';
 import 'package:epenting/app/cubits/status_gizi/statusgizi_cubit.dart';
+import 'package:epenting/app/views/dashboard/dashboard_page.dart';
 import 'package:epenting/app/views/login/login_page.dart';
 import 'package:epenting/app/views/onboard/onboard_page.dart';
 import 'package:epenting/app/views/splash/splash_page.dart';
 import 'package:epenting/app/views/status_gizi/statusgizi_page.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppRouter {
   static Route<dynamic> onGenerateRoute(
@@ -29,6 +30,8 @@ class AppRouter {
             child: const StatusGiziPage(),
           ),
         );
+      case DashboardPage.routeName:
+        return fadeTransition(context, settings, child: const DashboardPage());
       default:
         return MaterialPageRoute(builder: (context) => const Placeholder());
     }
