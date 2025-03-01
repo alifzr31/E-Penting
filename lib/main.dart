@@ -1,10 +1,12 @@
 import 'package:epenting/app/configs/router/app_router.dart';
+import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/utils/app_strings.dart';
 import 'package:epenting/app/views/splash/splash_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -44,51 +46,54 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      minTextAdapt: true,
-      splitScreenMode: true,
-      useInheritedMediaQuery: true,
-      builder: (context, child) {
-        return GlobalLoaderOverlay(
-          overlayColor: Colors.black.withValues(alpha: 0.4),
-          disableBackButton: true,
-          overlayWholeScreen: true,
-          overlayHeight: ScreenUtil().screenHeight,
-          overlayWidth: ScreenUtil().screenWidth,
-          overlayWidgetBuilder: (progress) {
-            return Center(
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
+    return BlocProvider(
+      create: (context) => di.sl<AuthCubit>(),
+      child: ScreenUtilInit(
+        minTextAdapt: true,
+        splitScreenMode: true,
+        useInheritedMediaQuery: true,
+        builder: (context, child) {
+          return GlobalLoaderOverlay(
+            overlayColor: Colors.black.withValues(alpha: 0.4),
+            disableBackButton: true,
+            overlayWholeScreen: true,
+            overlayHeight: ScreenUtil().screenHeight,
+            overlayWidth: ScreenUtil().screenWidth,
+            overlayWidgetBuilder: (progress) {
+              return Center(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Lottie.asset(
+                    '${AppStrings.assetsLotties}/loader.json',
+                    width: 80.w,
+                    frameRate: const FrameRate(144),
+                  ),
                 ),
-                child: Lottie.asset(
-                  '${AppStrings.assetsLotties}/loader.json',
-                  width: 80.w,
-                  frameRate: const FrameRate(144),
+              );
+            },
+            child: MaterialApp(
+              title: 'E-Penting',
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                scaffoldBackgroundColor: AppColors.scaffoldBgColor,
+                colorScheme: ColorScheme.fromSeed(
+                  seedColor: AppColors.orangeColor,
                 ),
+                fontFamily: 'Poppins',
+                useMaterial3: true,
+                applyElevationOverlayColor: false,
               ),
-            );
-          },
-          child: MaterialApp(
-            title: 'E-Penting',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              scaffoldBackgroundColor: AppColors.scaffoldBgColor,
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: AppColors.orangeColor,
-              ),
-              fontFamily: 'Poppins',
-              useMaterial3: true,
-              applyElevationOverlayColor: false,
+              initialRoute: SplashPage.routeName,
+              onGenerateRoute:
+                  (settings) => AppRouter.onGenerateRoute(context, settings),
             ),
-            initialRoute: SplashPage.routeName,
-            onGenerateRoute:
-                (settings) => AppRouter.onGenerateRoute(context, settings),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

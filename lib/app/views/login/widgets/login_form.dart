@@ -1,11 +1,16 @@
+import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/views/status_gizi/statusgizi_page.dart';
 import 'package:epenting/app/widgets/base_button.dart';
 import 'package:epenting/app/widgets/base_formfield.dart';
 import 'package:epenting/app/widgets/base_iconbutton.dart';
+import 'package:epenting/app/widgets/show_customtoast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:toastification/toastification.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({
@@ -37,7 +42,7 @@ class LoginForm extends StatelessWidget {
             maxLength: currentTab == 0 ? null : 16,
             keyboardType: currentTab == 0 ? null : TextInputType.number,
             prefixIcon: Icon(
-              currentTab == 0 ? Icons.person : Icons.contact_mail,
+              currentTab == 0 ? MingCute.user_3_line : MingCute.IDcard_line,
               size: 18.sp,
               color: AppColors.blueColor,
             ),
@@ -57,12 +62,12 @@ class LoginForm extends StatelessWidget {
             controller: passwordController,
             obscureText: obscurePass,
             prefixIcon: Icon(
-              Icons.password,
+              MingCute.key_2_line,
               size: 18.sp,
               color: AppColors.blueColor,
             ),
             suffixIcon: BaseIconButton(
-              icon: obscurePass ? Icons.visibility : Icons.visibility_off,
+              icon: obscurePass ? MingCute.eye_fill : MingCute.eye_close_line,
               size: 18.sp,
               color: AppColors.blueColor,
               onPressed: onPressedVisiblePassword,
@@ -86,34 +91,59 @@ class LoginForm extends StatelessWidget {
                       borderColor: AppColors.blueColor,
                       fgColor: AppColors.blueColor,
                       label: 'Aktivasi Akun',
-                      icon: Icons.safety_check,
+                      icon: MingCute.safety_certificate_line,
                       onPressed: () {},
                     ),
                   ),
                 ),
               if (currentTab == 1) SizedBox(width: 10.w),
               Expanded(
-                child: SizedBox(
-                  height: 30.h,
-                  child: BaseButtonIcon(
-                    bgColor: AppColors.orangeColor,
-                    fgColor: Colors.white,
-                    label: 'Masuk',
-                    icon: Icons.login,
-                    onPressed: () async {
-                      if (formKey.currentState?.validate() ?? false) {
-                        context.loaderOverlay.show();
+                child: BlocListener<AuthCubit, AuthState>(
+                  listenWhen:
+                      (previous, current) =>
+                          previous.loginStatus != current.loginStatus,
+                  listener: (context, state) {
+                    if (state.loginStatus == LoginStatus.loading) {
+                      context.loaderOverlay.show();
+                    }
 
-                        await Future.delayed(
-                          const Duration(milliseconds: 1500),
-                          () {
-                            if (context.mounted) {
-                              context.loaderOverlay.hide();
-                            }
-                          },
-                        );
-                      }
-                    },
+                    if (state.loginStatus == LoginStatus.success) {
+                      context.loaderOverlay.hide();
+                      showCustomToast(
+                        context,
+                        type: ToastificationType.success,
+                        title: 'Masuk Berhasil',
+                        description: state.loginResponse?.data.toString(),
+                      );
+                      context.read<AuthCubit>().fetchProfile();
+                    }
+
+                    if (state.loginStatus == LoginStatus.error) {
+                      context.loaderOverlay.hide();
+                      showCustomToast(
+                        context,
+                        type: ToastificationType.error,
+                        title: 'Masuk Gagal',
+                        description: state.loginError,
+                      );
+                    }
+                  },
+                  child: SizedBox(
+                    height: 30.h,
+                    child: BaseButtonIcon(
+                      bgColor: AppColors.orangeColor,
+                      fgColor: Colors.white,
+                      label: 'Masuk',
+                      icon: MingCute.entrance_line,
+                      onPressed: () {
+                        if (formKey.currentState?.validate() ?? false) {
+                          context.read<AuthCubit>().login(
+                            username: userController.text,
+                            password: passwordController.text,
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -141,7 +171,7 @@ class LoginForm extends StatelessWidget {
             height: 30.h,
             width: double.infinity,
             child: BaseOutlineButtonIcon(
-              icon: Icons.speed,
+              icon: MingCute.dashboard_line,
               borderColor: AppColors.orangeColor,
               label: 'Cek Status Gizi Anak',
               fgColor: AppColors.orangeColor,
