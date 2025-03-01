@@ -16,4 +16,14 @@ class AuthService extends DioClient {
       rethrow;
     }
   }
+
+  Future<Response> logout() async {
+    try {
+      final response = await post(EndPoint.logout);
+
+      return await compute((message) => message, response);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
