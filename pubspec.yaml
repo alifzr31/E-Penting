@@ -56,6 +56,7 @@ dependencies:
   group_button: ^5.3.4
   shared_preferences: ^2.5.2
   icons_plus: ^5.0.0
+  toastification: ^3.0.1
 
 dev_dependencies:
   flutter_test:
