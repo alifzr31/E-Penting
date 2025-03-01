@@ -15,6 +15,24 @@ class AuthCubit extends Cubit<AuthState> {
 
   final AuthRepository _repository;
 
+  void resetState() async {
+    await Future.delayed(const Duration(milliseconds: 500), () {
+      emit(
+        state.copyWith(
+          loginStatus: LoginStatus.initial,
+          loginResponse: null,
+          loginError: null,
+          profileStatus: ProfileStatus.initial,
+          profile: null,
+          profileError: null,
+          logoutStatus: LogoutStatus.initial,
+          logoutResponse: null,
+          logoutError: null,
+        ),
+      );
+    });
+  }
+
   void login({String? username, String? password}) async {
     emit(state.copyWith(loginStatus: LoginStatus.loading));
 
@@ -62,6 +80,20 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<bool> hasToken() async {
+    try {
+      String? token = await SecureStorage.readStorage(key: 'token');
+
+      if (token == null) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> fetchProfile() async {
     emit(state.copyWith(profileStatus: ProfileStatus.loading));
 
@@ -76,5 +108,38 @@ class AuthCubit extends Cubit<AuthState> {
         state.copyWith(profileStatus: ProfileStatus.success, profile: profile),
       );
     });
+  }
+
+  void logout() async {
+    emit(
+      state.copyWith(
+        profile: state.profile,
+        logoutStatus: LogoutStatus.loading,
+      ),
+    );
+
+    try {
+      final response = await _repository.logout();
+
+      await SecureStorage.deleteStorage(key: 'token');
+      await SecureStorage.deleteStorage(key: 'profile');
+
+      emit(
+        state.copyWith(
+          profile: state.profile,
+          logoutStatus: LogoutStatus.success,
+          logoutResponse: response,
+        ),
+      );
+    } on DioException catch (e) {
+      emit(
+        state.copyWith(
+          profile: state.profile,
+          logoutStatus: LogoutStatus.error,
+          logoutError:
+              e.response?.data['message'] ?? 'Ups sepertinya terjadi kesalahan',
+        ),
+      );
+    }
   }
 }
