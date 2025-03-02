@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:app_version_update/app_version_update.dart';
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/utils/app_strings.dart';
 import 'package:epenting/app/views/dashboard/dashboard_page.dart';
 import 'package:epenting/app/views/login/login_page.dart';
 import 'package:epenting/app/views/onboard/onboard_page.dart';
+import 'package:epenting/app/views/update/update_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,6 +31,12 @@ class _SplashPageState extends State<SplashPage> {
   final localAuthentication = LocalAuthentication();
   Timer? _timer;
   String? _appVersion;
+  String? _packageName;
+
+  void initApps() async {
+    await _getPackageInfo();
+    await _checkUpdate();
+  }
 
   Future<void> _getPackageInfo() async {
     try {
@@ -36,9 +44,35 @@ class _SplashPageState extends State<SplashPage> {
 
       setState(() {
         _appVersion = 'Versi ${packageInfo.version}';
+        _packageName = packageInfo.packageName;
       });
     } on PlatformException catch (e) {
       if (kDebugMode) print(e);
+    }
+  }
+
+  Future<void> _checkUpdate() async {
+    try {
+      final result = await AppVersionUpdate.checkForUpdates(
+        playStoreId: _packageName,
+        country: 'id',
+      );
+
+      if (result.canUpdate!) {
+        if (mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            UpdatePage.routeName,
+            (route) => false,
+            arguments: {'appVersionResult': result},
+          );
+        }
+      } else {
+        _initTimer();
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      rethrow;
     }
   }
 
@@ -129,9 +163,7 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void initState() {
-    _getPackageInfo().then((value) {
-      _initTimer();
-    });
+    initApps();
     super.initState();
   }
 
