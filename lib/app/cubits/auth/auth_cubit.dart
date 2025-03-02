@@ -110,6 +110,18 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
+  void refetchProfile() async {
+    emit(
+      state.copyWith(
+        profileStatus: ProfileStatus.initial,
+        profile: null,
+        profileError: null,
+      ),
+    );
+
+    await fetchProfile();
+  }
+
   void logout() async {
     emit(
       state.copyWith(
