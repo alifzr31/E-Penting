@@ -59,6 +59,9 @@ dependencies:
   toastification: ^3.0.1
   local_auth: ^2.3.0
   local_auth_android: ^1.0.46
+  app_settings: ^5.2.0
+  app_version_update: ^6.0.0
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
