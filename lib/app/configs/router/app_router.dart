@@ -1,13 +1,16 @@
 import 'package:epenting/app/configs/get_it/service_locator.dart';
-import 'package:epenting/app/configs/router/fade_transition.dart';
+import 'package:epenting/app/configs/router/page_transition.dart';
+import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/cubits/status_gizi/statusgizi_cubit.dart';
 import 'package:epenting/app/views/dashboard/dashboard_page.dart';
 import 'package:epenting/app/views/login/login_page.dart';
 import 'package:epenting/app/views/onboard/onboard_page.dart';
 import 'package:epenting/app/views/splash/splash_page.dart';
 import 'package:epenting/app/views/status_gizi/statusgizi_page.dart';
+import 'package:epenting/app/views/update/update_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:page_transition/page_transition.dart';
 
 class AppRouter {
   static Route<dynamic> onGenerateRoute(
@@ -16,13 +19,22 @@ class AppRouter {
   ) {
     switch (settings.name) {
       case SplashPage.routeName:
-        return fadeTransition(context, settings, child: const SplashPage());
+        return pageTransition(context, settings, child: const SplashPage());
+      case UpdatePage.routeName:
+        final args = settings.arguments as Map<String, dynamic>?;
+
+        return pageTransition(
+          context,
+          settings,
+          type: PageTransitionType.sharedAxisVertical,
+          child: UpdatePage(appVersionResult: args?['appVersionResult']),
+        );
       case OnboardPage.routeName:
-        return fadeTransition(context, settings, child: const OnboardPage());
+        return pageTransition(context, settings, child: const OnboardPage());
       case LoginPage.routeName:
-        return fadeTransition(context, settings, child: const LoginPage());
+        return pageTransition(context, settings, child: const LoginPage());
       case StatusGiziPage.routeName:
-        return fadeTransition(
+        return pageTransition(
           context,
           settings,
           child: BlocProvider(
@@ -31,7 +43,14 @@ class AppRouter {
           ),
         );
       case DashboardPage.routeName:
-        return fadeTransition(context, settings, child: const DashboardPage());
+        return pageTransition(
+          context,
+          settings,
+          child: BlocProvider(
+            create: (context) => sl<DashboardCubit>(),
+            child: const DashboardPage(),
+          ),
+        );
       default:
         return MaterialPageRoute(builder: (context) => const Placeholder());
     }
