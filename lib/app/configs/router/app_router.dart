@@ -46,6 +46,7 @@ class AppRouter {
         return pageTransition(
           context,
           settings,
+          type: PageTransitionType.sharedAxisVertical,
           child: BlocProvider(
             create: (context) => sl<DashboardCubit>(),
             child: const DashboardPage(),
