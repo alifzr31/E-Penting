@@ -1,8 +1,13 @@
+import 'package:epenting/app/configs/firebase/firebase_notif.dart';
+import 'package:epenting/app/configs/firebase/firebase_options.dart';
+import 'package:epenting/app/configs/local_notification/local_notif.dart';
 import 'package:epenting/app/configs/router/app_router.dart';
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/utils/app_strings.dart';
 import 'package:epenting/app/views/splash/splash_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,10 +28,25 @@ Future<void> loadDotEnv() async {
   }
 }
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  if (kDebugMode) print('BACKGROUND FIREBASE NOTIF : $message');
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await loadDotEnv();
   di.init();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  FirebaseNotif firebaseNotif = FirebaseNotif();
+  LocalNotif localNotif = LocalNotif();
+
+  await firebaseNotif.requestNotificationPermission();
+  firebaseNotif.firebaseInit();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await localNotif.init();
 
   initializeDateFormatting('id_ID');
   Intl.defaultLocale = 'id_ID';

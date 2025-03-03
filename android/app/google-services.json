@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "417197055150",
+    "project_id": "e-penting-diskominfo",
+    "storage_bucket": "e-penting-diskominfo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:417197055150:android:14fdb2353e5ec7dd73213f",
+        "android_client_info": {
+          "package_name": "gov.bdg.epenting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "417197055150-dq925dubemfjro3dcgu2tr256ge4suq4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY6Ml8oXbO0wcL5DyfzAx8Y29oSTlWlPQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "417197055150-dq925dubemfjro3dcgu2tr256ge4suq4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
