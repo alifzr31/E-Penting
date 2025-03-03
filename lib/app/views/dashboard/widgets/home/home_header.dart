@@ -1,6 +1,7 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
+import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/views/dashboard/components/home/header_percentage.dart';
 import 'package:epenting/app/views/dashboard/components/home/header_profile.dart';
 import 'package:epenting/app/views/dashboard/components/home/headerpercentage_loading.dart';
@@ -41,6 +42,7 @@ class HomeHeader extends StatelessWidget {
                     BaseIconButton(
                       icon: MingCute.information_line,
                       size: 20.sp,
+                      color: AppColors.blueColor,
                       onPressed:
                           () => AppSettings.openAppSettings(
                             type: AppSettingsType.settings,
@@ -79,6 +81,7 @@ class HomeHeader extends StatelessWidget {
                       child: BaseIconButton(
                         icon: MingCute.exit_line,
                         size: 20.sp,
+                        color: AppColors.blueColor,
                         onPressed: () {
                           context.read<AuthCubit>().logout();
                         },
