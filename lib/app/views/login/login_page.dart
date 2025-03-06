@@ -99,7 +99,11 @@ class _LoginPageState extends State<LoginPage> {
                                     child: Column(
                                       children: [
                                         Expanded(
-                                          child: Opacity(
+                                          child: AnimatedOpacity(
+                                            duration: const Duration(
+                                              milliseconds: 300,
+                                            ),
+                                            curve: Curves.easeInOutCubic,
                                             opacity:
                                                 currentTab == index ? 1 : 0.4,
                                             child: SvgPicture.asset(
