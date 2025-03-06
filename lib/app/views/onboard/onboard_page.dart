@@ -107,7 +107,7 @@ class _OnboardPageState extends State<OnboardPage> {
                 curve: Curves.easeInOutCubic,
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(
-                  vertical: 10,
+                  vertical: 12,
                   horizontal: 16,
                 ),
                 color:
