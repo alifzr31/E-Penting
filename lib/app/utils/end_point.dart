@@ -7,4 +7,11 @@ class EndPoint {
   static const String nutrition = '/gizi';
 
   static const String percentage = '/percentage';
+  static const String latestBalita = '/balita/latest';
+  static const String latestPengukuran = '/penimbangan/latest';
+  static const String latestImunisasi = '/imunisasi/latest';
+
+  static const String allPengukuran = '/penimbangan/list';
+  static const String allImunisasi = '/imunisasi/list';
+  static const String allBalita = '/balita/list';
 }
