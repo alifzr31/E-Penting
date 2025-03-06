@@ -1,5 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:epenting/app/models/balita.dart';
+import 'package:epenting/app/models/imunisasi.dart';
+import 'package:epenting/app/models/pengukuran.dart';
 import 'package:epenting/app/models/percentage.dart';
 import 'package:epenting/app/repositories/dashboard_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -10,6 +13,13 @@ class DashboardCubit extends Cubit<DashboardState> {
   DashboardCubit(this._repository) : super(const DashboardState());
 
   final DashboardRepository _repository;
+
+  void loadData() async {
+    await fetchPercentage();
+    await fetchLatestBalita();
+    await fetchLatestPengukuran();
+    await fetchLatestImunisasi();
+  }
 
   Future<void> fetchPercentage() async {
     emit(state.copyWith(percentageStatus: PercentageStatus.loading));
@@ -44,5 +54,112 @@ class DashboardCubit extends Cubit<DashboardState> {
     );
 
     await fetchPercentage();
+  }
+
+  Future<void> fetchLatestBalita() async {
+    emit(state.copyWith(latestBalitaStatus: LatestBalitaStatus.loading));
+
+    try {
+      final latestBalitas = await _repository.fetchLatestBalita();
+
+      emit(
+        state.copyWith(
+          latestBalitaStatus: LatestBalitaStatus.success,
+          latestBalitas: latestBalitas,
+        ),
+      );
+    } on DioException catch (e) {
+      emit(
+        state.copyWith(
+          latestBalitaStatus: LatestBalitaStatus.error,
+          latestBalitaError:
+              e.response?.data['message'] ?? 'Ups sepertinya terjadi kesalahan',
+        ),
+      );
+    }
+  }
+
+  void refetchLatestBalita() async {
+    emit(
+      state.copyWith(
+        latestBalitaStatus: LatestBalitaStatus.initial,
+        latestBalitas: const [],
+        latestBalitaError: null,
+      ),
+    );
+
+    await fetchLatestBalita();
+  }
+
+  Future<void> fetchLatestPengukuran() async {
+    emit(
+      state.copyWith(latestPengukuranStatus: LatestPengukuranStatus.loading),
+    );
+
+    try {
+      final latestPengukurans = await _repository.fetchLatestPengukuran();
+
+      emit(
+        state.copyWith(
+          latestPengukuranStatus: LatestPengukuranStatus.success,
+          latestPengukurans: latestPengukurans,
+        ),
+      );
+    } on DioException catch (e) {
+      emit(
+        state.copyWith(
+          latestPengukuranStatus: LatestPengukuranStatus.error,
+          latestPengukuranError:
+              e.response?.data['message'] ?? 'Ups sepertinya terjadi kesalahan',
+        ),
+      );
+    }
+  }
+
+  void refetchLatestPengukuran() async {
+    emit(
+      state.copyWith(
+        latestPengukuranStatus: LatestPengukuranStatus.initial,
+        latestPengukurans: const [],
+        latestPengukuranError: null,
+      ),
+    );
+
+    await fetchLatestPengukuran();
+  }
+
+  Future<void> fetchLatestImunisasi() async {
+    emit(state.copyWith(latestImunisasiStatus: LatestImunisasiStatus.loading));
+
+    try {
+      final latestImunisasis = await _repository.fetchLatestImunisasi();
+
+      emit(
+        state.copyWith(
+          latestImunisasiStatus: LatestImunisasiStatus.success,
+          latestImunisasis: latestImunisasis,
+        ),
+      );
+    } on DioException catch (e) {
+      emit(
+        state.copyWith(
+          latestImunisasiStatus: LatestImunisasiStatus.error,
+          latestImunisasiError:
+              e.response?.data['message'] ?? 'Ups sepertinya terjadi kesalahan',
+        ),
+      );
+    }
+  }
+
+  void refetchLatestImunisasi() async {
+    emit(
+      state.copyWith(
+        latestImunisasiStatus: LatestImunisasiStatus.initial,
+        latestImunisasis: const [],
+        latestImunisasiError: null,
+      ),
+    );
+
+    await fetchLatestImunisasi();
   }
 }

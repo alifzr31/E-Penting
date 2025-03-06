@@ -29,7 +29,18 @@ Widget headerPercentageLoading() {
           ),
         ),
         SizedBox(width: 10.w),
-        CircleAvatar(radius: 30.r),
+        Expanded(
+          child: AspectRatio(
+            aspectRatio: 2,
+            child: Container(
+              foregroundDecoration: BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.circle,
+              ),
+              child: CircleAvatar(radius: 28),
+            ),
+          ),
+        ),
         SizedBox(width: 10.w),
         Expanded(
           child: Column(

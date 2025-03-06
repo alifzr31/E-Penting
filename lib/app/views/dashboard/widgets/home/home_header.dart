@@ -32,6 +32,7 @@ class HomeHeader extends StatelessWidget {
           bottomRight: Radius.circular(10.r),
         ),
         child: SafeArea(
+          bottom: false,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(

@@ -1,4 +1,5 @@
 import 'package:epenting/app/utils/app_colors.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -36,7 +37,33 @@ class HeaderPercentage extends StatelessWidget {
           ),
         ),
         SizedBox(width: 10.w),
-        CircleAvatar(radius: 30.r),
+        Expanded(
+          child: AspectRatio(
+            aspectRatio: 2,
+            child: PieChart(
+              PieChartData(
+                startDegreeOffset: 72,
+                borderData: FlBorderData(show: false),
+                sectionsSpace: 0,
+                centerSpaceRadius: 0,
+                sections: [
+                  PieChartSectionData(
+                    color: AppColors.blueColor,
+                    value: (maleTotal / (maleTotal + femaleTotal)) * 100,
+                    showTitle: false,
+                    radius: 28,
+                  ),
+                  PieChartSectionData(
+                    color: AppColors.orangeColor,
+                    value: (femaleTotal / (maleTotal + femaleTotal)) * 100,
+                    showTitle: false,
+                    radius: 28,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
         SizedBox(width: 10.w),
         Expanded(
           child: Column(
@@ -55,7 +82,7 @@ class HeaderPercentage extends StatelessWidget {
                   SizedBox(width: 4.w),
                   Flexible(
                     child: Text(
-                      '45% Perempuan',
+                      '${((femaleTotal / (maleTotal + femaleTotal)) * 100).toInt()}% Perempuan',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -81,7 +108,7 @@ class HeaderPercentage extends StatelessWidget {
                   SizedBox(width: 4.w),
                   Flexible(
                     child: Text(
-                      '55% Laki-laki',
+                      '${((maleTotal / (maleTotal + femaleTotal)) * 100).toInt()}% Laki-laki',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
