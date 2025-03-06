@@ -19,6 +19,8 @@ import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:epenting/app/configs/get_it/service_locator.dart' as di;
 import 'package:lottie/lottie.dart';
+import 'package:month_year_picker/month_year_picker.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> loadDotEnv() async {
   try {
@@ -83,7 +85,7 @@ class MyApp extends StatelessWidget {
               return Center(
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
@@ -98,6 +100,13 @@ class MyApp extends StatelessWidget {
             child: MaterialApp(
               title: 'E-Penting',
               debugShowCheckedModeBanner: false,
+              supportedLocales: const [Locale('en', 'US'), Locale('id', 'ID')],
+              localizationsDelegates: const [
+                GlobalWidgetsLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                MonthYearPickerLocalizations.delegate,
+              ],
               theme: ThemeData(
                 scaffoldBackgroundColor: AppColors.scaffoldBgColor,
                 colorScheme: ColorScheme.fromSeed(
