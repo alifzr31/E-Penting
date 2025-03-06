@@ -1,6 +1,7 @@
 import 'package:epenting/app/configs/get_it/service_locator.dart';
 import 'package:epenting/app/configs/router/page_transition.dart';
 import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
+import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/cubits/status_gizi/statusgizi_cubit.dart';
 import 'package:epenting/app/views/dashboard/dashboard_page.dart';
 import 'package:epenting/app/views/login/login_page.dart';
@@ -47,8 +48,11 @@ class AppRouter {
           context,
           settings,
           type: PageTransitionType.sharedAxisVertical,
-          child: BlocProvider(
-            create: (context) => sl<DashboardCubit>(),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => sl<DashboardCubit>()),
+              BlocProvider(create: (context) => sl<PengukuranCubit>()),
+            ],
             child: const DashboardPage(),
           ),
         );
