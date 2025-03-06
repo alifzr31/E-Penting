@@ -5,5 +5,5 @@ class AppColors {
   static const Color orangeColor = Color(0xFFFE634E);
   static const Color blueColor = Color(0xFF3653DB);
   static const Color softBlueColor = Color(0xFFDCE1F7);
-  static const Color greyFormField = Color(0xFFD7DADC);
+  static const Color greyFormField = Color(0xFFB5B8BA);
 }
