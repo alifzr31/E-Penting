@@ -20,8 +20,8 @@ abstract class DioClient {
     };
     dio.options.connectTimeout = const Duration(minutes: 5);
     dio.options.receiveTimeout = const Duration(minutes: 5);
+    dio.interceptors.add(DioInterceptors());
     if (kDebugMode) {
-      dio.interceptors.add(DioInterceptors());
       dio.interceptors.add(
         PrettyDioLogger(
           requestHeader: true,
