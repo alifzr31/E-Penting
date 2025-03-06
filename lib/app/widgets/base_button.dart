@@ -60,7 +60,7 @@ class BaseOutlineButton extends StatelessWidget {
     return OutlinedButton(
       style: ElevatedButton.styleFrom(
         foregroundColor: fgColor,
-        side: BorderSide(width: 1, color: borderColor ?? Colors.black),
+        side: BorderSide(width: 1.3, color: borderColor ?? Colors.black),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
         ),
@@ -156,7 +156,7 @@ class BaseOutlineButtonIcon extends StatelessWidget {
         iconColor: WidgetStatePropertyAll(fgColor),
         overlayColor: WidgetStatePropertyAll(fgColor?.withValues(alpha: 0.1)),
         side: WidgetStatePropertyAll(
-          BorderSide(width: 1, color: borderColor ?? Colors.black),
+          BorderSide(width: 1.3, color: borderColor ?? Colors.black),
         ),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
