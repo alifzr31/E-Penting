@@ -77,7 +77,9 @@ class PengukuranCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      stanting,
+                      stanting.toLowerCase().contains('sangat pendek')
+                          ? 'Sangat Pendek'
+                          : stanting,
                       textAlign: TextAlign.right,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
