@@ -97,7 +97,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> fetchProfile() async {
     emit(state.copyWith(profileStatus: ProfileStatus.loading));
 
-    await Future.delayed(const Duration(milliseconds: 1500), () async {
+    await Future.delayed(const Duration(milliseconds: 500), () async {
       final profileJson = await SecureStorage.readStorage(key: 'profile');
       final profile = await compute(
         (message) => profileFromStringJson(message),
