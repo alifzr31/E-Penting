@@ -17,7 +17,7 @@ class DashboardBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10, left: 16, right: 16),
+      padding: const EdgeInsets.only(bottom: 12, left: 16, right: 16),
       child: Material(
         elevation: 1,
         clipBehavior: Clip.antiAlias,
