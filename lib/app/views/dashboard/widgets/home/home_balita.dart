@@ -15,7 +15,7 @@ class HomeBalita extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 86.h,
+      height: 104,
       width: ScreenUtil().screenWidth,
       child: Column(
         children: [
