@@ -37,7 +37,7 @@ Widget headerPercentageLoading() {
                 color: Colors.red,
                 shape: BoxShape.circle,
               ),
-              child: CircleAvatar(radius: 28),
+              child: CircleAvatar(radius: 28.r),
             ),
           ),
         ),
@@ -52,14 +52,14 @@ Widget headerPercentageLoading() {
                     height: 8.r,
                     width: 8.r,
                     decoration: BoxDecoration(
-                      color: AppColors.orangeColor,
+                      color: AppColors.femaleColor,
                       shape: BoxShape.circle,
                     ),
                   ),
                   SizedBox(width: 4.w),
                   Flexible(
                     child: Text(
-                      '45% Perempuan',
+                      'xx% Perempuan',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -78,14 +78,14 @@ Widget headerPercentageLoading() {
                     height: 8.r,
                     width: 8.r,
                     decoration: BoxDecoration(
-                      color: AppColors.blueColor,
+                      color: AppColors.maleColor,
                       shape: BoxShape.circle,
                     ),
                   ),
                   SizedBox(width: 4.w),
                   Flexible(
                     child: Text(
-                      '55% Laki-laki',
+                      'xx% Laki-laki',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

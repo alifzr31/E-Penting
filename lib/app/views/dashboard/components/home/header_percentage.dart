@@ -48,16 +48,16 @@ class HeaderPercentage extends StatelessWidget {
                 centerSpaceRadius: 0,
                 sections: [
                   PieChartSectionData(
-                    color: AppColors.blueColor,
+                    color: AppColors.maleColor,
                     value: (maleTotal / (maleTotal + femaleTotal)) * 100,
                     showTitle: false,
-                    radius: 28,
+                    radius: 28.r,
                   ),
                   PieChartSectionData(
-                    color: AppColors.orangeColor,
+                    color: AppColors.femaleColor,
                     value: (femaleTotal / (maleTotal + femaleTotal)) * 100,
                     showTitle: false,
-                    radius: 28,
+                    radius: 28.r,
                   ),
                 ],
               ),
@@ -75,7 +75,7 @@ class HeaderPercentage extends StatelessWidget {
                     height: 8.r,
                     width: 8.r,
                     decoration: BoxDecoration(
-                      color: AppColors.orangeColor,
+                      color: AppColors.femaleColor,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -101,7 +101,7 @@ class HeaderPercentage extends StatelessWidget {
                     height: 8.r,
                     width: 8.r,
                     decoration: BoxDecoration(
-                      color: AppColors.blueColor,
+                      color: AppColors.maleColor,
                       shape: BoxShape.circle,
                     ),
                   ),
