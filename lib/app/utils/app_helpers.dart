@@ -1,13 +1,19 @@
+import 'package:epenting/app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AppHelpers {
   static Color stantingColor(String? stanting) {
     return (stanting?.toLowerCase().contains('sangat pendek') ?? false)
-        ? const Color(0xFFB3261E)
+        ? AppColors.veryShortColor
         : (stanting?.toLowerCase().contains('pendek') ?? false)
-        ? const Color(0xFFC35C00)
+        ? AppColors.shortColor
         : stanting?.toLowerCase() == 'tinggi'
-        ? const Color(0xFF2F6BBA)
-        : const Color(0xFF2B7B50);
+        ? AppColors.tallColor
+        : AppColors.normalColor;
+  }
+
+  static String monthYearFormat(DateTime date) {
+    return DateFormat('MMMM yyyy').format(date);
   }
 }
