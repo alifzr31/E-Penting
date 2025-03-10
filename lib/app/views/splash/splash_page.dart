@@ -83,8 +83,10 @@ class _SplashPageState extends State<SplashPage> {
       final canAuthenticate =
           canAuthenticateWithBiometrics ||
           await localAuthentication.isDeviceSupported();
+      final availableBiometrics =
+          await localAuthentication.getAvailableBiometrics();
 
-      return canAuthenticate;
+      return availableBiometrics.isEmpty ? false : canAuthenticate;
     } on PlatformException catch (e) {
       if (kDebugMode) print(e.message);
       return false;
