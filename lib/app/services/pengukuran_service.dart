@@ -31,4 +31,22 @@ class PengukuranService extends DioClient {
       rethrow;
     }
   }
+
+  Future<List<Pengukuran>> fetchSearchPengukuran({String? name}) async {
+    try {
+      final response = await get(
+        EndPoint.searchPengukuran,
+        queryParams: {'name': name},
+      );
+
+      return response.data['data'] == null
+          ? const []
+          : await compute(
+            (message) => listPengukuranFromJson(message),
+            response.data['data'],
+          );
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

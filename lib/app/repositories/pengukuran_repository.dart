@@ -7,6 +7,7 @@ abstract class PengukuranRepository {
     int? month,
     int? year,
   });
+  Future<List<Pengukuran>> fetchSearchPengukuran({String? name});
 }
 
 class PengukuranRepositoryImpl implements PengukuranRepository {
@@ -25,5 +26,10 @@ class PengukuranRepositoryImpl implements PengukuranRepository {
       month: month,
       year: year,
     );
+  }
+
+  @override
+  Future<List<Pengukuran>> fetchSearchPengukuran({String? name}) async {
+    return await _service.fetchSearchPengukuran(name: name);
   }
 }

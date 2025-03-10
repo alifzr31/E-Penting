@@ -46,7 +46,12 @@ class PengukuranCubit extends Cubit<PengukuranState> {
     }
   }
 
-  void refetchAllPengukuran({int? month, int? year}) async {
+  void refetchAllPengukuran({
+    bool isSearch = false,
+    int? month,
+    int? year,
+    String? search,
+  }) async {
     currentPage = 1;
     emit(
       state.copyWith(
@@ -57,6 +62,33 @@ class PengukuranCubit extends Cubit<PengukuranState> {
       ),
     );
 
-    await fetchAllPengukuran(month: month, year: year);
+    if (isSearch) {
+      await fetchSearchPengukuran(name: search);
+    } else {
+      await fetchAllPengukuran(month: month, year: year);
+    }
+  }
+
+  Future<void> fetchSearchPengukuran({String? name}) async {
+    emit(state.copyWith(pengukuranStatus: PengukuranStatus.loading));
+
+    try {
+      final pengukurans = await _repository.fetchSearchPengukuran(name: name);
+
+      emit(
+        state.copyWith(
+          pengukuranStatus: PengukuranStatus.success,
+          pengukurans: pengukurans,
+        ),
+      );
+    } on DioException catch (e) {
+      emit(
+        state.copyWith(
+          pengukuranStatus: PengukuranStatus.error,
+          pengukuranError:
+              e.response?.data['message'] ?? 'Ups sepertinya terjadi kesalahan',
+        ),
+      );
+    }
   }
 }

@@ -10,9 +10,12 @@ class PengukuranCard extends StatelessWidget {
     required this.measureDate,
     required this.name,
     required this.stanting,
+    this.cardColor = Colors.white,
+    this.elevation = 1,
+    this.marginBottom = 10,
     this.index,
     this.dataLength,
-    this.onPressed,
+    this.onTap,
     super.key,
   });
 
@@ -20,22 +23,25 @@ class PengukuranCard extends StatelessWidget {
   final String measureDate;
   final String name;
   final String stanting;
+  final Color? cardColor;
+  final double elevation;
+  final double marginBottom;
   final int? index;
   final int? dataLength;
-  final void Function()? onPressed;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
-      elevation: 1,
+      color: cardColor,
+      elevation: elevation,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
       margin: EdgeInsets.only(
-        bottom: index == ((dataLength ?? 0) - 1) ? 0 : 10,
+        bottom: index == ((dataLength ?? 0) - 1) ? 0 : marginBottom,
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(
@@ -79,6 +85,8 @@ class PengukuranCard extends StatelessWidget {
                     Text(
                       stanting.toLowerCase().contains('sangat pendek')
                           ? 'Sangat Pendek'
+                          : stanting.toLowerCase().contains('pendek')
+                          ? 'Pendek'
                           : stanting,
                       textAlign: TextAlign.right,
                       maxLines: 1,
@@ -96,7 +104,7 @@ class PengukuranCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: Colors.indigo.shade100,
+                  color: const Color(0xFFE2E6FC),
                   shape: BoxShape.circle,
                 ),
                 child: Center(

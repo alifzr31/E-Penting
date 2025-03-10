@@ -3,21 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-Widget pengukuranCardLoading(int dataLength) {
+Widget pengukuranCardLoading(
+  int dataLength, {
+  bool shrinkWrap = false,
+  bool withPadding = true,
+  Color shimmerColor = const Color(0xFFEBEBF4),
+  Color cardColor = Colors.white,
+  double elevation = 1,
+  double marginBottom = 10,
+}) {
   return ListView.builder(
+    shrinkWrap: shrinkWrap,
     physics: const NeverScrollableScrollPhysics(),
-    padding: const EdgeInsets.all(16),
+    padding: withPadding ? const EdgeInsets.all(16) : EdgeInsets.zero,
     itemCount: dataLength,
     itemBuilder: (context, index) {
       return Skeletonizer(
+        effect: ShimmerEffect(baseColor: shimmerColor),
         child: Card(
-          color: Colors.white,
-          elevation: 1,
+          color: cardColor,
+          elevation: elevation,
           clipBehavior: Clip.antiAlias,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.r),
           ),
-          margin: const EdgeInsets.only(bottom: 10),
+          margin: EdgeInsets.only(bottom: marginBottom),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
@@ -49,7 +59,7 @@ Widget pengukuranCardLoading(int dataLength) {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        'xxxxxxxxxx',
+                        'xxxxxxxxxxxxxx',
                         textAlign: TextAlign.right,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

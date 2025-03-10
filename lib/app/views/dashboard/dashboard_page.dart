@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
@@ -21,6 +23,9 @@ class _DashboardPageState extends State<DashboardPage> {
   int _currentPage = 0;
   DateTime? _selectedPengukuranDateFilter;
   final _pengukuranScrollController = ScrollController();
+  Timer? _pengukuranDebounce;
+  final _searchPengukuranController = TextEditingController();
+  String? _searchPengukuran;
 
   void _onScrollPengukuran() {
     if (_pengukuranScrollController.hasClients) {
@@ -48,8 +53,10 @@ class _DashboardPageState extends State<DashboardPage> {
 
     if (selected != null) {
       setState(() {
+        _searchPengukuran = null;
         _selectedPengukuranDateFilter = selected;
       });
+      _searchPengukuranController.clear();
 
       if (context.mounted) {
         context.read<PengukuranCubit>().refetchAllPengukuran(
@@ -60,16 +67,47 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
-  Future<void> onRefreshPengukuran() async {
+  Future<void> _onRefreshPengukuran() async {
     await Future.delayed(const Duration(milliseconds: 2500), () {
       setState(() {
         _selectedPengukuranDateFilter = null;
+        _searchPengukuran = null;
       });
+      _searchPengukuranController.clear();
 
       if (mounted) {
         context.read<PengukuranCubit>().refetchAllPengukuran();
       }
     });
+  }
+
+  void _onSearchPengukuran(String? value) {
+    setState(() {
+      if (_selectedPengukuranDateFilter != null) {
+        _selectedPengukuranDateFilter = null;
+      }
+      _searchPengukuran = value;
+    });
+
+    if (_pengukuranDebounce?.isActive ?? false) _pengukuranDebounce?.cancel();
+    _pengukuranDebounce = Timer(const Duration(milliseconds: 500), () {
+      if (_searchPengukuran?.isEmpty ?? false) {
+        context.read<PengukuranCubit>().refetchAllPengukuran();
+      } else {
+        context.read<PengukuranCubit>().refetchAllPengukuran(
+          isSearch: true,
+          search: _searchPengukuran,
+        );
+      }
+    });
+  }
+
+  void _onPressedShowAllMonth() {
+    setState(() {
+      _selectedPengukuranDateFilter = null;
+    });
+
+    context.read<PengukuranCubit>().refetchAllPengukuran();
   }
 
   @override
@@ -90,6 +128,8 @@ class _DashboardPageState extends State<DashboardPage> {
     _pengukuranScrollController
       ..removeListener(_onScrollPengukuran)
       ..dispose();
+    _pengukuranDebounce?.cancel();
+    _searchPengukuranController.dispose();
     super.dispose();
   }
 
@@ -97,6 +137,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      resizeToAvoidBottomInset: _currentPage == 0 ? null : false,
       bottomNavigationBar: DashboardBottomNav(
         currentPage: _currentPage,
         onTap: (index) {
@@ -127,11 +168,14 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           PengukuranPage(
             selectedPengukuranDateFilter: _selectedPengukuranDateFilter,
-            onPressedPengukuranDateFilter: () async {
+            onPressedPengukuranDateFilter: () {
               _onPressedPengukuranDateFilter(context);
             },
             pengukuranScrollController: _pengukuranScrollController,
-            onRefreshPengukuran: onRefreshPengukuran,
+            onRefreshPengukuran: _onRefreshPengukuran,
+            searchPengukuranController: _searchPengukuranController,
+            onSearchPengukuran: _onSearchPengukuran,
+            onPressedShowAllMonth: _onPressedShowAllMonth,
           ),
           const Center(child: Text('Imunisasi')),
           const Center(child: Text('Balita')),
