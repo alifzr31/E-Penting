@@ -4,10 +4,9 @@ import 'package:epenting/app/views/dashboard/components/pengukuran_card.dart';
 import 'package:epenting/app/views/dashboard/components/pengukurancard_loading.dart';
 import 'package:epenting/app/views/dashboard/widgets/pengukuran/pengukuran_header.dart';
 import 'package:epenting/app/widgets/base_emptystate.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:epenting/app/widgets/base_loadscroll.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class PengukuranPage extends StatelessWidget {
@@ -18,7 +17,7 @@ class PengukuranPage extends StatelessWidget {
     required this.onRefreshPengukuran,
     required this.searchPengukuranController,
     required this.onSearchPengukuran,
-    required this.onPressedShowAllMonth,
+    required this.onPressedShowAllMonthPengukuran,
     super.key,
   });
 
@@ -28,7 +27,7 @@ class PengukuranPage extends StatelessWidget {
   final Future<void> Function() onRefreshPengukuran;
   final TextEditingController searchPengukuranController;
   final void Function(String?)? onSearchPengukuran;
-  final void Function()? onPressedShowAllMonth;
+  final void Function()? onPressedShowAllMonthPengukuran;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +62,7 @@ class PengukuranPage extends StatelessWidget {
                         totalData: '${state.pengukurans.length} Pengukuran',
                         iconButton: MingCute.refresh_2_line,
                         labelButton: 'Tampilkan Semua Bulan',
-                        onPressedButton: onPressedShowAllMonth,
+                        onPressedButton: onPressedShowAllMonthPengukuran,
                       )
                       : state.pengukurans.isEmpty
                       ? BaseEmptyState(
@@ -89,50 +88,7 @@ class PengukuranPage extends StatelessWidget {
                                           : state.pengukurans.length,
                                   itemBuilder: (context, index) {
                                     return index >= state.pengukurans.length
-                                        ? Padding(
-                                          padding: const EdgeInsets.only(
-                                            top: 10,
-                                          ),
-                                          child: Center(
-                                            child: Card(
-                                              color: Colors.white,
-                                              clipBehavior: Clip.antiAlias,
-                                              elevation: 1,
-                                              shape: const StadiumBorder(),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      vertical: 10,
-                                                      horizontal: 16,
-                                                    ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Text(
-                                                      'Memuat data',
-                                                      style: TextStyle(
-                                                        fontSize: 12.sp,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            Colors
-                                                                .grey
-                                                                .shade600,
-                                                      ),
-                                                    ),
-                                                    SizedBox(width: 6.w),
-                                                    CupertinoActivityIndicator(
-                                                      radius: 6.r,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        )
+                                        ? const BaseLoadScroll()
                                         : PengukuranCard(
                                           day:
                                               state.pengukurans[index].hari ??
