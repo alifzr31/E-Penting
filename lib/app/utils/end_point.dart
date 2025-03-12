@@ -14,5 +14,7 @@ class EndPoint {
   static const String allPengukuran = '/penimbangan/list';
   static const String searchPengukuran = '/penimbangan/search';
   static const String allImunisasi = '/imunisasi/list';
+  static const String searchImunisasi = '/imunisasi/search';
   static const String allBalita = '/balita/list';
+  static const String searchBalita = '/balita/search';
 }
