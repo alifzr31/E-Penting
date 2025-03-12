@@ -12,7 +12,7 @@ class ImunisasiCubit extends Cubit<ImunisasiState> {
   final ImunisasiRepository _repository;
   int currentPage = 1;
 
-  Future<void> fetchAllImunisasi({int? page, int? month, int? year}) async {
+  Future<void> fetchAllImunisasi({int? month, int? year}) async {
     if (currentPage == 1) {
       emit(state.copyWith(imunisasiStatus: ImunisasiStatus.loading));
     }
