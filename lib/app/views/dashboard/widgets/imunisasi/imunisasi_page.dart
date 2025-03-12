@@ -5,6 +5,7 @@ import 'package:epenting/app/views/dashboard/components/imunisasicard_loading.da
 import 'package:epenting/app/views/dashboard/widgets/imunisasi/imunisasi_header.dart';
 import 'package:epenting/app/widgets/base_emptystate.dart';
 import 'package:epenting/app/widgets/base_loadscroll.dart';
+import 'package:epenting/app/widgets/base_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -70,7 +71,7 @@ class ImunisasiPage extends StatelessWidget {
                         totalData: '${state.imunisasis.length} Pengukuran',
                         onPressedButton: () {},
                       )
-                      : RefreshIndicator(
+                      : BaseRefresh(
                         onRefresh: onRefreshImunisasi,
                         child:
                             searchImunisasiController.text.isEmpty

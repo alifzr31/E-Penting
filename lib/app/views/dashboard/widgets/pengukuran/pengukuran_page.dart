@@ -5,6 +5,7 @@ import 'package:epenting/app/views/dashboard/components/pengukurancard_loading.d
 import 'package:epenting/app/views/dashboard/widgets/pengukuran/pengukuran_header.dart';
 import 'package:epenting/app/widgets/base_emptystate.dart';
 import 'package:epenting/app/widgets/base_loadscroll.dart';
+import 'package:epenting/app/widgets/base_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -70,7 +71,7 @@ class PengukuranPage extends StatelessWidget {
                         totalData: '${state.pengukurans.length} Pengukuran',
                         onPressedButton: () {},
                       )
-                      : RefreshIndicator(
+                      : BaseRefresh(
                         onRefresh: onRefreshPengukuran,
                         child:
                             searchPengukuranController.text.isEmpty
