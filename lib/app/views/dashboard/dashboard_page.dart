@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
+import 'package:epenting/app/cubits/imunisasi/imunisasi_cubit.dart';
 import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/views/dashboard/widgets/dashboard_bottomnav.dart';
 import 'package:epenting/app/views/dashboard/widgets/home/home_page.dart';
+import 'package:epenting/app/views/dashboard/widgets/imunisasi/imunisasi_page.dart';
 import 'package:epenting/app/views/dashboard/widgets/pengukuran/pengukuran_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 
@@ -21,11 +24,18 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   int _currentPage = 0;
+
   DateTime? _selectedPengukuranDateFilter;
   final _pengukuranScrollController = ScrollController();
   Timer? _pengukuranDebounce;
   final _searchPengukuranController = TextEditingController();
   String? _searchPengukuran;
+
+  DateTime? _selectedImunisasiDateFilter;
+  final _imunisasiScrollController = ScrollController();
+  Timer? _imunisasiDebounce;
+  final _searchImunisasiController = TextEditingController();
+  String? _searchImunisasi;
 
   void _onScrollPengukuran() {
     if (_pengukuranScrollController.hasClients) {
@@ -102,12 +112,95 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
-  void _onPressedShowAllMonth() {
+  void _onPressedShowAllMonthPengukuran() {
     setState(() {
       _selectedPengukuranDateFilter = null;
     });
 
     context.read<PengukuranCubit>().refetchAllPengukuran();
+  }
+
+  void _onScrollImunisasi() {
+    if (_imunisasiScrollController.hasClients) {
+      final currentScroll = _imunisasiScrollController.position.pixels;
+      final maxScroll = _imunisasiScrollController.position.maxScrollExtent;
+
+      if (currentScroll == maxScroll &&
+          context.read<ImunisasiCubit>().state.hasMoreImunisasi) {
+        context.read<ImunisasiCubit>().fetchAllImunisasi(
+          month: _selectedImunisasiDateFilter?.month,
+          year: _selectedImunisasiDateFilter?.year,
+        );
+      }
+    }
+  }
+
+  Future<void> _onPressedImunisasiDateFilter(BuildContext context) async {
+    final selected = await showMonthYearPicker(
+      context: context,
+      initialDate: _selectedImunisasiDateFilter ?? DateTime.now(),
+      firstDate: DateTime(DateTime.now().year, 1, 1),
+      lastDate: DateTime(DateTime.now().year, 12, 31),
+      locale: const Locale('id', 'ID'),
+    );
+
+    if (selected != null) {
+      setState(() {
+        _searchImunisasi = null;
+        _selectedImunisasiDateFilter = selected;
+      });
+      _searchImunisasiController.clear();
+
+      if (context.mounted) {
+        context.read<ImunisasiCubit>().refetchAllImunisasi(
+          month: _selectedImunisasiDateFilter?.month,
+          year: _selectedImunisasiDateFilter?.year,
+        );
+      }
+    }
+  }
+
+  Future<void> _onRefreshImunisasi() async {
+    await Future.delayed(const Duration(milliseconds: 2500), () {
+      setState(() {
+        _selectedImunisasiDateFilter = null;
+        _searchImunisasi = null;
+      });
+      _searchImunisasiController.clear();
+
+      if (mounted) {
+        context.read<ImunisasiCubit>().refetchAllImunisasi();
+      }
+    });
+  }
+
+  void _onSearchImunisasi(String? value) {
+    setState(() {
+      if (_selectedImunisasiDateFilter != null) {
+        _selectedImunisasiDateFilter = null;
+      }
+      _searchImunisasi = value;
+    });
+
+    if (_imunisasiDebounce?.isActive ?? false) _imunisasiDebounce?.cancel();
+    _imunisasiDebounce = Timer(const Duration(milliseconds: 500), () {
+      if (_searchImunisasi?.isEmpty ?? false) {
+        context.read<ImunisasiCubit>().refetchAllImunisasi();
+      } else {
+        context.read<ImunisasiCubit>().refetchAllImunisasi(
+          isSearch: true,
+          search: _searchImunisasi,
+        );
+      }
+    });
+  }
+
+  void _onPressedShowAllMonthImunisasi() {
+    setState(() {
+      _selectedImunisasiDateFilter = null;
+    });
+
+    context.read<ImunisasiCubit>().refetchAllImunisasi();
   }
 
   @override
@@ -117,6 +210,9 @@ class _DashboardPageState extends State<DashboardPage> {
         context.read<DashboardCubit>().loadData();
         context.read<PengukuranCubit>().fetchAllPengukuran().then((value) {
           _pengukuranScrollController.addListener(_onScrollPengukuran);
+        });
+        context.read<ImunisasiCubit>().fetchAllImunisasi().then((value) {
+          _imunisasiScrollController.addListener(_onScrollImunisasi);
         });
       }
     });
@@ -130,56 +226,85 @@ class _DashboardPageState extends State<DashboardPage> {
       ..dispose();
     _pengukuranDebounce?.cancel();
     _searchPengukuranController.dispose();
+    _imunisasiScrollController
+      ..removeListener(_onScrollImunisasi)
+      ..dispose();
+    _imunisasiDebounce?.cancel();
+    _searchImunisasiController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      resizeToAvoidBottomInset: _currentPage == 0 ? null : false,
-      bottomNavigationBar: DashboardBottomNav(
-        currentPage: _currentPage,
-        onTap: (index) {
-          setState(() {
-            _currentPage = index;
-          });
-        },
-      ),
-      body: IndexedStack(
-        index: _currentPage,
-        children: [
-          HomePage(
-            seeAllPengukuran: () {
-              setState(() {
-                _currentPage = 1;
-              });
-            },
-            seeAllImunisasi: () {
-              setState(() {
-                _currentPage = 2;
-              });
-            },
-            seeAllBalita: () {
-              setState(() {
-                _currentPage = 3;
-              });
-            },
-          ),
-          PengukuranPage(
-            selectedPengukuranDateFilter: _selectedPengukuranDateFilter,
-            onPressedPengukuranDateFilter: () {
-              _onPressedPengukuranDateFilter(context);
-            },
-            pengukuranScrollController: _pengukuranScrollController,
-            onRefreshPengukuran: _onRefreshPengukuran,
-            searchPengukuranController: _searchPengukuranController,
-            onSearchPengukuran: _onSearchPengukuran,
-            onPressedShowAllMonth: _onPressedShowAllMonth,
-          ),
-          const Center(child: Text('Imunisasi')),
-          const Center(child: Text('Balita')),
-        ],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          if (_currentPage == 0) {
+            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+          } else {
+            setState(() {
+              _currentPage = 0;
+            });
+          }
+        }
+      },
+      child: Scaffold(
+        extendBody: true,
+        resizeToAvoidBottomInset: _currentPage == 0 ? null : false,
+        bottomNavigationBar: DashboardBottomNav(
+          currentPage: _currentPage,
+          onTap: (index) {
+            setState(() {
+              _currentPage = index;
+            });
+          },
+        ),
+        body: IndexedStack(
+          index: _currentPage,
+          children: [
+            HomePage(
+              seeAllPengukuran: () {
+                setState(() {
+                  _currentPage = 1;
+                });
+              },
+              seeAllImunisasi: () {
+                setState(() {
+                  _currentPage = 2;
+                });
+              },
+              seeAllBalita: () {
+                setState(() {
+                  _currentPage = 3;
+                });
+              },
+            ),
+            PengukuranPage(
+              selectedPengukuranDateFilter: _selectedPengukuranDateFilter,
+              onPressedPengukuranDateFilter: () {
+                _onPressedPengukuranDateFilter(context);
+              },
+              pengukuranScrollController: _pengukuranScrollController,
+              onRefreshPengukuran: _onRefreshPengukuran,
+              searchPengukuranController: _searchPengukuranController,
+              onSearchPengukuran: _onSearchPengukuran,
+              onPressedShowAllMonthPengukuran: _onPressedShowAllMonthPengukuran,
+            ),
+            ImunisasiPage(
+              selectedImunisasiDateFilter: _selectedImunisasiDateFilter,
+              onPressedImunisasiDateFilter: () {
+                _onPressedImunisasiDateFilter(context);
+              },
+              imunisasiScrollController: _imunisasiScrollController,
+              onRefreshImunisasi: _onRefreshImunisasi,
+              searchImunisasiController: _searchImunisasiController,
+              onSearchImunisasi: _onSearchImunisasi,
+              onPressedShowAllMonthImunisasi: _onPressedShowAllMonthImunisasi,
+            ),
+            const Center(child: Text('Balita')),
+          ],
+        ),
       ),
     );
   }

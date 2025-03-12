@@ -1,13 +1,16 @@
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
+import 'package:epenting/app/cubits/imunisasi/imunisasi_cubit.dart';
 import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/cubits/status_gizi/statusgizi_cubit.dart';
 import 'package:epenting/app/repositories/auth_repository.dart';
 import 'package:epenting/app/repositories/dashboard_repository.dart';
+import 'package:epenting/app/repositories/imunisasi_repository.dart';
 import 'package:epenting/app/repositories/pengukuran_repository.dart';
 import 'package:epenting/app/repositories/statusgizi_repository.dart';
 import 'package:epenting/app/services/auth_service.dart';
 import 'package:epenting/app/services/dashboard_service.dart';
+import 'package:epenting/app/services/imunisasi_service.dart';
 import 'package:epenting/app/services/pengukuran_service.dart';
 import 'package:epenting/app/services/statusgizi_service.dart';
 import 'package:get_it/get_it.dart';
@@ -36,4 +39,10 @@ void init() {
     () => PengukuranRepositoryImpl(sl()),
   );
   sl.registerFactory(() => PengukuranCubit(sl()));
+
+  sl.registerLazySingleton(() => ImunisasiService());
+  sl.registerLazySingleton<ImunisasiRepository>(
+    () => ImunisasiRepositoryImpl(sl()),
+  );
+  sl.registerFactory(() => ImunisasiCubit(sl()));
 }

@@ -1,6 +1,7 @@
 import 'package:epenting/app/configs/get_it/service_locator.dart';
 import 'package:epenting/app/configs/router/page_transition.dart';
 import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
+import 'package:epenting/app/cubits/imunisasi/imunisasi_cubit.dart';
 import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/cubits/status_gizi/statusgizi_cubit.dart';
 import 'package:epenting/app/views/dashboard/dashboard_page.dart';
@@ -52,6 +53,7 @@ class AppRouter {
             providers: [
               BlocProvider(create: (context) => sl<DashboardCubit>()),
               BlocProvider(create: (context) => sl<PengukuranCubit>()),
+              BlocProvider(create: (context) => sl<ImunisasiCubit>()),
             ],
             child: const DashboardPage(),
           ),
