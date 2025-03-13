@@ -11,8 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class BalitaPage extends StatelessWidget {
   const BalitaPage({
     required this.balitaFilters,
-    required this.selectedFilter,
-    required this.onSelectFilter,
     required this.balitaScrollController,
     required this.onRefreshBalita,
     required this.searchBalitaController,
@@ -21,8 +19,6 @@ class BalitaPage extends StatelessWidget {
   });
 
   final List<String> balitaFilters;
-  final String selectedFilter;
-  final void Function()? onSelectFilter;
   final ScrollController balitaScrollController;
   final Future<void> Function() onRefreshBalita;
   final TextEditingController searchBalitaController;
@@ -34,8 +30,6 @@ class BalitaPage extends StatelessWidget {
       children: [
         BalitaHeader(
           balitaFilters: balitaFilters,
-          selectedFilter: selectedFilter,
-          onSelectFilter: onSelectFilter,
           searchBalitaController: searchBalitaController,
           onSearchBalita: onSearchBalita,
         ),
@@ -54,6 +48,13 @@ class BalitaPage extends StatelessWidget {
                         totalData: '${state.balitas.length} Balita',
                         showButton: false,
                       )
+                      : state.balitas.isEmpty && state.selectedFilter != 'all'
+                      ? BaseEmptyState(
+                        message:
+                            'Balita dengan rentang usia ${state.selectedFilter} bulan tidak ditemukan',
+                        totalData: '${state.balitas.length} Balita',
+                        showButton: false,
+                      )
                       : state.balitas.isEmpty
                       ? BaseEmptyState(
                         message: 'Data Balita Kosong',
@@ -66,6 +67,8 @@ class BalitaPage extends StatelessWidget {
                             searchBalitaController.text.isEmpty
                                 ? ListView.builder(
                                   controller: balitaScrollController,
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
                                   padding: const EdgeInsets.fromLTRB(
                                     16,
                                     10,
@@ -105,6 +108,8 @@ class BalitaPage extends StatelessWidget {
                                   },
                                 )
                                 : ListView.builder(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
                                   padding: const EdgeInsets.fromLTRB(
                                     16,
                                     10,

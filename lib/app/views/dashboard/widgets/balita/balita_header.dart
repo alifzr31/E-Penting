@@ -1,4 +1,5 @@
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
+import 'package:epenting/app/cubits/balita/balita_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/widgets/base_button.dart';
 import 'package:epenting/app/widgets/base_formfield.dart';
@@ -11,16 +12,12 @@ import 'package:skeletonizer/skeletonizer.dart';
 class BalitaHeader extends StatelessWidget {
   const BalitaHeader({
     required this.balitaFilters,
-    required this.selectedFilter,
-    required this.onSelectFilter,
     required this.searchBalitaController,
     required this.onSearchBalita,
     super.key,
   });
 
   final List<String> balitaFilters;
-  final String selectedFilter;
-  final void Function()? onSelectFilter;
   final TextEditingController searchBalitaController;
   final void Function(String?)? onSearchBalita;
 
@@ -149,55 +146,67 @@ class BalitaHeader extends StatelessWidget {
         ),
         if (searchBalitaController.text.isEmpty) SizedBox(height: 10.h),
         if (searchBalitaController.text.isEmpty)
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 6),
-            child: Row(
-              children: List.generate(5, (index) {
-                final filter = balitaFilters[index];
+          BlocBuilder<BalitaCubit, BalitaState>(
+            builder: (context, state) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 6),
+                child: Row(
+                  children: List.generate(5, (index) {
+                    final filter = balitaFilters[index];
 
-                return Padding(
-                  padding: EdgeInsets.only(
-                    right: index == (balitaFilters.length - 1) ? 0 : 8,
-                    bottom: 3,
-                  ),
-                  child: Material(
-                    color:
-                        selectedFilter == filter
-                            ? AppColors.blueColor
-                            : Colors.white,
-                    elevation: 1,
-                    shape: const StadiumBorder(),
-                    clipBehavior: Clip.antiAlias,
-                    child: InkWell(
-                      onTap: onSelectFilter,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 6,
-                          horizontal: 16,
-                        ),
-                        child: Center(
-                          child: Text(
-                            filter == 'all' ? 'Semua Bulan' : '$filter Bulan',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight:
-                                  selectedFilter == filter
-                                      ? FontWeight.w600
-                                      : FontWeight.w400,
-                              color:
-                                  selectedFilter == filter
-                                      ? Colors.white
-                                      : Colors.black,
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        right: index == (balitaFilters.length - 1) ? 0 : 8,
+                        bottom: 3,
+                      ),
+                      child: Material(
+                        color:
+                            state.selectedFilter == filter
+                                ? AppColors.blueColor
+                                : Colors.white,
+                        elevation: 1,
+                        shape: const StadiumBorder(),
+                        clipBehavior: Clip.antiAlias,
+                        child: InkWell(
+                          onTap: () {
+                            if (state.selectedFilter != filter) {
+                              context.read<BalitaCubit>().refetchAllBalita(
+                                filter: filter,
+                              );
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 6,
+                              horizontal: 16,
+                            ),
+                            child: Center(
+                              child: Text(
+                                filter == 'all'
+                                    ? 'Semua Bulan'
+                                    : '$filter Bulan',
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight:
+                                      state.selectedFilter == filter
+                                          ? FontWeight.w600
+                                          : FontWeight.w400,
+                                  color:
+                                      state.selectedFilter == filter
+                                          ? Colors.white
+                                          : Colors.black,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                );
-              }),
-            ),
+                    );
+                  }),
+                ),
+              );
+            },
           ),
       ],
     );

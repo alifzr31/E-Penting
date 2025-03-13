@@ -12,7 +12,7 @@ class BalitaCubit extends Cubit<BalitaState> {
   final BalitaRepository _repository;
   int currentPage = 1;
 
-  Future<void> fetchAllBalita({String? ageFilter}) async {
+  Future<void> fetchAllBalita() async {
     if (currentPage == 1) {
       emit(state.copyWith(balitaStatus: BalitaStatus.loading));
     }
@@ -20,7 +20,7 @@ class BalitaCubit extends Cubit<BalitaState> {
     try {
       final balitas = await _repository.fetchAllBalita(
         page: currentPage,
-        ageFilter: ageFilter,
+        ageFilter: state.selectedFilter,
       );
 
       if (balitas.length < 15) {
@@ -47,7 +47,7 @@ class BalitaCubit extends Cubit<BalitaState> {
 
   void refetchAllBalita({
     bool isSearch = false,
-    String? ageFilter,
+    String? filter,
     String? search,
   }) async {
     currentPage = 1;
@@ -57,13 +57,14 @@ class BalitaCubit extends Cubit<BalitaState> {
         hasMoreBalita: true,
         balitas: const [],
         balitaError: null,
+        selectedFilter: filter,
       ),
     );
 
     if (isSearch) {
       await fetchSearchBalita(name: search);
     } else {
-      await fetchAllBalita(ageFilter: ageFilter);
+      await fetchAllBalita();
     }
   }
 

@@ -48,7 +48,7 @@ class _DashboardPageState extends State<DashboardPage> {
     '37-48',
     '49-60',
   ];
-  String selectedFilter = 'all';
+  // String selectedFilter = 'all';
   final _balitaScrollController = ScrollController();
   Timer? _balitaDebounce;
   final _searchBalitaController = TextEditingController();
@@ -227,7 +227,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
       if (currentScroll == maxScroll &&
           context.read<BalitaCubit>().state.hasMoreBalita) {
-        context.read<BalitaCubit>().fetchAllBalita(ageFilter: selectedFilter);
+        context.read<BalitaCubit>().fetchAllBalita();
       }
     }
   }
@@ -235,31 +235,30 @@ class _DashboardPageState extends State<DashboardPage> {
   Future<void> _onRefreshBalita() async {
     await Future.delayed(const Duration(milliseconds: 2500), () {
       setState(() {
-        selectedFilter = 'all';
         _searchBalita = null;
       });
       _searchBalitaController.clear();
 
       if (mounted) {
-        context.read<BalitaCubit>().refetchAllBalita(ageFilter: selectedFilter);
+        context.read<BalitaCubit>().refetchAllBalita();
       }
     });
   }
 
   void _onSearchBalita(String? value) {
     setState(() {
-      selectedFilter = 'all';
       _searchBalita = value;
     });
 
     if (_balitaDebounce?.isActive ?? false) _balitaDebounce?.cancel();
     _balitaDebounce = Timer(const Duration(milliseconds: 500), () {
       if (_searchBalita?.isEmpty ?? false) {
-        context.read<BalitaCubit>().refetchAllBalita(ageFilter: selectedFilter);
+        context.read<BalitaCubit>().refetchAllBalita();
       } else {
         context.read<BalitaCubit>().refetchAllBalita(
           isSearch: true,
           search: _searchBalita,
+          filter: 'all',
         );
       }
     });
@@ -276,12 +275,9 @@ class _DashboardPageState extends State<DashboardPage> {
         context.read<ImunisasiCubit>().fetchAllImunisasi().then((value) {
           _imunisasiScrollController.addListener(_onScrollImunisasi);
         });
-        context
-            .read<BalitaCubit>()
-            .fetchAllBalita(ageFilter: selectedFilter)
-            .then((value) {
-              _balitaScrollController.addListener(_onScrollBalita);
-            });
+        context.read<BalitaCubit>().fetchAllBalita().then((value) {
+          _balitaScrollController.addListener(_onScrollBalita);
+        });
       }
     });
     super.initState();
@@ -377,12 +373,6 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             BalitaPage(
               balitaFilters: _balitaFilters,
-              selectedFilter: selectedFilter,
-              onSelectFilter: () {
-                setState(() {
-                  selectedFilter = '0-6';
-                });
-              },
               balitaScrollController: _balitaScrollController,
               onRefreshBalita: _onRefreshBalita,
               searchBalitaController: _searchBalitaController,

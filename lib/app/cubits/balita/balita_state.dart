@@ -7,12 +7,14 @@ class BalitaState extends Equatable {
   final bool hasMoreBalita;
   final List<Balita> balitas;
   final dynamic balitaError;
+  final String selectedFilter;
 
   const BalitaState({
     this.balitaStatus = BalitaStatus.initial,
     this.hasMoreBalita = true,
     this.balitas = const [],
     this.balitaError,
+    this.selectedFilter = 'all',
   });
 
   BalitaState copyWith({
@@ -20,12 +22,14 @@ class BalitaState extends Equatable {
     bool? hasMoreBalita,
     List<Balita>? balitas,
     dynamic balitaError,
+    String? selectedFilter,
   }) {
     return BalitaState(
       balitaStatus: balitaStatus ?? this.balitaStatus,
       hasMoreBalita: hasMoreBalita ?? this.hasMoreBalita,
       balitas: balitas ?? this.balitas,
       balitaError: balitaError ?? this.balitaError,
+      selectedFilter: selectedFilter ?? this.selectedFilter,
     );
   }
 
@@ -35,5 +39,6 @@ class BalitaState extends Equatable {
     hasMoreBalita,
     balitas,
     balitaError,
+    selectedFilter,
   ];
 }
