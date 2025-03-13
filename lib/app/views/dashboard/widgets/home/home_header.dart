@@ -1,4 +1,3 @@
-import 'package:app_settings/app_settings.dart';
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
@@ -6,19 +5,17 @@ import 'package:epenting/app/views/dashboard/components/home/header_percentage.d
 import 'package:epenting/app/views/dashboard/components/home/header_profile.dart';
 import 'package:epenting/app/views/dashboard/components/home/headerpercentage_loading.dart';
 import 'package:epenting/app/views/dashboard/components/home/headerprofile_loading.dart';
-import 'package:epenting/app/views/login/login_page.dart';
 import 'package:epenting/app/widgets/base_errorstate.dart';
 import 'package:epenting/app/widgets/base_iconbutton.dart';
-import 'package:epenting/app/widgets/show_customtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:loader_overlay/loader_overlay.dart';
-import 'package:toastification/toastification.dart';
 
 class HomeHeader extends StatelessWidget {
-  const HomeHeader({super.key});
+  const HomeHeader({required this.dashboardKey, super.key});
+
+  final GlobalKey<ScaffoldState> dashboardKey;
 
   @override
   Widget build(BuildContext context) {
@@ -38,58 +35,16 @@ class HomeHeader extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    BaseIconButton(
-                      icon: MingCute.information_line,
-                      size: 20.sp,
-                      color: AppColors.blueColor,
-                      onPressed:
-                          () => AppSettings.openAppSettings(
-                            type: AppSettingsType.settings,
-                          ),
-                    ),
-                    SizedBox(width: 6.w),
-                    BlocListener<AuthCubit, AuthState>(
-                      listenWhen:
-                          (previous, current) =>
-                              previous.logoutStatus != current.logoutStatus,
-                      listener: (context, state) {
-                        if (state.logoutStatus == LogoutStatus.loading) {
-                          context.loaderOverlay.show();
-                        }
-
-                        if (state.logoutStatus == LogoutStatus.success) {
-                          context.loaderOverlay.hide();
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            LoginPage.routeName,
-                            (route) => false,
-                          );
-                          context.read<AuthCubit>().resetState();
-                        }
-
-                        if (state.logoutStatus == LogoutStatus.error) {
-                          context.loaderOverlay.hide();
-                          showCustomToast(
-                            context,
-                            type: ToastificationType.error,
-                            title: 'Keluar Gagal',
-                            description: state.logoutError,
-                          );
-                        }
-                      },
-                      child: BaseIconButton(
-                        icon: MingCute.exit_line,
-                        size: 20.sp,
-                        color: AppColors.blueColor,
-                        onPressed: () {
-                          context.read<AuthCubit>().logout();
-                        },
-                      ),
-                    ),
-                  ],
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: BaseIconButton(
+                    icon: MingCute.menu_line,
+                    size: 20.sp,
+                    color: AppColors.blueColor,
+                    onPressed: () {
+                      dashboardKey.currentState?.openEndDrawer();
+                    },
+                  ),
                 ),
                 SizedBox(height: 10.h),
                 BlocBuilder<AuthCubit, AuthState>(

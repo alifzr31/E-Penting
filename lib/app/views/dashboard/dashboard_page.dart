@@ -7,13 +7,19 @@ import 'package:epenting/app/cubits/imunisasi/imunisasi_cubit.dart';
 import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/views/dashboard/widgets/balita/balita_page.dart';
 import 'package:epenting/app/views/dashboard/widgets/dashboard_bottomnav.dart';
+import 'package:epenting/app/views/dashboard/widgets/dashboard_enddrawer.dart';
 import 'package:epenting/app/views/dashboard/widgets/home/home_page.dart';
 import 'package:epenting/app/views/dashboard/widgets/imunisasi/imunisasi_page.dart';
 import 'package:epenting/app/views/dashboard/widgets/pengukuran/pengukuran_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:local_auth_android/local_auth_android.dart';
 import 'package:month_year_picker/month_year_picker.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -25,7 +31,13 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  final _dashboardKey = GlobalKey<ScaffoldState>();
   int _currentPage = 0;
+  String? _appName;
+  String? _appVersion;
+  bool fingerprintSupported = false;
+  List<BiometricType> availableBiometrics = const [];
+  bool fingerprintEnabled = false;
 
   DateTime? _selectedPengukuranDateFilter;
   final _pengukuranScrollController = ScrollController();
@@ -48,11 +60,97 @@ class _DashboardPageState extends State<DashboardPage> {
     '37-48',
     '49-60',
   ];
-  // String selectedFilter = 'all';
   final _balitaScrollController = ScrollController();
   Timer? _balitaDebounce;
   final _searchBalitaController = TextEditingController();
   String? _searchBalita;
+
+  Future<void> _getPackageInfo() async {
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+
+      setState(() {
+        _appName = packageInfo.appName;
+        _appVersion = 'v${packageInfo.version}';
+      });
+    } on PlatformException catch (e) {
+      if (kDebugMode) print(e);
+    }
+  }
+
+  Future<void> _checkBiometrics() async {
+    LocalAuthentication localAuthentication = LocalAuthentication();
+
+    try {
+      final canAuthenticateWithBiometrics =
+          await localAuthentication.canCheckBiometrics;
+      final canAuthenticate =
+          canAuthenticateWithBiometrics ||
+          await localAuthentication.isDeviceSupported();
+      final availableBiometrics =
+          await localAuthentication.getAvailableBiometrics();
+      setState(() {
+        fingerprintSupported = canAuthenticate;
+        this.availableBiometrics = availableBiometrics;
+      });
+    } on PlatformException catch (e) {
+      if (kDebugMode) print(e.message);
+    }
+  }
+
+  Future<void> _checkFingerprintEnabled() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool enabled = prefs.getBool('fingerprint_enabled') ?? false;
+
+    setState(() {
+      fingerprintEnabled = enabled;
+    });
+  }
+
+  Future<void> _setFingerprint(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('fingerprint_enabled', value);
+
+    setState(() {
+      fingerprintEnabled = value;
+    });
+  }
+
+  Future<bool> _authFingerprint() async {
+    LocalAuthentication localAuthentication = LocalAuthentication();
+
+    try {
+      final didAuthFingerprint = await localAuthentication.authenticate(
+        localizedReason: 'Silahkan pindai sidik jari anda untuk melanjutkan',
+        authMessages: [
+          AndroidAuthMessages(
+            signInTitle: 'E-Penting',
+            biometricHint: 'Masuk dengan sidik jari',
+            cancelButton: 'Batal',
+            biometricNotRecognized: 'Sidik jari tidak dikenali, coba lagi',
+            biometricSuccess: 'Autentikasi berhasil',
+          ),
+        ],
+        options: AuthenticationOptions(
+          biometricOnly: true,
+          stickyAuth: true,
+          sensitiveTransaction: true,
+          useErrorDialogs: true,
+        ),
+      );
+
+      return didAuthFingerprint;
+    } on PlatformException catch (e) {
+      if (kDebugMode) print(e.message);
+      return false;
+    }
+  }
+
+  void _initDashboard() async {
+    await _getPackageInfo();
+    await _checkBiometrics();
+    await _checkFingerprintEnabled();
+  }
 
   void _onScrollPengukuran() {
     if (_pengukuranScrollController.hasClients) {
@@ -266,6 +364,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   void initState() {
+    _initDashboard();
     context.read<AuthCubit>().fetchProfile().then((value) {
       if (mounted) {
         context.read<DashboardCubit>().loadData();
@@ -319,8 +418,27 @@ class _DashboardPageState extends State<DashboardPage> {
         }
       },
       child: Scaffold(
+        key: _dashboardKey,
         extendBody: true,
         resizeToAvoidBottomInset: _currentPage == 0 ? null : false,
+        endDrawer: DashboardEndDrawer(
+          appName: _appName,
+          appVersion: _appVersion,
+          fingerprintSupported: fingerprintSupported,
+          fingerprintEnabled: fingerprintEnabled,
+          availableBiometrics: availableBiometrics,
+          onChangedFingerprint: (value) {
+            if (fingerprintEnabled) {
+              _setFingerprint(value);
+            } else {
+              _authFingerprint().then((didAuth) {
+                if (didAuth) {
+                  _setFingerprint(value);
+                }
+              });
+            }
+          },
+        ),
         bottomNavigationBar: DashboardBottomNav(
           currentPage: _currentPage,
           onTap: (index) {
@@ -333,6 +451,7 @@ class _DashboardPageState extends State<DashboardPage> {
           index: _currentPage,
           children: [
             HomePage(
+              dashboardKey: _dashboardKey,
               seeAllPengukuran: () {
                 setState(() {
                   _currentPage = 1;

@@ -125,15 +125,29 @@ class _SplashPageState extends State<SplashPage> {
     bool hasToken = await context.read<AuthCubit>().hasToken();
     final sharedPreferences = await SharedPreferences.getInstance();
     bool openedOnboard = sharedPreferences.getBool('opened_onboard') ?? false;
+    bool fingerprintEnabled =
+        sharedPreferences.getBool('fingerprint_enabled') ?? false;
 
     _timer = Timer(const Duration(seconds: 2), () async {
       if (hasToken) {
-        final canAuthenticate = await _checkBiometrics();
+        if (fingerprintEnabled) {
+          final canAuthenticate = await _checkBiometrics();
 
-        if (canAuthenticate) {
-          final didAuthFingerprint = await _authFingerprint();
+          if (canAuthenticate) {
+            final didAuthFingerprint = await _authFingerprint();
 
-          if (didAuthFingerprint) {
+            if (didAuthFingerprint) {
+              if (mounted) {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  DashboardPage.routeName,
+                  (route) => false,
+                );
+              }
+            } else {
+              SystemNavigator.pop();
+            }
+          } else {
             if (mounted) {
               Navigator.pushNamedAndRemoveUntil(
                 context,
@@ -141,17 +155,13 @@ class _SplashPageState extends State<SplashPage> {
                 (route) => false,
               );
             }
-          } else {
-            SystemNavigator.pop();
           }
         } else {
-          if (mounted) {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              DashboardPage.routeName,
-              (route) => false,
-            );
-          }
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            DashboardPage.routeName,
+            (route) => false,
+          );
         }
       } else {
         Navigator.pushNamedAndRemoveUntil(

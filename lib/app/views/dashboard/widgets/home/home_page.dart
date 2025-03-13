@@ -11,12 +11,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
+    required this.dashboardKey,
     this.seeAllPengukuran,
     this.seeAllImunisasi,
     this.seeAllBalita,
     super.key,
   });
 
+  final GlobalKey<ScaffoldState> dashboardKey;
   final void Function()? seeAllPengukuran;
   final void Function()? seeAllImunisasi;
   final void Function()? seeAllBalita;
@@ -39,7 +41,7 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 80),
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
-          const HomeHeader(),
+          HomeHeader(dashboardKey: dashboardKey),
           SizedBox(height: 10.h),
           HomeBalita(seeAllBalita: seeAllBalita),
           SizedBox(height: 10.h),
