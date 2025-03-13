@@ -3,10 +3,12 @@ import 'package:epenting/app/views/dashboard/components/balita/balita_card.dart'
 import 'package:epenting/app/views/dashboard/components/balita/balitacard_loading.dart';
 import 'package:epenting/app/views/dashboard/widgets/balita/balita_header.dart';
 import 'package:epenting/app/widgets/base_emptystate.dart';
+import 'package:epenting/app/widgets/base_errorstate.dart';
 import 'package:epenting/app/widgets/base_loadscroll.dart';
 import 'package:epenting/app/widgets/base_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BalitaPage extends StatelessWidget {
   const BalitaPage({
@@ -38,7 +40,15 @@ class BalitaPage extends StatelessWidget {
             builder: (context, state) {
               switch (state.balitaStatus) {
                 case BalitaStatus.error:
-                  return Center(child: Text(state.balitaError));
+                  return BaseErrorstate(
+                    message: state.balitaError,
+                    messageSize: 14.sp,
+                    lottieWidth: 180.w,
+                    padding: const EdgeInsets.all(16),
+                    onPressedRefresh: () {
+                      context.read<BalitaCubit>().refetchAllBalita();
+                    },
+                  );
                 case BalitaStatus.success:
                   return state.balitas.isEmpty &&
                           searchBalitaController.text.isNotEmpty

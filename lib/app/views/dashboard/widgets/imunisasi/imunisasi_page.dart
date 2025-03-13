@@ -4,10 +4,12 @@ import 'package:epenting/app/views/dashboard/components/imunisasi_card.dart';
 import 'package:epenting/app/views/dashboard/components/imunisasicard_loading.dart';
 import 'package:epenting/app/views/dashboard/widgets/imunisasi/imunisasi_header.dart';
 import 'package:epenting/app/widgets/base_emptystate.dart';
+import 'package:epenting/app/widgets/base_errorstate.dart';
 import 'package:epenting/app/widgets/base_loadscroll.dart';
 import 'package:epenting/app/widgets/base_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class ImunisasiPage extends StatelessWidget {
@@ -45,7 +47,15 @@ class ImunisasiPage extends StatelessWidget {
             builder: (context, state) {
               switch (state.imunisasiStatus) {
                 case ImunisasiStatus.error:
-                  return Center(child: Text(state.imunisasiError));
+                  return BaseErrorstate(
+                    message: state.imunisasiError,
+                    messageSize: 14.sp,
+                    lottieWidth: 180.w,
+                    padding: const EdgeInsets.all(16),
+                    onPressedRefresh: () {
+                      context.read<ImunisasiCubit>().refetchAllImunisasi();
+                    },
+                  );
                 case ImunisasiStatus.success:
                   return state.imunisasis.isEmpty &&
                           searchImunisasiController.text.isNotEmpty

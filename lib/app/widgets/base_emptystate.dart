@@ -35,12 +35,13 @@ class BaseEmptyState extends StatelessWidget {
             Lottie.asset(
               '${AppStrings.assetsLotties}/empty.json',
               width: 180.w,
+              frameRate: const FrameRate(144),
             ),
-            SizedBox(height: 10.h),
+            SizedBox(height: 6.h),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
             ),
             SizedBox(height: showButton ? 6.h : 4.h),
             if (showButton)

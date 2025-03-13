@@ -7,6 +7,7 @@ import 'package:epenting/app/views/dashboard/components/home/header_profile.dart
 import 'package:epenting/app/views/dashboard/components/home/headerpercentage_loading.dart';
 import 'package:epenting/app/views/dashboard/components/home/headerprofile_loading.dart';
 import 'package:epenting/app/views/login/login_page.dart';
+import 'package:epenting/app/widgets/base_errorstate.dart';
 import 'package:epenting/app/widgets/base_iconbutton.dart';
 import 'package:epenting/app/widgets/show_customtoast.dart';
 import 'package:flutter/material.dart';
@@ -113,7 +114,11 @@ class HomeHeader extends StatelessWidget {
                     builder: (context, state) {
                       switch (state.percentageStatus) {
                         case PercentageStatus.error:
-                          return Center(child: Text(state.percentageError));
+                          return BaseHorizontalErrorState(
+                            message: state.percentageError,
+                            messageSize: 12.sp,
+                            lottieWidth: 80.w,
+                          );
                         case PercentageStatus.success:
                           return HeaderPercentage(
                             maleTotal: state.percentages.last.total ?? 0,

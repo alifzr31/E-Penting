@@ -2,6 +2,7 @@ import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/views/dashboard/components/pengukuran_card.dart';
 import 'package:epenting/app/views/dashboard/components/pengukurancard_loading.dart';
+import 'package:epenting/app/widgets/base_errorstate.dart';
 import 'package:epenting/app/widgets/base_textbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +40,12 @@ class HomePengukuran extends StatelessWidget {
                 builder: (context, state) {
                   switch (state.latestPengukuranStatus) {
                     case LatestPengukuranStatus.error:
-                      return Center(child: Text(state.latestPengukuranError));
+                      return BaseErrorstate(
+                        message: state.latestPengukuranError,
+                        messageSize: 14.sp,
+                        lottieWidth: 180.w,
+                        showButton: false,
+                      );
                     case LatestPengukuranStatus.success:
                       return ListView.builder(
                         shrinkWrap: true,
@@ -76,13 +82,23 @@ class HomePengukuran extends StatelessWidget {
                   }
                 },
               ),
-              SizedBox(height: 8.h),
-              BaseTextButton(
-                text: 'Lihat Semua',
-                size: 12.sp,
-                color: AppColors.orangeColor,
-                onPressed: seeAllPengukuran,
-              ),
+              if (context
+                      .watch<DashboardCubit>()
+                      .state
+                      .latestPengukuranStatus ==
+                  LatestPengukuranStatus.success)
+                SizedBox(height: 8.h),
+              if (context
+                      .watch<DashboardCubit>()
+                      .state
+                      .latestPengukuranStatus ==
+                  LatestPengukuranStatus.success)
+                BaseTextButton(
+                  text: 'Lihat Semua',
+                  size: 12.sp,
+                  color: AppColors.orangeColor,
+                  onPressed: seeAllPengukuran,
+                ),
             ],
           ),
         ),

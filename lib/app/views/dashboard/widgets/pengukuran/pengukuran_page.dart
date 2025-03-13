@@ -4,10 +4,12 @@ import 'package:epenting/app/views/dashboard/components/pengukuran_card.dart';
 import 'package:epenting/app/views/dashboard/components/pengukurancard_loading.dart';
 import 'package:epenting/app/views/dashboard/widgets/pengukuran/pengukuran_header.dart';
 import 'package:epenting/app/widgets/base_emptystate.dart';
+import 'package:epenting/app/widgets/base_errorstate.dart';
 import 'package:epenting/app/widgets/base_loadscroll.dart';
 import 'package:epenting/app/widgets/base_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class PengukuranPage extends StatelessWidget {
@@ -45,7 +47,15 @@ class PengukuranPage extends StatelessWidget {
             builder: (context, state) {
               switch (state.pengukuranStatus) {
                 case PengukuranStatus.error:
-                  return Center(child: Text(state.pengukuranError));
+                  return BaseErrorstate(
+                    message: state.pengukuranError,
+                    messageSize: 14.sp,
+                    lottieWidth: 180.w,
+                    padding: const EdgeInsets.all(16),
+                    onPressedRefresh: () {
+                      context.read<PengukuranCubit>().refetchAllPengukuran();
+                    },
+                  );
                 case PengukuranStatus.success:
                   return state.pengukurans.isEmpty &&
                           searchPengukuranController.text.isNotEmpty

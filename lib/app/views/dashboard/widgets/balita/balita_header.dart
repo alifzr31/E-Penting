@@ -144,8 +144,13 @@ class BalitaHeader extends StatelessWidget {
             ),
           ),
         ),
-        if (searchBalitaController.text.isEmpty) SizedBox(height: 10.h),
-        if (searchBalitaController.text.isEmpty)
+        if (searchBalitaController.text.isEmpty &&
+            context.watch<BalitaCubit>().state.balitaStatus ==
+                BalitaStatus.success)
+          SizedBox(height: 10.h),
+        if (searchBalitaController.text.isEmpty &&
+            context.watch<BalitaCubit>().state.balitaStatus ==
+                BalitaStatus.success)
           BlocBuilder<BalitaCubit, BalitaState>(
             builder: (context, state) {
               return SingleChildScrollView(
