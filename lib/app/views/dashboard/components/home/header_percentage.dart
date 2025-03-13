@@ -42,7 +42,7 @@ class HeaderPercentage extends StatelessWidget {
             aspectRatio: 2,
             child: PieChart(
               PieChartData(
-                startDegreeOffset: 72,
+                startDegreeOffset: 69,
                 borderData: FlBorderData(show: false),
                 sectionsSpace: 0,
                 centerSpaceRadius: 0,
