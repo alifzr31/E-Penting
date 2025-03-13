@@ -1,0 +1,39 @@
+part of 'balita_cubit.dart';
+
+enum BalitaStatus { initial, loading, success, error }
+
+class BalitaState extends Equatable {
+  final BalitaStatus balitaStatus;
+  final bool hasMoreBalita;
+  final List<Balita> balitas;
+  final dynamic balitaError;
+
+  const BalitaState({
+    this.balitaStatus = BalitaStatus.initial,
+    this.hasMoreBalita = true,
+    this.balitas = const [],
+    this.balitaError,
+  });
+
+  BalitaState copyWith({
+    BalitaStatus? balitaStatus,
+    bool? hasMoreBalita,
+    List<Balita>? balitas,
+    dynamic balitaError,
+  }) {
+    return BalitaState(
+      balitaStatus: balitaStatus ?? this.balitaStatus,
+      hasMoreBalita: hasMoreBalita ?? this.hasMoreBalita,
+      balitas: balitas ?? this.balitas,
+      balitaError: balitaError ?? this.balitaError,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+    balitaStatus,
+    hasMoreBalita,
+    balitas,
+    balitaError,
+  ];
+}

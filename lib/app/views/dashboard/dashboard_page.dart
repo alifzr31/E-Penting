@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
+import 'package:epenting/app/cubits/balita/balita_cubit.dart';
 import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/cubits/imunisasi/imunisasi_cubit.dart';
 import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
+import 'package:epenting/app/views/dashboard/widgets/balita/balita_page.dart';
 import 'package:epenting/app/views/dashboard/widgets/dashboard_bottomnav.dart';
 import 'package:epenting/app/views/dashboard/widgets/home/home_page.dart';
 import 'package:epenting/app/views/dashboard/widgets/imunisasi/imunisasi_page.dart';
@@ -36,6 +38,21 @@ class _DashboardPageState extends State<DashboardPage> {
   Timer? _imunisasiDebounce;
   final _searchImunisasiController = TextEditingController();
   String? _searchImunisasi;
+
+  final _balitaFilters = [
+    'all',
+    '0-6',
+    '7-12',
+    '13-24',
+    '25-36',
+    '37-48',
+    '49-60',
+  ];
+  String selectedFilter = 'all';
+  final _balitaScrollController = ScrollController();
+  Timer? _balitaDebounce;
+  final _searchBalitaController = TextEditingController();
+  String? _searchBalita;
 
   void _onScrollPengukuran() {
     if (_pengukuranScrollController.hasClients) {
@@ -203,6 +220,51 @@ class _DashboardPageState extends State<DashboardPage> {
     context.read<ImunisasiCubit>().refetchAllImunisasi();
   }
 
+  void _onScrollBalita() {
+    if (_balitaScrollController.hasClients) {
+      final currentScroll = _balitaScrollController.position.pixels;
+      final maxScroll = _balitaScrollController.position.maxScrollExtent;
+
+      if (currentScroll == maxScroll &&
+          context.read<BalitaCubit>().state.hasMoreBalita) {
+        context.read<BalitaCubit>().fetchAllBalita(ageFilter: selectedFilter);
+      }
+    }
+  }
+
+  Future<void> _onRefreshBalita() async {
+    await Future.delayed(const Duration(milliseconds: 2500), () {
+      setState(() {
+        selectedFilter = 'all';
+        _searchBalita = null;
+      });
+      _searchBalitaController.clear();
+
+      if (mounted) {
+        context.read<BalitaCubit>().refetchAllBalita(ageFilter: selectedFilter);
+      }
+    });
+  }
+
+  void _onSearchBalita(String? value) {
+    setState(() {
+      selectedFilter = 'all';
+      _searchBalita = value;
+    });
+
+    if (_balitaDebounce?.isActive ?? false) _balitaDebounce?.cancel();
+    _balitaDebounce = Timer(const Duration(milliseconds: 500), () {
+      if (_searchBalita?.isEmpty ?? false) {
+        context.read<BalitaCubit>().refetchAllBalita(ageFilter: selectedFilter);
+      } else {
+        context.read<BalitaCubit>().refetchAllBalita(
+          isSearch: true,
+          search: _searchBalita,
+        );
+      }
+    });
+  }
+
   @override
   void initState() {
     context.read<AuthCubit>().fetchProfile().then((value) {
@@ -214,6 +276,12 @@ class _DashboardPageState extends State<DashboardPage> {
         context.read<ImunisasiCubit>().fetchAllImunisasi().then((value) {
           _imunisasiScrollController.addListener(_onScrollImunisasi);
         });
+        context
+            .read<BalitaCubit>()
+            .fetchAllBalita(ageFilter: selectedFilter)
+            .then((value) {
+              _balitaScrollController.addListener(_onScrollBalita);
+            });
       }
     });
     super.initState();
@@ -231,6 +299,11 @@ class _DashboardPageState extends State<DashboardPage> {
       ..dispose();
     _imunisasiDebounce?.cancel();
     _searchImunisasiController.dispose();
+    _balitaScrollController
+      ..removeListener(_onScrollBalita)
+      ..dispose();
+    _balitaDebounce?.cancel();
+    _searchBalitaController.dispose();
     super.dispose();
   }
 
@@ -302,7 +375,19 @@ class _DashboardPageState extends State<DashboardPage> {
               onSearchImunisasi: _onSearchImunisasi,
               onPressedShowAllMonthImunisasi: _onPressedShowAllMonthImunisasi,
             ),
-            const Center(child: Text('Balita')),
+            BalitaPage(
+              balitaFilters: _balitaFilters,
+              selectedFilter: selectedFilter,
+              onSelectFilter: () {
+                setState(() {
+                  selectedFilter = '0-6';
+                });
+              },
+              balitaScrollController: _balitaScrollController,
+              onRefreshBalita: _onRefreshBalita,
+              searchBalitaController: _searchBalitaController,
+              onSearchBalita: _onSearchBalita,
+            ),
           ],
         ),
       ),

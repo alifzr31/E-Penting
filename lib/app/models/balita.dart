@@ -22,7 +22,7 @@ class Balita extends Equatable {
   final String? namaAnak;
   final String? jenisKelamin;
   final int? anakKe;
-  final int? tinggi;
+  final double? tinggi;
   final double? beratLahir;
   final DateTime? tanggalLahir;
   final int? bulanUsia;
@@ -61,7 +61,7 @@ class Balita extends Equatable {
     namaAnak: json["nama_anak"],
     jenisKelamin: json["jenis_kelamin"],
     anakKe: json["anak_ke"],
-    tinggi: json["tinggi"],
+    tinggi: json["tinggi"]?.toDouble(),
     beratLahir: json["berat_lahir"]?.toDouble(),
     tanggalLahir:
         json["tanggal_lahir"] == null
