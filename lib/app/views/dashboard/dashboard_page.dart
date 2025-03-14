@@ -11,13 +11,13 @@ import 'package:epenting/app/views/dashboard/widgets/dashboard_enddrawer.dart';
 import 'package:epenting/app/views/dashboard/widgets/home/home_page.dart';
 import 'package:epenting/app/views/dashboard/widgets/imunisasi/imunisasi_page.dart';
 import 'package:epenting/app/views/dashboard/widgets/pengukuran/pengukuran_page.dart';
+import 'package:epenting/app/widgets/base_monthpicker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth_android/local_auth_android.dart';
-import 'package:month_year_picker/month_year_picker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -169,28 +169,25 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _onPressedPengukuranDateFilter(BuildContext context) async {
-    final selected = await showMonthYearPicker(
-      context: context,
-      initialDate: _selectedPengukuranDateFilter ?? DateTime.now(),
-      firstDate: DateTime(DateTime.now().year, 1, 1),
-      lastDate: DateTime(DateTime.now().year, 12, 31),
-      locale: const Locale('id', 'ID'),
-    );
+    showBaseMonthPicker(
+      context,
+      initialDate: _selectedPengukuranDateFilter,
+    ).then((date) {
+      if (date != null) {
+        setState(() {
+          _searchPengukuran = null;
+          _selectedPengukuranDateFilter = date;
+        });
+        _searchPengukuranController.clear();
 
-    if (selected != null) {
-      setState(() {
-        _searchPengukuran = null;
-        _selectedPengukuranDateFilter = selected;
-      });
-      _searchPengukuranController.clear();
-
-      if (context.mounted) {
-        context.read<PengukuranCubit>().refetchAllPengukuran(
-          month: _selectedPengukuranDateFilter?.month,
-          year: _selectedPengukuranDateFilter?.year,
-        );
+        if (context.mounted) {
+          context.read<PengukuranCubit>().refetchAllPengukuran(
+            month: _selectedPengukuranDateFilter?.month,
+            year: _selectedPengukuranDateFilter?.year,
+          );
+        }
       }
-    }
+    });
   }
 
   Future<void> _onRefreshPengukuran() async {
@@ -252,28 +249,25 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _onPressedImunisasiDateFilter(BuildContext context) async {
-    final selected = await showMonthYearPicker(
-      context: context,
-      initialDate: _selectedImunisasiDateFilter ?? DateTime.now(),
-      firstDate: DateTime(DateTime.now().year, 1, 1),
-      lastDate: DateTime(DateTime.now().year, 12, 31),
-      locale: const Locale('id', 'ID'),
-    );
+    showBaseMonthPicker(
+      context,
+      initialDate: _selectedImunisasiDateFilter,
+    ).then((date) {
+      if (date != null) {
+        setState(() {
+          _searchImunisasi = null;
+          _selectedImunisasiDateFilter = date;
+        });
+        _searchImunisasiController.clear();
 
-    if (selected != null) {
-      setState(() {
-        _searchImunisasi = null;
-        _selectedImunisasiDateFilter = selected;
-      });
-      _searchImunisasiController.clear();
-
-      if (context.mounted) {
-        context.read<ImunisasiCubit>().refetchAllImunisasi(
-          month: _selectedImunisasiDateFilter?.month,
-          year: _selectedImunisasiDateFilter?.year,
-        );
+        if (context.mounted) {
+          context.read<ImunisasiCubit>().refetchAllImunisasi(
+            month: _selectedImunisasiDateFilter?.month,
+            year: _selectedImunisasiDateFilter?.year,
+          );
+        }
       }
-    }
+    });
   }
 
   Future<void> _onRefreshImunisasi() async {

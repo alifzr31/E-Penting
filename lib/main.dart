@@ -19,7 +19,6 @@ import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:epenting/app/configs/get_it/service_locator.dart' as di;
 import 'package:lottie/lottie.dart';
-import 'package:month_year_picker/month_year_picker.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> loadDotEnv() async {
@@ -105,7 +104,6 @@ class MyApp extends StatelessWidget {
                 GlobalWidgetsLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
-                MonthYearPickerLocalizations.delegate,
               ],
               theme: ThemeData(
                 scaffoldBackgroundColor: AppColors.scaffoldBgColor,

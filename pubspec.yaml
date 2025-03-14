@@ -69,7 +69,7 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   salomon_bottom_bar: ^3.3.2
   fl_chart: ^0.70.2
-  month_year_picker: ^0.4.0+1
+  month_picker_dialog: ^6.0.3
 
 dev_dependencies:
   flutter_test:
