@@ -34,7 +34,7 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  void login({String? username, String? password}) async {
+  void login({int? currentTab, String? username, String? password}) async {
     emit(state.copyWith(loginStatus: LoginStatus.loading));
 
     try {
@@ -53,22 +53,41 @@ class AuthCubit extends Cubit<AuthState> {
           ),
         );
       } else {
-        await SecureStorage.writeStorage(
-          key: 'token',
-          value: response.data['token'],
-        );
+        if (currentTab == 0 && response.data['data']['level'] == 'orangtua') {
+          emit(
+            state.copyWith(
+              loginStatus: LoginStatus.error,
+              loginError:
+                  'Mohon maaf anda tidak memiliki akses sebagai Kader Posyandu',
+            ),
+          );
+        } else if (currentTab == 1 &&
+            response.data['data']['level'] == 'kader_posyandu') {
+          emit(
+            state.copyWith(
+              loginStatus: LoginStatus.error,
+              loginError:
+                  'Mohon maaf anda tidak memiliki akses sebagai Orang Tua Anak',
+            ),
+          );
+        } else {
+          await SecureStorage.writeStorage(
+            key: 'token',
+            value: response.data['token'],
+          );
 
-        await SecureStorage.writeStorage(
-          key: 'profile',
-          value: jsonEncode(response.data['data']),
-        );
+          await SecureStorage.writeStorage(
+            key: 'profile',
+            value: jsonEncode(response.data['data']),
+          );
 
-        emit(
-          state.copyWith(
-            loginStatus: LoginStatus.success,
-            loginResponse: response,
-          ),
-        );
+          emit(
+            state.copyWith(
+              loginStatus: LoginStatus.success,
+              loginResponse: response,
+            ),
+          );
+        }
       }
     } on DioException catch (e) {
       emit(

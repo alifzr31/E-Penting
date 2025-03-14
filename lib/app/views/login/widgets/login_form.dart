@@ -136,6 +136,7 @@ class LoginForm extends StatelessWidget {
                       onPressed: () {
                         if (formKey.currentState?.validate() ?? false) {
                           context.read<AuthCubit>().login(
+                            currentTab: currentTab,
                             username: userController.text,
                             password: passwordController.text,
                           );
