@@ -7,6 +7,7 @@ import 'package:epenting/app/models/profile.dart';
 import 'package:epenting/app/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_state.dart';
 
@@ -133,6 +134,9 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final response = await _repository.logout();
 
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('fingerprint_enabled', false);
+      await prefs.reload();
       await SecureStorage.deleteStorage(key: 'token');
       await SecureStorage.deleteStorage(key: 'profile');
 

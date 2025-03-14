@@ -110,6 +110,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Future<void> _setFingerprint(bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('fingerprint_enabled', value);
+    await prefs.reload();
 
     setState(() {
       fingerprintEnabled = value;
