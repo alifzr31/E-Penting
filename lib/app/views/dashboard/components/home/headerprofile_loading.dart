@@ -29,7 +29,7 @@ Widget headerProfileLoading() {
                 ),
               ),
               Text(
-                'xxxxxxxxxxxxxxxxx',
+                'xxxxxxxxxxxxxxx',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),

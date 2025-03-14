@@ -404,7 +404,11 @@ class _DashboardPageState extends State<DashboardPage> {
       onPopInvokedWithResult: (didPop, result) {
         if (!didPop) {
           if (_currentPage == 0) {
-            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+            if (_dashboardKey.currentState?.isEndDrawerOpen ?? false) {
+              _dashboardKey.currentState?.closeEndDrawer();
+            } else {
+              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+            }
           } else {
             setState(() {
               _currentPage = 0;
