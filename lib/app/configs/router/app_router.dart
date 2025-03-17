@@ -5,6 +5,7 @@ import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/cubits/imunisasi/imunisasi_cubit.dart';
 import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/cubits/status_gizi/statusgizi_cubit.dart';
+import 'package:epenting/app/views/aktivasi_akun/aktivasiakun_page.dart';
 import 'package:epenting/app/views/dashboard/dashboard_page.dart';
 import 'package:epenting/app/views/login/login_page.dart';
 import 'package:epenting/app/views/onboard/onboard_page.dart';
@@ -36,6 +37,12 @@ class AppRouter {
         return pageTransition(context, settings, child: const OnboardPage());
       case LoginPage.routeName:
         return pageTransition(context, settings, child: const LoginPage());
+      case AktivasiAkunPage.routeName:
+        return pageTransition(
+          context,
+          settings,
+          child: const AktivasiAkunPage(),
+        );
       case StatusGiziPage.routeName:
         return pageTransition(
           context,

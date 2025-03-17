@@ -1,5 +1,6 @@
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
+import 'package:epenting/app/views/aktivasi_akun/aktivasiakun_page.dart';
 import 'package:epenting/app/views/dashboard/dashboard_page.dart';
 import 'package:epenting/app/views/status_gizi/statusgizi_page.dart';
 import 'package:epenting/app/widgets/base_button.dart';
@@ -93,7 +94,12 @@ class LoginForm extends StatelessWidget {
                       fgColor: AppColors.blueColor,
                       label: 'Aktivasi Akun',
                       icon: MingCute.safety_certificate_line,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          AktivasiAkunPage.routeName,
+                        );
+                      },
                     ),
                   ),
                 ),
