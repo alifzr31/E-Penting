@@ -3,6 +3,7 @@ import 'package:epenting/app/utils/app_strings.dart';
 import 'package:epenting/app/views/login/widgets/login_form.dart';
 import 'package:epenting/app/views/login/widgets/login_header.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -76,6 +77,10 @@ class _LoginPageState extends State<LoginPage> {
                                         _obscurePass = true;
                                       });
 
+                                      SchedulerBinding.instance
+                                          .addPostFrameCallback((_) {
+                                            FocusScope.of(context).unfocus();
+                                          });
                                       _userController.clear();
                                       _passwordController.clear();
                                       _formKey.currentState?.reset();
