@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:app_version_update/app_version_update.dart';
+import 'package:epenting/app/configs/secure_storage/secure_storage.dart';
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/utils/app_strings.dart';
 import 'package:epenting/app/views/dashboard/dashboard_page.dart';
 import 'package:epenting/app/views/login/login_page.dart';
 import 'package:epenting/app/views/onboard/onboard_page.dart';
+import 'package:epenting/app/views/ortu/ortu_page.dart';
 import 'package:epenting/app/views/update/update_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +36,7 @@ class _SplashPageState extends State<SplashPage> {
   String? _appVersion;
   String? _packageName;
 
-  void initApps() async {
+  void _initApps() async {
     await _getPackageInfo();
     await _checkUpdate();
   }
@@ -138,30 +141,18 @@ class _SplashPageState extends State<SplashPage> {
 
             if (didAuthFingerprint) {
               if (mounted) {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  DashboardPage.routeName,
-                  (route) => false,
-                );
+                _navigate();
               }
             } else {
               SystemNavigator.pop();
             }
           } else {
             if (mounted) {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                DashboardPage.routeName,
-                (route) => false,
-              );
+              _navigate();
             }
           }
         } else {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            DashboardPage.routeName,
-            (route) => false,
-          );
+          _navigate();
         }
       } else {
         Navigator.pushNamedAndRemoveUntil(
@@ -173,9 +164,31 @@ class _SplashPageState extends State<SplashPage> {
     });
   }
 
+  void _navigate() async {
+    final profileJson = await SecureStorage.readStorage(key: 'profile');
+    final profile = jsonDecode(profileJson ?? '');
+    final level = profile['level'];
+
+    if (mounted) {
+      if (level == 'kader_posyandu') {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          DashboardPage.routeName,
+          (route) => false,
+        );
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          OrtuPage.routeName,
+          (route) => false,
+        );
+      }
+    }
+  }
+
   @override
   void initState() {
-    initApps();
+    _initApps();
     super.initState();
   }
 
