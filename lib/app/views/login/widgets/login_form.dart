@@ -2,6 +2,7 @@ import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/views/aktivasi_akun/aktivasiakun_page.dart';
 import 'package:epenting/app/views/dashboard/dashboard_page.dart';
+import 'package:epenting/app/views/ortu/ortu_page.dart';
 import 'package:epenting/app/views/status_gizi/statusgizi_page.dart';
 import 'package:epenting/app/widgets/base_button.dart';
 import 'package:epenting/app/widgets/base_formfield.dart';
@@ -116,10 +117,18 @@ class LoginForm extends StatelessWidget {
 
                     if (state.loginStatus == LoginStatus.success) {
                       context.loaderOverlay.hide();
-                      Navigator.pushReplacementNamed(
-                        context,
-                        DashboardPage.routeName,
-                      );
+                      if (state.loginResponse?.data['data']['level'] ==
+                          'kader_posyandu') {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          DashboardPage.routeName,
+                        );
+                      } else {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          OrtuPage.routeName,
+                        );
+                      }
                     }
 
                     if (state.loginStatus == LoginStatus.error) {
