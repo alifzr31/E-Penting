@@ -6,19 +6,22 @@ import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/cubits/imunisasi/imunisasi_cubit.dart';
 import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/views/dashboard/widgets/balita/balita_page.dart';
-import 'package:epenting/app/views/dashboard/widgets/dashboard_bottomnav.dart';
-import 'package:epenting/app/views/dashboard/widgets/dashboard_enddrawer.dart';
 import 'package:epenting/app/views/dashboard/widgets/home/home_page.dart';
 import 'package:epenting/app/views/dashboard/widgets/imunisasi/imunisasi_page.dart';
 import 'package:epenting/app/views/dashboard/widgets/pengukuran/pengukuran_page.dart';
+import 'package:epenting/app/widgets/base_bottomnav.dart';
+import 'package:epenting/app/widgets/base_enddrawer.dart';
 import 'package:epenting/app/widgets/base_monthpicker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -420,7 +423,7 @@ class _DashboardPageState extends State<DashboardPage> {
         key: _dashboardKey,
         extendBody: true,
         resizeToAvoidBottomInset: _currentPage == 0 ? null : false,
-        endDrawer: DashboardEndDrawer(
+        endDrawer: BaseEndDrawer(
           appName: _appName,
           appVersion: _appVersion,
           fingerprintSupported: fingerprintSupported,
@@ -438,7 +441,69 @@ class _DashboardPageState extends State<DashboardPage> {
             }
           },
         ),
-        bottomNavigationBar: DashboardBottomNav(
+        bottomNavigationBar: BaseBottomNav(
+          items: [
+            SalomonBottomBarItem(
+              icon: Icon(
+                _currentPage == 0 ? MingCute.home_3_fill : MingCute.home_3_line,
+                size: 21.sp,
+              ),
+              title: Text(
+                'Beranda',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Poppins',
+                ),
+              ),
+            ),
+            SalomonBottomBarItem(
+              icon: Icon(
+                _currentPage == 1
+                    ? MingCute.dashboard_4_fill
+                    : MingCute.dashboard_4_line,
+                size: 21.sp,
+              ),
+              title: Text(
+                'Pengukuran',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Poppins',
+                ),
+              ),
+            ),
+            SalomonBottomBarItem(
+              icon: Icon(
+                _currentPage == 2
+                    ? BoxIcons.bxs_first_aid
+                    : BoxIcons.bx_first_aid,
+                size: 21.sp,
+              ),
+              title: Text(
+                'Imunisasi',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Poppins',
+                ),
+              ),
+            ),
+            SalomonBottomBarItem(
+              icon: Icon(
+                _currentPage == 3 ? MingCute.emoji_fill : MingCute.emoji_line,
+                size: 21.sp,
+              ),
+              title: Text(
+                'Balita',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Poppins',
+                ),
+              ),
+            ),
+          ],
           currentPage: _currentPage,
           onTap: (index) {
             setState(() {
