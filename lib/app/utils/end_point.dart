@@ -2,6 +2,7 @@ class EndPoint {
   static const String login = '/login';
   static const String logout = '/logout';
 
+  // POSYANDU
   static const String classification = '/classification';
   static const String weight = '/berat-badan';
   static const String nutrition = '/gizi';
@@ -17,4 +18,9 @@ class EndPoint {
   static const String searchImunisasi = '/imunisasi/search';
   static const String allBalita = '/balita/list';
   static const String searchBalita = '/balita/search';
+
+  // ORANG TUA
+  static const String latestPengukuranBalita = '/balita/latest-nik';
+  static const String latestVaccine = '/imunisasi/history-nik';
+  static const String historyPengukuran = '/penimbangan/history';
 }
