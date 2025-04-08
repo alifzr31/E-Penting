@@ -132,6 +132,16 @@
 -dontwarn com.bumptech.glide.**
 -keep class com.caverock.androidsvg.** { *; }
 -dontwarn com.caverock.androidsvg.**
+
+# WebView Flutter
+-keep class android.webkit.** { *; }
+-dontwarn android.webkit.**
+
+# Lindungi WebView agar tidak dioptimasi oleh Proguard (aktifkan apabila webview tidak berjalan di release/production)
+# -keep class * extends android.webkit.WebView { *; }
+# -keep class android.webkit.** { *; }
+# -dontwarn android.webkit.**
+
 ## Keep SplitCompat classes
 #-keep public class com.google.android.play.core.splitcompat.SplitCompatApplication { *; }
 #-keep class com.google.android.play.core.** { *; }
