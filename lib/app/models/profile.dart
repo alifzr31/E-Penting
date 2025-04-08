@@ -32,6 +32,7 @@ class Profile extends Equatable {
   final String? namaPuskesmas;
   final String? namaPosyandu;
   final dynamic asikHealthCentreId;
+  final List<Anak>? listAnak;
 
   const Profile({
     this.id,
@@ -53,6 +54,7 @@ class Profile extends Equatable {
     this.namaPuskesmas,
     this.namaPosyandu,
     this.asikHealthCentreId,
+    this.listAnak,
   });
 
   @override
@@ -76,6 +78,7 @@ class Profile extends Equatable {
     namaPuskesmas,
     namaPosyandu,
     asikHealthCentreId,
+    listAnak,
   ];
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
@@ -100,6 +103,10 @@ class Profile extends Equatable {
     namaPuskesmas: json["nama_puskesmas"],
     namaPosyandu: json["nama_posyandu"],
     asikHealthCentreId: json["asik_health_centre_id"],
+    listAnak:
+        json["list_anak"] == null
+            ? []
+            : List<Anak>.from(json["list_anak"]!.map((x) => Anak.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -122,5 +129,39 @@ class Profile extends Equatable {
     "nama_puskesmas": namaPuskesmas,
     "nama_posyandu": namaPosyandu,
     "asik_health_centre_id": asikHealthCentreId,
+    "list_anak":
+        listAnak == null
+            ? []
+            : List<dynamic>.from(listAnak!.map((x) => x.toJson())),
+  };
+}
+
+class Anak extends Equatable {
+  final String? nik;
+  final String? nama;
+  final DateTime? tanggalLahir;
+  final String? jenisKelamin;
+
+  const Anak({this.nik, this.nama, this.tanggalLahir, this.jenisKelamin});
+
+  @override
+  List<Object?> get props => [nik, nama, tanggalLahir, jenisKelamin];
+
+  factory Anak.fromJson(Map<String, dynamic> json) => Anak(
+    nik: json["nik"],
+    nama: json["nama"],
+    tanggalLahir:
+        json["tanggal_lahir"] == null
+            ? null
+            : DateTime.parse(json["tanggal_lahir"]),
+    jenisKelamin: json["jenis_kelamin"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "nik": nik,
+    "nama": nama,
+    "tanggal_lahir":
+        "${tanggalLahir!.year.toString().padLeft(4, '0')}-${tanggalLahir!.month.toString().padLeft(2, '0')}-${tanggalLahir!.day.toString().padLeft(2, '0')}",
+    "jenis_kelamin": jenisKelamin,
   };
 }
