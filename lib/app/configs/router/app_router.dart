@@ -3,12 +3,15 @@ import 'package:epenting/app/configs/router/page_transition.dart';
 import 'package:epenting/app/cubits/balita/balita_cubit.dart';
 import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/cubits/imunisasi/imunisasi_cubit.dart';
+import 'package:epenting/app/cubits/ortu/ortu_cubit.dart';
 import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/cubits/status_gizi/statusgizi_cubit.dart';
 import 'package:epenting/app/views/aktivasi_akun/aktivasiakun_page.dart';
 import 'package:epenting/app/views/dashboard/dashboard_page.dart';
+import 'package:epenting/app/views/detail_panduan/detailpanduan_page.dart';
 import 'package:epenting/app/views/login/login_page.dart';
 import 'package:epenting/app/views/onboard/onboard_page.dart';
+import 'package:epenting/app/views/ortu/ortu_page.dart';
 import 'package:epenting/app/views/splash/splash_page.dart';
 import 'package:epenting/app/views/status_gizi/statusgizi_page.dart';
 import 'package:epenting/app/views/update/update_page.dart';
@@ -66,6 +69,25 @@ class AppRouter {
             ],
             child: const DashboardPage(),
           ),
+        );
+      case OrtuPage.routeName:
+        return pageTransition(
+          context,
+          settings,
+          type: PageTransitionType.sharedAxisVertical,
+          child: BlocProvider(
+            create: (context) => sl<OrtuCubit>(),
+            child: const OrtuPage(),
+          ),
+        );
+      case DetailPanduanPage.routeName:
+        final args = settings.arguments as Map<String, dynamic>?;
+
+        return pageTransition(
+          context,
+          settings,
+          type: PageTransitionType.sharedAxisVertical,
+          child: DetailPanduanPage(imageName: args?['imageName']),
         );
       default:
         return MaterialPageRoute(builder: (context) => const Placeholder());
