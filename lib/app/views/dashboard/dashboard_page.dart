@@ -11,7 +11,7 @@ import 'package:epenting/app/views/dashboard/widgets/imunisasi/imunisasi_page.da
 import 'package:epenting/app/views/dashboard/widgets/pengukuran/pengukuran_page.dart';
 import 'package:epenting/app/widgets/base_bottomnav.dart';
 import 'package:epenting/app/widgets/base_enddrawer.dart';
-import 'package:epenting/app/widgets/base_monthpicker.dart';
+import 'package:epenting/app/widgets/show_basemonthpicker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -363,6 +363,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     _initDashboard();
+    context.read<DashboardCubit>().startGreeting();
     context.read<AuthCubit>().fetchProfile().then((value) {
       if (mounted) {
         context.read<DashboardCubit>().loadData();
