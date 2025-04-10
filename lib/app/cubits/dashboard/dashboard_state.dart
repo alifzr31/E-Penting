@@ -9,6 +9,7 @@ enum LatestPengukuranStatus { initial, loading, success, error }
 enum LatestImunisasiStatus { initial, loading, success, error }
 
 class DashboardState extends Equatable {
+  final String greeting;
   final PercentageStatus percentageStatus;
   final List<Percentage> percentages;
   final dynamic percentageError;
@@ -23,6 +24,7 @@ class DashboardState extends Equatable {
   final dynamic latestImunisasiError;
 
   const DashboardState({
+    this.greeting = '',
     this.percentageStatus = PercentageStatus.initial,
     this.percentages = const [],
     this.percentageError,
@@ -38,6 +40,7 @@ class DashboardState extends Equatable {
   });
 
   DashboardState copyWith({
+    String? greeting,
     PercentageStatus? percentageStatus,
     List<Percentage>? percentages,
     dynamic percentageError,
@@ -52,6 +55,7 @@ class DashboardState extends Equatable {
     dynamic latestImunisasiError,
   }) {
     return DashboardState(
+      greeting: greeting ?? this.greeting,
       percentageStatus: percentageStatus ?? this.percentageStatus,
       percentages: percentages ?? this.percentages,
       percentageError: percentageError ?? this.percentageError,
@@ -72,6 +76,7 @@ class DashboardState extends Equatable {
 
   @override
   List<Object?> get props => [
+    greeting,
     percentageStatus,
     percentages,
     percentageError,

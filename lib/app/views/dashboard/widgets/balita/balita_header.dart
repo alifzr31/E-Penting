@@ -1,5 +1,6 @@
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/cubits/balita/balita_cubit.dart';
+import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/widgets/base_button.dart';
 import 'package:epenting/app/widgets/base_formfield.dart';
@@ -46,13 +47,17 @@ class BalitaHeader extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Wilujeng Siang',
-                            style: TextStyle(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey.shade600,
-                            ),
+                          BlocBuilder<DashboardCubit, DashboardState>(
+                            builder: (context, state) {
+                              return Text(
+                                'Wilujeng ${state.greeting}',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey.shade600,
+                                ),
+                              );
+                            },
                           ),
                           BlocBuilder<AuthCubit, AuthState>(
                             builder: (context, state) {

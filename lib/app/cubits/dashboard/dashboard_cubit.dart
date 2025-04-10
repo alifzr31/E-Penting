@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:epenting/app/models/balita.dart';
@@ -14,11 +16,49 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   final DashboardRepository _repository;
 
+  void resetState() async {
+    await Future.delayed(const Duration(milliseconds: 500), () {
+      emit(
+        state.copyWith(
+          greeting: '',
+          percentageStatus: PercentageStatus.initial,
+          percentages: const [],
+          percentageError: null,
+          latestBalitaStatus: LatestBalitaStatus.initial,
+          latestBalitas: const [],
+          latestBalitaError: null,
+          latestPengukuranStatus: LatestPengukuranStatus.initial,
+          latestPengukurans: const [],
+          latestPengukuranError: null,
+          latestImunisasiStatus: LatestImunisasiStatus.initial,
+          latestImunisasis: const [],
+          latestImunisasiError: null,
+        ),
+      );
+    });
+  }
+
   void loadData() async {
     await fetchPercentage();
     await fetchLatestBalita();
     await fetchLatestPengukuran();
     await fetchLatestImunisasi();
+  }
+
+  void startGreeting() {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      int hour = DateTime.now().hour;
+
+      if (hour >= 4 && hour < 11) {
+        emit(state.copyWith(greeting: 'Enjing'));
+      } else if (hour >= 11 && hour < 15) {
+        emit(state.copyWith(greeting: 'Siang'));
+      } else if (hour >= 15 && hour < 18) {
+        emit(state.copyWith(greeting: 'Sonten'));
+      } else {
+        emit(state.copyWith(greeting: 'Wengi'));
+      }
+    });
   }
 
   Future<void> fetchPercentage() async {
