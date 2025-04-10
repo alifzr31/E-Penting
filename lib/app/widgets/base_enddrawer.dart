@@ -1,5 +1,6 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
+import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/utils/app_strings.dart';
 import 'package:epenting/app/views/login/login_page.dart';
@@ -267,6 +268,12 @@ class BaseEndDrawer extends StatelessWidget {
                         LoginPage.routeName,
                         (route) => false,
                       );
+
+                      if (state.profile?.level?.toLowerCase() ==
+                          'kader_posyandu') {
+                        context.read<DashboardCubit>().resetState();
+                      }
+
                       context.read<AuthCubit>().resetState();
                     }
 
