@@ -23,7 +23,7 @@ class PemberianAsiItem extends StatelessWidget {
           color: color,
           shape: RoundedRectangleBorder(
             side: BorderSide(color: AppColors.blueColor),
-            borderRadius: BorderRadius.circular(2.r),
+            borderRadius: BorderRadius.circular(4.r),
           ),
           child: InkWell(
             onTap: onSelectedPemberianAsi,

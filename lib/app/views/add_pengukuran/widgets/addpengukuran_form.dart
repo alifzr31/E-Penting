@@ -2,7 +2,7 @@ import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/utils/app_helpers.dart';
-import 'package:epenting/app/views/add_pengukuran/components/balita_form.dart';
+import 'package:epenting/app/views/add_pengukuran/components/addpengukuranbalita_form.dart';
 import 'package:epenting/app/views/add_pengukuran/components/pemberianasi_item.dart';
 import 'package:epenting/app/views/add_pengukuran/components/pengukuran_form.dart';
 import 'package:epenting/app/widgets/base_button.dart';
@@ -128,7 +128,7 @@ class _AddPengukuranFormState extends State<AddPengukuranForm> {
                       },
                     ),
                     SizedBox(height: 10.h),
-                    BalitaForm(
+                    AddPengukuranBalitaForm(
                       namaBalitaController: _namaBalitaController,
                       onSelectedNamaBalita: (value) {
                         _namaBalitaController.text = value.namaAnak ?? '';

@@ -10,8 +10,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:group_button/group_button.dart';
 
-class BalitaForm extends StatelessWidget {
-  const BalitaForm({
+class AddPengukuranBalitaForm extends StatelessWidget {
+  const AddPengukuranBalitaForm({
     required this.namaBalitaController,
     required this.onSelectedNamaBalita,
     required this.nikBalitaController,

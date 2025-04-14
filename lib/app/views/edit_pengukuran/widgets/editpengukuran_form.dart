@@ -3,7 +3,7 @@ import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/models/detail_pengukuran.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/utils/app_helpers.dart';
-import 'package:epenting/app/views/edit_pengukuran/components/balita_form.dart';
+import 'package:epenting/app/views/edit_pengukuran/components/editpengukuranbalita_form.dart';
 import 'package:epenting/app/views/edit_pengukuran/components/pemberianasi_item.dart';
 import 'package:epenting/app/views/edit_pengukuran/components/pengukuran_form.dart';
 import 'package:epenting/app/widgets/base_button.dart';
@@ -236,7 +236,7 @@ class _EditPengukuranFormState extends State<EditPengukuranForm> {
                         },
                       ),
                       SizedBox(height: 10.h),
-                      BalitaForm(
+                      EditPengukuranBalitaForm(
                         namaBalitaController: _namaBalitaController,
                         nikBalitaController: _nikBalitaController,
                         tglLahirController: _tglLahirController,

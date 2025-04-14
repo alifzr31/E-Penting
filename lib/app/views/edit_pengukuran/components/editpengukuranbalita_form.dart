@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 
-class BalitaForm extends StatelessWidget {
-  const BalitaForm({
+class EditPengukuranBalitaForm extends StatelessWidget {
+  const EditPengukuranBalitaForm({
     required this.namaBalitaController,
     required this.nikBalitaController,
     required this.tglLahirController,
