@@ -73,6 +73,7 @@ dependencies:
   expansion_tile_card: ^3.0.0
   webview_flutter: ^4.10.0
   flutter_datetime_picker_plus: ^2.2.0
+  flutter_typeahead: ^5.2.0
 
 dev_dependencies:
   flutter_test:
