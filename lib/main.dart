@@ -5,6 +5,7 @@ import 'package:epenting/app/configs/router/app_router.dart';
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/cubits/balita/balita_cubit.dart';
 import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
+import 'package:epenting/app/cubits/imunisasi/imunisasi_cubit.dart';
 import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/utils/app_strings.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => di.sl<AuthCubit>()),
         BlocProvider(create: (context) => di.sl<DashboardCubit>()),
         BlocProvider(create: (context) => di.sl<PengukuranCubit>()),
+        BlocProvider(create: (context) => di.sl<ImunisasiCubit>()),
         BlocProvider(create: (context) => di.sl<BalitaCubit>()),
       ],
       child: ScreenUtilInit(
