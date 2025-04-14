@@ -2,6 +2,7 @@ import 'package:app_settings/app_settings.dart';
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/cubits/balita/balita_cubit.dart';
 import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
+import 'package:epenting/app/cubits/imunisasi/imunisasi_cubit.dart';
 import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/utils/app_strings.dart';
@@ -275,6 +276,7 @@ class BaseEndDrawer extends StatelessWidget {
                           'kader_posyandu') {
                         context.read<DashboardCubit>().resetState();
                         context.read<PengukuranCubit>().resetState();
+                        context.read<ImunisasiCubit>().resetState();
                         context.read<BalitaCubit>().resetState();
                       }
 
