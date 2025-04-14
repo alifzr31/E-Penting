@@ -65,11 +65,7 @@ class BaseFormField extends StatelessWidget {
         helperText: helperText,
         helperMaxLines: 2,
         errorMaxLines: 2,
-        helperStyle: TextStyle(
-          fontSize: 10.sp,
-          color: helperTextColor,
-          fontStyle: FontStyle.italic,
-        ),
+        helperStyle: TextStyle(fontSize: 10.sp, color: helperTextColor),
         errorStyle: TextStyle(fontSize: 10.sp),
         counterText: '',
         isDense: true,
@@ -165,37 +161,29 @@ class BaseFormGroupField extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.centerLeft,
-          child:
-              mandatory
-                  ? RichText(
-                    text: TextSpan(
-                      style: DefaultTextStyle.of(context).style,
-                      children: [
-                        TextSpan(
-                          text: label,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '*',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red.shade700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                  : Text(
-                    label,
+          child: RichText(
+            text: TextSpan(
+              style: DefaultTextStyle.of(context).style,
+              children: [
+                TextSpan(
+                  text: label,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                if (mandatory)
+                  TextSpan(
+                    text: '*',
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w500,
+                      color: Colors.red.shade700,
                     ),
                   ),
+              ],
+            ),
+          ),
         ),
         SizedBox(height: 2.h),
         TextFormField(
@@ -219,11 +207,7 @@ class BaseFormGroupField extends StatelessWidget {
             helperMaxLines: 2,
             errorMaxLines: 2,
             counterText: '',
-            helperStyle: TextStyle(
-              fontSize: 10.sp,
-              color: helperTextColor,
-              fontStyle: FontStyle.italic,
-            ),
+            helperStyle: TextStyle(fontSize: 10.sp, color: helperTextColor),
             errorStyle: TextStyle(fontSize: 10.sp),
             prefixIcon:
                 prefixIcon == null
