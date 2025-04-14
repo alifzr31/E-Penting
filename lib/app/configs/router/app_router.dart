@@ -1,14 +1,14 @@
 import 'package:epenting/app/configs/get_it/service_locator.dart';
 import 'package:epenting/app/configs/router/page_transition.dart';
-import 'package:epenting/app/cubits/balita/balita_cubit.dart';
-import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/cubits/imunisasi/imunisasi_cubit.dart';
 import 'package:epenting/app/cubits/ortu/ortu_cubit.dart';
-import 'package:epenting/app/cubits/pengukuran/pengukuran_cubit.dart';
 import 'package:epenting/app/cubits/status_gizi/statusgizi_cubit.dart';
+import 'package:epenting/app/views/add_pengukuran/addpengukuran_page.dart';
 import 'package:epenting/app/views/aktivasi_akun/aktivasiakun_page.dart';
 import 'package:epenting/app/views/dashboard/dashboard_page.dart';
 import 'package:epenting/app/views/detail_panduan/detailpanduan_page.dart';
+import 'package:epenting/app/views/edit_balita/editbalita_page.dart';
+import 'package:epenting/app/views/edit_pengukuran/editpengukuran_page.dart';
 import 'package:epenting/app/views/login/login_page.dart';
 import 'package:epenting/app/views/onboard/onboard_page.dart';
 import 'package:epenting/app/views/ortu/ortu_page.dart';
@@ -62,13 +62,35 @@ class AppRouter {
           type: PageTransitionType.sharedAxisVertical,
           child: MultiBlocProvider(
             providers: [
-              BlocProvider(create: (context) => sl<DashboardCubit>()),
-              BlocProvider(create: (context) => sl<PengukuranCubit>()),
               BlocProvider(create: (context) => sl<ImunisasiCubit>()),
-              BlocProvider(create: (context) => sl<BalitaCubit>()),
             ],
             child: const DashboardPage(),
           ),
+        );
+      case AddPengukuranPage.routeName:
+        return pageTransition(
+          context,
+          settings,
+          type: PageTransitionType.sharedAxisVertical,
+          child: const AddPengukuranPage(),
+        );
+      case EditPengukuranPage.routeName:
+        final args = settings.arguments as Map<String, dynamic>?;
+
+        return pageTransition(
+          context,
+          settings,
+          type: PageTransitionType.sharedAxisVertical,
+          child: EditPengukuranPage(idPengukuran: args?['idPengukuran']),
+        );
+      case EditBalitaPage.routeName:
+        final args = settings.arguments as Map<String, dynamic>?;
+
+        return pageTransition(
+          context,
+          settings,
+          type: PageTransitionType.sharedAxisVertical,
+          child: EditBalitaPage(balitaId: args?['balitaId']),
         );
       case OrtuPage.routeName:
         return pageTransition(
