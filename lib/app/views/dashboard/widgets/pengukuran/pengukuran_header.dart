@@ -1,6 +1,7 @@
 import 'package:epenting/app/cubits/auth/auth_cubit.dart';
 import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
+import 'package:epenting/app/views/add_pengukuran/addpengukuran_page.dart';
 import 'package:epenting/app/widgets/base_button.dart';
 import 'package:epenting/app/widgets/base_formfield.dart';
 import 'package:flutter/material.dart';
@@ -189,7 +190,12 @@ class PengukuranHeader extends StatelessWidget {
                           fgColor: AppColors.orangeColor,
                           label: 'Pengukuran Baru',
                           icon: MingCute.add_line,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              AddPengukuranPage.routeName,
+                            );
+                          },
                         ),
                       ),
                     ),

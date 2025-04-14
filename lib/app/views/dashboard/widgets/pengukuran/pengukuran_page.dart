@@ -3,6 +3,7 @@ import 'package:epenting/app/utils/app_helpers.dart';
 import 'package:epenting/app/views/dashboard/components/pengukuran_card.dart';
 import 'package:epenting/app/views/dashboard/components/pengukurancard_loading.dart';
 import 'package:epenting/app/views/dashboard/widgets/pengukuran/pengukuran_header.dart';
+import 'package:epenting/app/views/edit_pengukuran/editpengukuran_page.dart';
 import 'package:epenting/app/widgets/base_emptystate.dart';
 import 'package:epenting/app/widgets/base_errorstate.dart';
 import 'package:epenting/app/widgets/base_loadscroll.dart';
@@ -121,7 +122,18 @@ class PengukuranPage extends StatelessWidget {
                                               '',
                                           index: index,
                                           dataLength: state.pengukurans.length,
-                                          onTap: () {},
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              EditPengukuranPage.routeName,
+                                              arguments: {
+                                                'idPengukuran':
+                                                    state
+                                                        .pengukurans[index]
+                                                        .idPengukuran,
+                                              },
+                                            );
+                                          },
                                         );
                                   },
                                 )
@@ -144,7 +156,16 @@ class PengukuranPage extends StatelessWidget {
                                       stanting: pengukuran.stanting ?? '',
                                       index: index,
                                       dataLength: state.pengukurans.length,
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          EditPengukuranPage.routeName,
+                                          arguments: {
+                                            'idPengukuran':
+                                                pengukuran.idPengukuran,
+                                          },
+                                        );
+                                      },
                                     );
                                   },
                                 ),
