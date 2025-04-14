@@ -19,6 +19,14 @@ class EndPoint {
   static const String allBalita = '/balita/list';
   static const String searchBalita = '/balita/search';
 
+  static const String addPengukuran = '/penimbangan';
+  static const String detailPengukuran = '/penimbangan/detail';
+  static const String editPengukuran = '/penimbangan';
+
+  static const String addBalita = '/balita/create';
+  static const String detailBalita = '/balita/detail';
+  static const String updateBalita = '/balita';
+
   // ORANG TUA
   static const String latestPengukuranBalita = '/balita/latest-nik';
   static const String latestVaccine = '/imunisasi/history-nik';
