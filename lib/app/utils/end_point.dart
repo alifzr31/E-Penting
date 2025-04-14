@@ -23,6 +23,10 @@ class EndPoint {
   static const String detailPengukuran = '/penimbangan/detail';
   static const String editPengukuran = '/penimbangan';
 
+  static const String addImunisasi = '/imunisasi';
+  static const String detailImunisasi = '/imunisasi/detail';
+  static const String editImunisasi = '/imunisasi';
+
   static const String addBalita = '/balita/create';
   static const String detailBalita = '/balita/detail';
   static const String updateBalita = '/balita';
