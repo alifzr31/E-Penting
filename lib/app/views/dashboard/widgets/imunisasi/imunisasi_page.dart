@@ -3,6 +3,7 @@ import 'package:epenting/app/utils/app_helpers.dart';
 import 'package:epenting/app/views/dashboard/components/imunisasi_card.dart';
 import 'package:epenting/app/views/dashboard/components/imunisasicard_loading.dart';
 import 'package:epenting/app/views/dashboard/widgets/imunisasi/imunisasi_header.dart';
+import 'package:epenting/app/views/edit_imunisasi/editimunisasi_page.dart';
 import 'package:epenting/app/widgets/base_emptystate.dart';
 import 'package:epenting/app/widgets/base_errorstate.dart';
 import 'package:epenting/app/widgets/base_loadscroll.dart';
@@ -118,7 +119,18 @@ class ImunisasiPage extends StatelessWidget {
                                               '',
                                           index: index,
                                           dataLength: state.imunisasis.length,
-                                          onTap: () {},
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              EditImunisasiPage.routeName,
+                                              arguments: {
+                                                'idImunisasi':
+                                                    state
+                                                        .imunisasis[index]
+                                                        .idImunisasi,
+                                              },
+                                            );
+                                          },
                                         );
                                   },
                                 )
@@ -139,7 +151,16 @@ class ImunisasiPage extends StatelessWidget {
                                       name: imunisasi.namaAnak ?? '',
                                       index: index,
                                       dataLength: state.imunisasis.length,
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          EditImunisasiPage.routeName,
+                                          arguments: {
+                                            'idImunisasi':
+                                                imunisasi.idImunisasi,
+                                          },
+                                        );
+                                      },
                                     );
                                   },
                                 ),

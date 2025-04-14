@@ -2,6 +2,7 @@ import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/views/dashboard/components/imunisasi_card.dart';
 import 'package:epenting/app/views/dashboard/components/imunisasicard_loading.dart';
+import 'package:epenting/app/views/edit_imunisasi/editimunisasi_page.dart';
 import 'package:epenting/app/widgets/base_errorstate.dart';
 import 'package:epenting/app/widgets/base_textbutton.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,15 @@ class HomeImunisasi extends StatelessWidget {
                             marginBottom: 6,
                             index: index,
                             dataLength: state.latestImunisasis.length,
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                EditImunisasiPage.routeName,
+                                arguments: {
+                                  'idImunisasi': imunisasi.idImunisasi,
+                                },
+                              );
+                            },
                           );
                         },
                       );
