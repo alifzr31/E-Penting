@@ -37,8 +37,8 @@ Widget firstStepContent({
             return Row(
               children: [
                 Container(
-                  height: 12,
-                  width: 12,
+                  height: 12.r,
+                  width: 12.r,
                   padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
                     color: Colors.indigo.shade100,
@@ -131,8 +131,8 @@ Widget thirdStepContent({
             return Row(
               children: [
                 Container(
-                  height: 12,
-                  width: 12,
+                  height: 12.r,
+                  width: 12.r,
                   padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
                     color: Colors.indigo.shade100,
