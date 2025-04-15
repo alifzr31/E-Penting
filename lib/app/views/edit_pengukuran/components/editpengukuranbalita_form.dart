@@ -122,19 +122,14 @@ class EditPengukuranBalitaForm extends StatelessWidget {
                 Container(
                   height: 12.r,
                   width: 12.r,
-                  padding: const EdgeInsets.all(2),
+                  padding: const EdgeInsets.all(1),
                   decoration: BoxDecoration(
-                    color: Colors.indigo.shade100,
                     shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.blueColor),
                   ),
                   child: Container(
-                    height: 12.r,
-                    width: 12.r,
                     decoration: BoxDecoration(
-                      color:
-                          selected
-                              ? AppColors.blueColor
-                              : Colors.indigo.shade100,
+                      color: selected ? AppColors.blueColor : Colors.white,
                       shape: BoxShape.circle,
                     ),
                   ),
