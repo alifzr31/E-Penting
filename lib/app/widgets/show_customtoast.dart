@@ -15,16 +15,19 @@ void showCustomToast(
     style: ToastificationStyle.flat,
     title: Text(
       title ?? '',
-      maxLines: 1,
+      maxLines: description == null ? 99 : 1,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
     ),
-    description: Text(
-      description ?? '',
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(fontSize: 10.sp),
-    ),
+    description:
+        description == null
+            ? null
+            : Text(
+              description,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 10.sp),
+            ),
     alignment: Alignment.bottomCenter,
     autoCloseDuration: const Duration(seconds: 5),
     borderRadius: BorderRadius.circular(10.r),
