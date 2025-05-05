@@ -68,7 +68,7 @@ dependencies:
   firebase_messaging: ^15.2.4
   flutter_local_notifications: ^19.0.0
   salomon_bottom_bar: ^3.3.2
-  fl_chart: ^0.70.2
+  fl_chart: ^0.71.0
   month_picker_dialog: ^6.0.3
   expansion_tile_card: ^3.0.0
   webview_flutter: ^4.10.0
