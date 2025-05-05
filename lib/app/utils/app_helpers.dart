@@ -26,6 +26,30 @@ class AppHelpers {
         : AppColors.femaleColor;
   }
 
+  static DateTime parseTglLahirFromJson(String dateString) {
+    String? formatted;
+
+    final parts = dateString.split('-');
+    if (parts.length == 3) {
+      final year = parts[0];
+      final month = parts[1].padLeft(2, '0');
+      final day = parts[2].padLeft(2, '0');
+
+      formatted = '$year-$month-$day';
+    }
+    return DateTime.parse(formatted ?? '');
+  }
+
+  static DateTime parseExcelTglLahir(String dateString) {
+    final isNumeric = int.tryParse(dateString);
+
+    if (isNumeric != null) {
+      return DateTime(1899, 12, 30).add(Duration(days: isNumeric));
+    }
+
+    return DateTime(0000);
+  }
+
   static String ageYearAndMonth(DateTime birthDate) {
     DateTime now = DateTime.now();
 
