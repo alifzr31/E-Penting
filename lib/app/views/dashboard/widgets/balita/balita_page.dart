@@ -2,6 +2,7 @@ import 'package:epenting/app/cubits/balita/balita_cubit.dart';
 import 'package:epenting/app/views/dashboard/components/balita/balita_card.dart';
 import 'package:epenting/app/views/dashboard/components/balita/balitacard_loading.dart';
 import 'package:epenting/app/views/dashboard/widgets/balita/balita_header.dart';
+import 'package:epenting/app/views/edit_balita/editbalita_page.dart';
 import 'package:epenting/app/widgets/base_emptystate.dart';
 import 'package:epenting/app/widgets/base_errorstate.dart';
 import 'package:epenting/app/widgets/base_loadscroll.dart';
@@ -113,7 +114,16 @@ class BalitaPage extends StatelessWidget {
                                               0,
                                           index: index,
                                           dataLength: state.balitas.length,
-                                          onTap: () {},
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              EditBalitaPage.routeName,
+                                              arguments: {
+                                                'balitaId':
+                                                    state.balitas[index].id,
+                                              },
+                                            );
+                                          },
                                         );
                                   },
                                 )
@@ -139,7 +149,13 @@ class BalitaPage extends StatelessWidget {
                                       weight: balita.beratLahir ?? 0,
                                       index: index,
                                       dataLength: state.balitas.length,
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          EditBalitaPage.routeName,
+                                          arguments: {'balitaId': balita.id},
+                                        );
+                                      },
                                     );
                                   },
                                 ),

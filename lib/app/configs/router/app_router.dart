@@ -2,6 +2,7 @@ import 'package:epenting/app/configs/get_it/service_locator.dart';
 import 'package:epenting/app/configs/router/page_transition.dart';
 import 'package:epenting/app/cubits/ortu/ortu_cubit.dart';
 import 'package:epenting/app/cubits/status_gizi/statusgizi_cubit.dart';
+import 'package:epenting/app/views/add_balita/addbalita_page.dart';
 import 'package:epenting/app/views/add_imunisasi/addimunisasi_page.dart';
 import 'package:epenting/app/views/add_pengukuran/addpengukuran_page.dart';
 import 'package:epenting/app/views/aktivasi_akun/aktivasiakun_page.dart';
@@ -94,6 +95,13 @@ class AppRouter {
           settings,
           type: PageTransitionType.sharedAxisVertical,
           child: EditImunisasiPage(idImunisasi: args?['idImunisasi']),
+        );
+      case AddBalitaPage.routeName:
+        return pageTransition(
+          context,
+          settings,
+          type: PageTransitionType.sharedAxisVertical,
+          child: const AddBalitaPage(),
         );
       case EditBalitaPage.routeName:
         final args = settings.arguments as Map<String, dynamic>?;

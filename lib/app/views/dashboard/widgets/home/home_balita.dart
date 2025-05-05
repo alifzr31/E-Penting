@@ -2,6 +2,7 @@ import 'package:epenting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:epenting/app/utils/app_colors.dart';
 import 'package:epenting/app/views/dashboard/components/home/balita_item.dart';
 import 'package:epenting/app/views/dashboard/components/home/balitaitem_loading.dart';
+import 'package:epenting/app/views/edit_balita/editbalita_page.dart';
 import 'package:epenting/app/widgets/base_errorstate.dart';
 import 'package:epenting/app/widgets/base_textbutton.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +72,13 @@ class HomeBalita extends StatelessWidget {
                           gender: balita.jenisKelamin ?? '',
                           index: index,
                           dataLength: state.latestBalitas.length,
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              EditBalitaPage.routeName,
+                              arguments: {'balitaId': balita.id},
+                            );
+                          },
                         );
                       },
                     );

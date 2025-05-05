@@ -28,6 +28,9 @@ class EndPoint {
   static const String editImunisasi = '/imunisasi';
 
   static const String addBalita = '/balita/create';
+  static const String checkNikBalita = '/balita/cek-nik';
+  static const String searchPindahBalita = '/balita/pindah/search';
+  static const String pindahBalita = '/balita/pindah';
   static const String detailBalita = '/balita/detail';
   static const String updateBalita = '/balita';
 
