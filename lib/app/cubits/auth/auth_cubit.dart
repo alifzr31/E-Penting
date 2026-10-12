@@ -88,13 +88,10 @@ class AuthCubit extends Cubit<AuthState> {
 
       if (isClosed || responseData == null) return;
 
-      await _secureStorage.deleteStorage(key: AppStrings.accessToken);
-      await _secureStorage.deleteStorage(key: AppStrings.profileData);
-      clearToken();
-
       if (responseData['success']) {
-        await _secureStorage.deleteStorage(key: AppStrings.accessToken);
-        await _secureStorage.deleteStorage(key: AppStrings.profileData);
+        // await _secureStorage.deleteStorage(key: AppStrings.accessToken);
+        // await _secureStorage.deleteStorage(key: AppStrings.profileData);
+        await _secureStorage.deleteStorage(key: AppStrings.userData);
         clearToken();
 
         emit(

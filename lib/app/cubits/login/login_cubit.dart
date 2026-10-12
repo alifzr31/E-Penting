@@ -27,22 +27,35 @@ class LoginCubit extends Cubit<LoginState> {
       if (isClosed || responseData == null) return;
 
       if (responseData['success']) {
-        final profileData = responseData['data'];
         final accessToken = responseData['token'];
+        final profileData = responseData['data'];
 
-        if (profileData != null) {
+        if (accessToken != null && profileData != null) {
+          final userData = {
+            AppStrings.accessToken: accessToken,
+            AppStrings.profileData: profileData,
+          };
+          final userDataString = jsonEncode(userData);
+
           await _secureStorage.writeStorage(
-            key: AppStrings.profileData,
-            value: jsonEncode(profileData),
+            key: AppStrings.userData,
+            value: userDataString,
           );
         }
 
-        if (accessToken != null) {
-          await _secureStorage.writeStorage(
-            key: AppStrings.accessToken,
-            value: accessToken,
-          );
-        }
+        // if (profileData != null) {
+        //   await _secureStorage.writeStorage(
+        //     key: AppStrings.profileData,
+        //     value: jsonEncode(profileData),
+        //   );
+        // }
+
+        // if (accessToken != null) {
+        //   await _secureStorage.writeStorage(
+        //     key: AppStrings.accessToken,
+        //     value: accessToken,
+        //   );
+        // }
 
         if (isClosed) return;
 

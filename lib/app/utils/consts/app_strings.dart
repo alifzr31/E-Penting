@@ -1,7 +1,8 @@
 class AppStrings {
   static const String indonesianLocale = 'id_ID';
-  static const String profileData = 'profile_data';
   static const String accessToken = 'access_token';
+  static const String profileData = 'profile_data';
+  static const String userData = 'user_data';
   static const String assetsImages = 'assets/images';
   static const String assetsIcons = 'assets/icons';
   static const String assetsLotties = 'assets/lotties';

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:e_penting/app/configs/firebase/firebase_remote.dart';
 import 'package:e_penting/app/configs/secure_storage/secure_storage.dart';
@@ -79,14 +81,16 @@ class SplashCubit extends Cubit<SplashState> {
         return;
       }
 
-      final accessToken = await _secureStorage.readStorage(
-        key: AppStrings.accessToken,
+      final userData = await _secureStorage.readStorage(
+        key: AppStrings.userData,
       );
 
-      final isLoggedIn = accessToken != null && accessToken.isNotEmpty;
+      final isLoggedIn = userData != null && userData.isNotEmpty;
 
       if (isLoggedIn) {
-        _authCubit.setToken(accessToken);
+        final userJson = jsonDecode(userData);
+
+        _authCubit.setToken(userJson[AppStrings.accessToken]);
         emit(
           state.copyWith(
             status: .success,

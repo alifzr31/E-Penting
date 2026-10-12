@@ -19,18 +19,19 @@ class AuthService {
 
   Future<Profile?> fetchProfile() async {
     try {
-      final profileData = await _secureStorage.readStorage(
-        key: AppStrings.profileData,
+      final userData = await _secureStorage.readStorage(
+        key: AppStrings.userData,
       );
 
-      if (profileData == null) return null;
+      if (userData == null || userData.isEmpty) return null;
 
-      final profileJson = jsonDecode(profileData);
+      final userJson = jsonDecode(userData);
 
-      return await compute(
-        (message) => profileFromJson(profileJson),
-        profileJson,
-      );
+      final profileData = userJson[AppStrings.profileData];
+
+      if (profileData == null || profileData.isEmpty) return null;
+
+      return await compute((message) => profileFromJson(message), profileData);
     } catch (e) {
       rethrow;
     }
