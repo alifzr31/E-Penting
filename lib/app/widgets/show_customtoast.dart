@@ -1,0 +1,43 @@
+import 'package:e_penting/app/utils/consts/app_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
+
+void showCustomToast(
+  BuildContext context, {
+  required ToastificationType type,
+  String? title,
+  String? description,
+}) {
+  toastification.show(
+    context: context,
+    type: type,
+    style: ToastificationStyle.flat,
+    title: Text(
+      title ?? '',
+      maxLines: description == null ? 99 : 1,
+      overflow: .ellipsis,
+      style: const TextStyle(fontSize: 14, fontWeight: .w600),
+    ),
+    description: description == null
+        ? null
+        : Text(
+            description,
+            maxLines: 2,
+            overflow: .ellipsis,
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+          ),
+    alignment: .topCenter,
+    autoCloseDuration: const Duration(seconds: 5),
+    borderRadius: .circular(10),
+    boxShadow: lowModeShadow,
+    progressBarTheme: ProgressIndicatorThemeData(
+      color: AppColors.blueColor,
+      linearTrackColor: const Color(0xFFE2E6FC),
+      borderRadius: .circular(4),
+    ),
+    dragToClose: true,
+    closeButton: const ToastCloseButton(showType: CloseButtonShowType.none),
+    margin: const .fromLTRB(12, 12, 12, 6),
+    padding: const .symmetric(vertical: 10, horizontal: 16),
+  );
+}
