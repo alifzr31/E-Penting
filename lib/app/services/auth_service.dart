@@ -3,25 +3,23 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:e_penting/app/configs/dio/dio_client.dart';
 import 'package:e_penting/app/configs/dio/exceptions.dart';
-import 'package:e_penting/app/configs/secure_storage/secure_storage.dart';
 import 'package:e_penting/app/models/profile.dart';
-import 'package:e_penting/app/utils/helpers/dio_helper.dart';
+import 'package:e_penting/app/repositories/storage_repository.dart';
 import 'package:e_penting/app/utils/consts/app_strings.dart';
+import 'package:e_penting/app/utils/helpers/dio_helper.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthService {
   final DioClient _dioClient;
-  final SecureStorage _secureStorage;
+  final StorageRepository _storageRepository;
 
-  new(this._dioClient, this._secureStorage);
+  new(this._dioClient, this._storageRepository);
 
   final Map<String, CancelToken> _cancelTokens = {};
 
   Future<Profile?> fetchProfile() async {
     try {
-      final userData = await _secureStorage.readStorage(
-        key: AppStrings.userData,
-      );
+      final userData = await _storageRepository.readUserData();
 
       if (userData == null || userData.isEmpty) return null;
 

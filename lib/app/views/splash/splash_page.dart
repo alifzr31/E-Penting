@@ -1,5 +1,4 @@
 import 'package:e_penting/app/configs/get_it/service_locator.dart';
-import 'package:e_penting/app/cubits/biometric/biometric_cubit.dart';
 import 'package:e_penting/app/cubits/splash/splash_cubit.dart';
 import 'package:e_penting/app/views/splash/splash_view.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +10,7 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider.value(value: sl<BiometricCubit>()),
-        BlocProvider(create: (context) => sl<SplashCubit>()),
-      ],
+      providers: [BlocProvider(create: (context) => sl<SplashCubit>())],
       child: const SplashView(),
     );
   }

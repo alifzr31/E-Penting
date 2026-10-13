@@ -1,18 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:e_penting/app/configs/dio/exceptions.dart';
-import 'package:e_penting/app/configs/secure_storage/secure_storage.dart';
 import 'package:e_penting/app/models/profile.dart';
 import 'package:e_penting/app/repositories/auth_repository.dart';
-import 'package:e_penting/app/utils/consts/app_strings.dart';
+import 'package:e_penting/app/repositories/storage_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  new(this._repository, this._secureStorage) : super(const AuthState());
+  new(this._repository, this._storageRepository) : super(const AuthState());
 
   final AuthRepository _repository;
-  final SecureStorage _secureStorage;
+  final StorageRepository _storageRepository;
 
   String? accessToken;
 
@@ -89,9 +89,7 @@ class AuthCubit extends Cubit<AuthState> {
       if (isClosed || responseData == null) return;
 
       if (responseData['success']) {
-        // await _secureStorage.deleteStorage(key: AppStrings.accessToken);
-        // await _secureStorage.deleteStorage(key: AppStrings.profileData);
-        await _secureStorage.deleteStorage(key: AppStrings.userData);
+        await _storageRepository.clearAll();
         clearToken();
 
         emit(
@@ -122,6 +120,31 @@ class AuthCubit extends Cubit<AuthState> {
           logoutErrorMessage: e.toString(),
         ),
       );
+    }
+  }
+
+  Future<void> forceLogout({String? errorMessage}) async {
+    try {
+      await _storageRepository.clearAll();
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error clearing storage on forceLogout: $e');
+      }
+    } finally {
+      clearToken();
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            profileStatus: .initial,
+            profile: null,
+            children: const [],
+            profileErrorMessage: null,
+            logoutStatus: .initial,
+            logoutResponseData: null,
+            logoutErrorMessage: errorMessage,
+          ),
+        );
+      }
     }
   }
 

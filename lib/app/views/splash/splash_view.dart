@@ -4,9 +4,12 @@ import 'package:e_penting/app/cubits/package_info/package_info_cubit.dart'
 import 'package:e_penting/app/cubits/splash/splash_cubit.dart';
 import 'package:e_penting/app/utils/consts/app_colors.dart';
 import 'package:e_penting/app/utils/consts/app_strings.dart';
+import 'package:e_penting/app/widgets/base_button.dart';
+import 'package:e_penting/app/widgets/show_customtoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:remix_icons_flutter/remixicon_ids.dart';
 
 class SplashView extends StatefulWidget {
   const new({super.key});
@@ -26,9 +29,25 @@ class _SplashViewState extends State<SplashView> {
   Widget build(BuildContext context) {
     return BlocListener<SplashCubit, SplashState>(
       listenWhen: (previous, current) {
-        return previous.target != current.target && current.target != .none;
+        final targetChanged =
+            previous.target != current.target && current.target != .none;
+        final errorOccurred =
+            previous.errorMessage != current.errorMessage &&
+            current.errorMessage != null;
+        return targetChanged || errorOccurred;
       },
       listener: (context, state) {
+        if (state.errorMessage != null) {
+          showCustomToast(
+            context,
+            type: state.target == .login ? .error : .warning,
+            title: state.target == .login
+                ? 'Keamanan Sesi'
+                : 'Informasi Sensor',
+            description: state.errorMessage,
+          );
+        }
+
         switch (state.target) {
           case .update:
             Navigator.pushNamedAndRemoveUntil(
@@ -96,8 +115,24 @@ class _SplashViewState extends State<SplashView> {
                               style: TextStyle(fontSize: 14, fontWeight: .w500),
                             ),
                             const SizedBox(height: 30),
-                            const CircularProgressIndicator(
-                              color: AppColors.orangeColor,
+                            BlocBuilder<SplashCubit, SplashState>(
+                              builder: (context, splashState) {
+                                if (splashState.isBiometricCancelled) {
+                                  return BaseButtonIcon(
+                                    icon: RemixIcon.fingerprint2Line,
+                                    label: 'Masuk',
+                                    onPressed: () async {
+                                      context
+                                          .read<SplashCubit>()
+                                          .authenticateBiometric();
+                                    },
+                                  );
+                                }
+
+                                return const CircularProgressIndicator(
+                                  color: AppColors.orangeColor,
+                                );
+                              },
                             ),
                           ],
                         ),

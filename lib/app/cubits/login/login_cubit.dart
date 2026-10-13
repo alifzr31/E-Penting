@@ -2,18 +2,18 @@ import 'dart:convert' show jsonEncode;
 
 import 'package:bloc/bloc.dart';
 import 'package:e_penting/app/configs/dio/exceptions.dart';
-import 'package:e_penting/app/configs/secure_storage/secure_storage.dart';
 import 'package:e_penting/app/repositories/login_repository.dart';
+import 'package:e_penting/app/repositories/storage_repository.dart';
 import 'package:e_penting/app/utils/consts/app_strings.dart';
 import 'package:equatable/equatable.dart';
 
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  new(this._repository, this._secureStorage) : super(const LoginState());
+  new(this._repository, this._storageRepository) : super(const LoginState());
 
   final LoginRepository _repository;
-  final SecureStorage _secureStorage;
+  final StorageRepository _storageRepository;
 
   void login({String? username, String? password}) async {
     emit(state.copyWith(status: .loading));
@@ -37,10 +37,7 @@ class LoginCubit extends Cubit<LoginState> {
           };
           final userDataString = jsonEncode(userData);
 
-          await _secureStorage.writeStorage(
-            key: AppStrings.userData,
-            value: userDataString,
-          );
+          await _storageRepository.writeUserData(userDataString);
         }
 
         // if (profileData != null) {

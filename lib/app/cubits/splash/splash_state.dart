@@ -17,6 +17,8 @@ class SplashState extends Equatable {
   final bool isOpenedOnboard;
   final bool isLoggedIn;
   final String? errorMessage;
+  final bool isBiometricCancelled;
+  final bool isBiometricPromptActive;
 
   const new({
     this.status = .initial,
@@ -25,6 +27,8 @@ class SplashState extends Equatable {
     this.isOpenedOnboard = false,
     this.isLoggedIn = false,
     this.errorMessage,
+    this.isBiometricCancelled = false,
+    this.isBiometricPromptActive = false,
   });
 
   SplashState copyWith({
@@ -34,6 +38,8 @@ class SplashState extends Equatable {
     bool? isOpenedOnboard,
     bool? isLoggedIn,
     String? errorMessage,
+    bool? isBiometricCancelled,
+    bool? isBiometricPromptActive,
   }) {
     return SplashState(
       status: status ?? this.status,
@@ -42,6 +48,9 @@ class SplashState extends Equatable {
       isOpenedOnboard: isOpenedOnboard ?? this.isOpenedOnboard,
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
       errorMessage: errorMessage ?? this.errorMessage,
+      isBiometricCancelled: isBiometricCancelled ?? this.isBiometricCancelled,
+      isBiometricPromptActive:
+          isBiometricPromptActive ?? this.isBiometricPromptActive,
     );
   }
 
@@ -53,5 +62,7 @@ class SplashState extends Equatable {
     isOpenedOnboard,
     isLoggedIn,
     errorMessage,
+    isBiometricCancelled,
+    isBiometricPromptActive,
   ];
 }
