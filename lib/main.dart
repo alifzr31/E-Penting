@@ -19,6 +19,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -45,7 +46,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  di.setupServiceLocator();
+  final sharedPreferences = await SharedPreferences.getInstance();
+  di.setupServiceLocator(sharedPreferences);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
