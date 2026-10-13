@@ -9,6 +9,9 @@ class BiometricState extends Equatable {
   final Status checkAvailableBiometricsStatus;
   final List<BiometricType> availableBiometrics;
   final String? checkAvailableBiometricsErrorMessage;
+  final bool isBiometricActive;
+  final Status toggleBiometricStatus;
+  final String? toggleBiometricErrorMessage;
 
   const new({
     this.checkBiometricHardwareStatus = .initial,
@@ -17,6 +20,9 @@ class BiometricState extends Equatable {
     this.checkAvailableBiometricsStatus = .initial,
     this.availableBiometrics = const [],
     this.checkAvailableBiometricsErrorMessage,
+    this.isBiometricActive = false,
+    this.toggleBiometricStatus = .initial,
+    this.toggleBiometricErrorMessage,
   });
 
   BiometricState copyWith({
@@ -26,6 +32,9 @@ class BiometricState extends Equatable {
     Status? checkAvailableBiometricsStatus,
     List<BiometricType>? availableBiometrics,
     String? checkAvailableBiometricsErrorMessage,
+    bool? isBiometricActive,
+    Status? toggleBiometricStatus,
+    String? toggleBiometricErrorMessage,
   }) {
     return BiometricState(
       checkBiometricHardwareStatus:
@@ -37,6 +46,10 @@ class BiometricState extends Equatable {
       availableBiometrics: availableBiometrics ?? this.availableBiometrics,
       checkAvailableBiometricsErrorMessage:
           checkAvailableBiometricsErrorMessage,
+      isBiometricActive: isBiometricActive ?? this.isBiometricActive,
+      toggleBiometricStatus:
+          toggleBiometricStatus ?? this.toggleBiometricStatus,
+      toggleBiometricErrorMessage: toggleBiometricErrorMessage,
     );
   }
 
@@ -48,5 +61,8 @@ class BiometricState extends Equatable {
     checkAvailableBiometricsStatus,
     availableBiometrics,
     checkAvailableBiometricsErrorMessage,
+    isBiometricActive,
+    toggleBiometricStatus,
+    toggleBiometricErrorMessage,
   ];
 }

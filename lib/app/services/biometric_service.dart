@@ -1,5 +1,3 @@
-// import 'package:biometric_storage/biometric_storage.dart';
-import 'package:biometric_storage/biometric_storage.dart';
 import 'package:e_penting/app/configs/dio/exceptions.dart';
 import 'package:e_penting/app/utils/consts/app_strings.dart';
 import 'package:flutter/services.dart' show PlatformException;
@@ -7,9 +5,8 @@ import 'package:local_auth/local_auth.dart';
 
 class BiometricService {
   final LocalAuthentication _localAuthentication;
-  final BiometricStorage _biometricStorage;
 
-  new(this._localAuthentication, this._biometricStorage);
+  new(this._localAuthentication);
 
   Future<bool> checkBiometricHardware() async {
     try {

@@ -1,5 +1,6 @@
+import 'package:biometric_storage/biometric_storage.dart';
 import 'package:bloc/bloc.dart';
-import 'package:e_penting/app/repositories/biometric_repository.dart';
+import 'package:e_penting/app/repositories/storage_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:local_auth/local_auth.dart'
@@ -10,11 +11,13 @@ part 'biometric_state.dart';
 class BiometricCubit extends Cubit<BiometricState> {
   BiometricCubit(this._repository) : super(const BiometricState());
 
-  final BiometricRepository _repository;
+  final StorageRepository _repository;
 
   Future<void> checkBiometric() async {
     await checkBiometricHardware();
     await checkAvailableBiometrics();
+    final isBiometricActive = _repository.isBiometricEnabled();
+    emit(state.copyWith(isBiometricActive: isBiometricActive));
   }
 
   Future<void> checkBiometricHardware() async {
@@ -100,6 +103,53 @@ class BiometricCubit extends Cubit<BiometricState> {
         state.copyWith(
           checkAvailableBiometricsStatus: .error,
           checkAvailableBiometricsErrorMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> toggleBiometric(bool enable) async {
+    emit(state.copyWith(toggleBiometricStatus: .loading));
+
+    try {
+      final isSuccess = await _repository.setupBiometric(enable: enable);
+
+      if (isClosed) return;
+
+      if (isSuccess) {
+        emit(
+          state.copyWith(
+            isBiometricActive: enable,
+            toggleBiometricStatus: .success,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            isBiometricActive: !enable,
+            toggleBiometricStatus: .error,
+            toggleBiometricErrorMessage: 'Gagal mengatur biometrik',
+          ),
+        );
+      }
+    } on AuthException catch (e) {
+      if (isClosed) return;
+
+      emit(
+        state.copyWith(
+          isBiometricActive: !enable,
+          toggleBiometricStatus: .error,
+          toggleBiometricErrorMessage: e.message,
+        ),
+      );
+    } catch (e) {
+      if (isClosed) return;
+
+      emit(
+        state.copyWith(
+          isBiometricActive: !enable,
+          toggleBiometricStatus: .error,
+          toggleBiometricErrorMessage: e.toString(),
         ),
       );
     }
