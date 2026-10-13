@@ -1,4 +1,4 @@
-import 'package:biometric_storage/biometric_storage.dart';
+import 'package:e_penting/app/configs/biom_storage/biom_storage.dart';
 import 'package:e_penting/app/configs/dio/dio_client.dart';
 import 'package:e_penting/app/configs/firebase/firebase_notification.dart';
 import 'package:e_penting/app/configs/firebase/firebase_remote.dart';
@@ -19,33 +19,46 @@ import 'package:e_penting/app/cubits/splash/splash_cubit.dart';
 import 'package:e_penting/app/cubits/stat/stat_cubit.dart';
 import 'package:e_penting/app/cubits/toddler/toddler_cubit.dart';
 import 'package:e_penting/app/repositories/auth_repository.dart';
-import 'package:e_penting/app/repositories/biometric_repository.dart';
 import 'package:e_penting/app/repositories/immunization_repository.dart';
 import 'package:e_penting/app/repositories/login_repository.dart';
 import 'package:e_penting/app/repositories/measurement_repository.dart';
 import 'package:e_penting/app/repositories/nutrition_repository.dart';
 import 'package:e_penting/app/repositories/stat_repository.dart';
+import 'package:e_penting/app/repositories/storage_repository.dart';
 import 'package:e_penting/app/repositories/toddler_repository.dart';
 import 'package:e_penting/app/services/auth_service.dart';
-import 'package:e_penting/app/services/biometric_service.dart';
 import 'package:e_penting/app/services/immunization_service.dart';
 import 'package:e_penting/app/services/login_service.dart';
 import 'package:e_penting/app/services/measurement_service.dart';
 import 'package:e_penting/app/services/nutrition_service.dart';
 import 'package:e_penting/app/services/stat_service.dart';
+import 'package:e_penting/app/services/storage_service.dart';
 import 'package:e_penting/app/services/toddler_service.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
 
-void setupServiceLocator() {
+void setupServiceLocator(SharedPreferences sharedPreferences) {
   sl.registerLazySingleton<AppRouter>(() => AppRouter());
+
+  sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
   sl.registerLazySingleton<SecureStorage>(
     () => const SecureStorage(FlutterSecureStorage()),
+  );
+  sl.registerLazySingleton<BiomStorage>(
+    () => BiomStorage(LocalAuthentication()),
+  );
+
+  sl.registerLazySingleton<StorageService>(
+    () => StorageService(sl(), sl(), sl()),
+  );
+  sl.registerLazySingleton<StorageRepository>(
+    () => StorageRepositoryImpl(sl()),
   );
 
   sl.registerLazySingleton<FirebaseRemote>(
@@ -63,13 +76,7 @@ void setupServiceLocator() {
     () => PackageInfoCubit()..fetchAppInfo(),
   );
 
-  sl.registerLazySingleton<BiometricService>(
-    () => BiometricService(LocalAuthentication(), BiometricStorage()),
-  );
-  sl.registerLazySingleton<BiometricRepository>(
-    () => BiometricRepositoryImpl(sl()),
-  );
-  sl.registerLazySingleton<BiometricCubit>(() => BiometricCubit(sl()));
+  sl.registerFactory<BiometricCubit>(() => BiometricCubit(sl()));
 
   sl.registerLazySingleton<AuthService>(() => AuthService(sl(), sl()));
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
