@@ -4,6 +4,18 @@
 -keep class gov.bdg.epenting.** { *; }
 
 ##############################################
+## Attributes, Annotations & Kotlin Coroutines
+##############################################
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
+-dontwarn kotlinx.coroutines.**
+
+##############################################
+## Desugaring (Java 8+ APIs)
+##############################################
+-dontwarn java.time.**
+-dontwarn j$.**
+
+##############################################
 ## Core Android Components
 ##############################################
 -keep public class * extends android.app.Application
@@ -61,6 +73,7 @@
 -keep class io.flutter.plugins.localauth.** { *; }
 -keep class androidx.biometric.** { *; }
 -keep class design.codeux.biometric_storage.** { *; }
+-dontwarn design.codeux.biometric_storage.**
 
 ##############################################
 ## Shared Preferences
@@ -71,6 +84,8 @@
 # flutter_local_notifications
 #############################################
 -keep class com.dexterous.flutterlocalnotifications.** { *; }
+-dontwarn com.dexterous.flutterlocalnotifications.**
+-keep class androidx.core.app.NotificationCompat** { *; }
 
 ##############################################
 ## WebView (webview_flutter)
@@ -100,6 +115,26 @@
 ## URL Launcher
 ##############################################
 -keep class io.flutter.plugins.urllauncher.** { *; }
+
+##############################################
+## app_settings
+##############################################
+-keep class com.spencerccf.app_settings.** { *; }
+-dontwarn com.spencerccf.app_settings.**
+
+##############################################
+## package_info_plus
+##############################################
+-keep class dev.fluttercommunity.plus.packageinfo.** { *; }
+-dontwarn dev.fluttercommunity.plus.packageinfo.**
+
+##############################################
+## JNI & JNI Flutter (path_provider_android)
+##############################################
+-keep class com.github.dart_lang.jni.** { *; }
+-dontwarn com.github.dart_lang.jni.**
+-keep class com.github.dart_lang.jni_flutter.** { *; }
+-dontwarn com.github.dart_lang.jni_flutter.**
 
 ##############################################
 ## Misc
