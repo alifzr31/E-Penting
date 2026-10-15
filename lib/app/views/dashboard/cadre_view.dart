@@ -44,6 +44,7 @@ class _CadreViewState extends State<CadreView> {
         key: _scaffoldKey,
         extendBody: true,
         resizeToAvoidBottomInset: false,
+        endDrawerEnableOpenDragGesture: _currentTab == 0,
         endDrawer: const DashboardEndDrawer(),
         bottomNavigationBar: CadreBottomNav(
           currentTab: _currentTab,

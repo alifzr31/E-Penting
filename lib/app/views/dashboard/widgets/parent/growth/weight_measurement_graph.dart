@@ -21,9 +21,9 @@ class WeightMeasurementGraph extends StatelessWidget {
           case .error:
             return BaseHandleState(
               handleType: .error,
-              errorMessageSize: 12,
-              iconButtonSize: 16,
-              labelButtonSize: 12,
+              errorMessageSize: 14,
+              labelButtonSize: 14,
+              iconButtonSize: 18,
               errorMessage:
                   state.weightMeasurementGraphNikErrorMessage ?? 'dnjaskn',
               onRefetch: () {
@@ -43,9 +43,9 @@ class WeightMeasurementGraph extends StatelessWidget {
             return isEmpty
                 ? BaseHandleState(
                     handleType: .empty,
-                    errorMessageSize: 12,
-                    iconButtonSize: 16,
-                    labelButtonSize: 12,
+                    errorMessageSize: 14,
+                    labelButtonSize: 14,
+                    iconButtonSize: 18,
                     errorMessage:
                         state.weightMeasurementGraphNikErrorMessage ?? '',
                     onRefetch: () {

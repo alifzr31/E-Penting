@@ -46,9 +46,9 @@ class ParentAdministeredImmunizationSection extends StatelessWidget {
                       case .error:
                         return BaseHandleState(
                           handleType: .error,
-                          errorMessageSize: 12,
-                          iconButtonSize: 16,
-                          labelButtonSize: 12,
+                          errorMessageSize: 14,
+                          labelButtonSize: 14,
+                          iconButtonSize: 18,
                           errorMessage:
                               state.immunizationHistoryNikErrorMessage ?? '',
                           onRefetch: () {

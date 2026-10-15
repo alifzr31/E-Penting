@@ -51,9 +51,9 @@ class ParentLastImmunizationSection extends StatelessWidget {
                       case .error:
                         return BaseHandleState(
                           handleType: .error,
-                          errorMessageSize: 12,
-                          labelButtonSize: 12,
-                          iconButtonSize: 16,
+                          errorMessageSize: 14,
+                          labelButtonSize: 14,
+                          iconButtonSize: 18,
                           errorMessage:
                               state.toddlerLatestNikErrorMessage ?? '',
                           onRefetch: () {
@@ -75,9 +75,9 @@ class ParentLastImmunizationSection extends StatelessWidget {
                         return vaccineNames.isEmpty
                             ? BaseHandleState(
                                 handleType: .empty,
-                                errorMessageSize: 12,
-                                labelButtonSize: 12,
-                                iconButtonSize: 16,
+                                errorMessageSize: 14,
+                                labelButtonSize: 14,
+                                iconButtonSize: 18,
                                 errorMessage:
                                     'Belum ada imunisasi yang dilakukan :(',
                                 onRefetch: () {

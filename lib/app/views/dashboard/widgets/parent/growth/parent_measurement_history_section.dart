@@ -44,9 +44,9 @@ class ParentMeasurementHistorySection extends StatelessWidget {
                         case .error:
                           return BaseHandleState(
                             handleType: .error,
-                            errorMessageSize: 12,
-                            iconButtonSize: 16,
-                            labelButtonSize: 12,
+                            errorMessageSize: 14,
+                            labelButtonSize: 14,
+                            iconButtonSize: 18,
                             errorMessage:
                                 state.measurementHistoryNikErrorMessage ?? '',
                             onRefetch: () {
@@ -65,9 +65,9 @@ class ParentMeasurementHistorySection extends StatelessWidget {
                           return state.measurementHistoryNik.isEmpty
                               ? BaseHandleState(
                                   handleType: .empty,
-                                  errorMessageSize: 12,
-                                  labelButtonSize: 12,
-                                  iconButtonSize: 16,
+                                  errorMessageSize: 14,
+                                  labelButtonSize: 14,
+                                  iconButtonSize: 18,
                                   errorMessage:
                                       'Belum ada pengukuran yang dilakukan :{',
                                   onRefetch: () {

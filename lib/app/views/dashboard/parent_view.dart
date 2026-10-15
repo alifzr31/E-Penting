@@ -89,6 +89,7 @@ class _ParentViewState extends State<ParentView> {
         child: Scaffold(
           key: _scaffoldKey,
           extendBody: true,
+          endDrawerEnableOpenDragGesture: _currentTab == 0,
           endDrawer: const DashboardEndDrawer(),
           bottomNavigationBar: ParentBottomNav(
             currentTab: _currentTab,

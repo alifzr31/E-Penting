@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
         overlayWidgetBuilder: (progress) {
           return Center(
             child: Container(
-              padding: const .all(8),
+              padding: const .all(2),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 shape: .circle,

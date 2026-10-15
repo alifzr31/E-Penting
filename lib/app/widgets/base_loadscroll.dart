@@ -17,7 +17,7 @@ class BaseLoadScroll extends StatelessWidget {
           shape: const CircleBorder(),
           child: Center(
             child: Padding(
-              padding: const .all(4),
+              padding: const .all(2),
               child: Lottie.asset(
                 '${AppStrings.assetsLotties}/loader.json',
                 width: 40,

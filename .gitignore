@@ -54,3 +54,4 @@ AGENTS.md
 skills-lock.json
 /lib/app/views/test/
 /lib/app/configs/firebase/firebase_options.dart
+devtools_options.yaml

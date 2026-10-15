@@ -21,9 +21,9 @@ class HeightMeasurementGraph extends StatelessWidget {
           case .error:
             return BaseHandleState(
               handleType: .error,
-              errorMessageSize: 12,
-              iconButtonSize: 16,
-              labelButtonSize: 12,
+              errorMessageSize: 14,
+              labelButtonSize: 14,
+              iconButtonSize: 18,
               errorMessage: state.heightMeasurementGraphNikErrorMessage ?? '',
               onRefetch: () {
                 final selectedChild = context.read<SelectedChildCubit>().state;
@@ -42,9 +42,9 @@ class HeightMeasurementGraph extends StatelessWidget {
             return isEmpty
                 ? BaseHandleState(
                     handleType: .empty,
-                    errorMessageSize: 12,
-                    iconButtonSize: 16,
-                    labelButtonSize: 12,
+                    errorMessageSize: 14,
+                    labelButtonSize: 14,
+                    iconButtonSize: 18,
                     errorMessage:
                         state.heightMeasurementGraphNikErrorMessage ?? '',
                     onRefetch: () {
