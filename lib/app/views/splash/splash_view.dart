@@ -143,7 +143,7 @@ class _SplashViewState extends State<SplashView> {
                         right: 0,
                         child: Text(
                           state.appVersion != null
-                              ? 'Versi ${state.appVersion}'
+                              ? 'Versi ${state.appVersion} (${state.appBuildNumber})'
                               : '',
                           textAlign: .center,
                           style: TextStyle(

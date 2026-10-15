@@ -240,7 +240,8 @@ class DashboardEndDrawer extends StatelessWidget {
                                 size: 24,
                               ),
                               title: 'Info Aplikasi',
-                              subtitle: 'Versi ${state.appVersion}',
+                              subtitle:
+                                  'Versi ${state.appVersion} (${state.appBuildNumber})',
                               trailing: const Icon(
                                 RemixIcon.arrowRightWideLine,
                                 size: 16,
