@@ -41,6 +41,9 @@ class LoginForm extends StatelessWidget {
             context.loaderOverlay.show();
           case .success:
             final name = state.responseData?['data']['name'];
+            final level = state.responseData?['data']['level'];
+            final forbiddenLevel =
+                level != 'kader_posyandu' && level != 'orangtua';
             final accessToken = state.responseData?['token'];
 
             context.loaderOverlay.hide();
@@ -51,7 +54,10 @@ class LoginForm extends StatelessWidget {
               title: 'Masuk Berhasil',
               description: 'Selamat datang $name!',
             );
-            Navigator.pushReplacementNamed(context, RouteName.dashboard);
+            Navigator.pushReplacementNamed(
+              context,
+              forbiddenLevel ? RouteName.forbidden : RouteName.dashboard,
+            );
           case .error:
             context.loaderOverlay.hide();
             showCustomToast(
