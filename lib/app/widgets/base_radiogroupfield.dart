@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:remix_icons_flutter/remixicon_ids.dart';
 
 class BaseRadioGroupField<T> extends FormField<T> {
-  new({
+  BaseRadioGroupField({
     super.key,
     String? label,
     bool mandatory = false,
@@ -17,6 +17,8 @@ class BaseRadioGroupField<T> extends FormField<T> {
     ValueChanged<T>? onChanged,
     double spacing = 10.0,
     double runSpacing = 8.0,
+    Axis direction = .horizontal,
+    int? crossAxisCount,
   }) : super(
          builder: (FormFieldState<T> state) {
            final hasError = state.hasError;
@@ -52,46 +54,69 @@ class BaseRadioGroupField<T> extends FormField<T> {
                    ),
                    const SizedBox(height: 4),
                  ],
-                 Wrap(
-                   spacing: spacing,
-                   runSpacing: runSpacing,
-                   children: items.map((item) {
-                     final isSelected = state.value == item;
+                 LayoutBuilder(
+                   builder: (context, constraints) {
+                     final effectiveCrossAxisCount =
+                         crossAxisCount ?? (direction == .vertical ? 1 : null);
+                     final double? itemWidth = effectiveCrossAxisCount != null
+                         ? (constraints.maxWidth -
+                                   (spacing * (effectiveCrossAxisCount - 1))) /
+                               effectiveCrossAxisCount
+                         : null;
 
-                     return CupertinoButton(
-                       alignment: .center,
-                       minimumSize: .zero,
-                       padding: .zero,
-                       onPressed: readOnly || onChanged == null
-                           ? null
-                           : () {
-                               state.didChange(item);
-                               onChanged(item);
-                             },
-                       child: Row(
-                         mainAxisSize: .min,
-                         children: [
-                           Icon(
-                             isSelected
-                                 ? RemixIcon.checkboxCircleFill
-                                 : RemixIcon.checkboxBlankCircleLine,
-                             size: 20,
-                             color: AppColors.blueColor,
-                           ),
-                           const SizedBox(width: 4),
-                           Text(
-                             itemLabelBuilder(item),
-                             style: TextStyle(
-                               fontSize: 14,
-                               fontWeight: isSelected ? .w500 : .w400,
-                               color: Colors.black,
-                               fontFamily: 'Poppins',
+                     return Wrap(
+                       spacing: spacing,
+                       runSpacing: runSpacing,
+                       children: items.map((item) {
+                         final isSelected = state.value == item;
+
+                         Widget buttonChild = Row(
+                           mainAxisSize: itemWidth != null
+                               ? MainAxisSize.max
+                               : MainAxisSize.min,
+                           children: [
+                             Icon(
+                               isSelected
+                                   ? RemixIcon.checkboxCircleFill
+                                   : RemixIcon.checkboxBlankCircleLine,
+                               size: 20,
+                               color: AppColors.blueColor,
                              ),
-                           ),
-                         ],
-                       ),
+                             const SizedBox(width: 4),
+                             Flexible(
+                               child: Text(
+                                 itemLabelBuilder(item),
+                                 style: TextStyle(
+                                   fontSize: 14,
+                                   fontWeight: isSelected ? .w500 : .w400,
+                                   color: Colors.black,
+                                   fontFamily: 'Poppins',
+                                 ),
+                               ),
+                             ),
+                           ],
+                         );
+
+                         Widget button = CupertinoButton(
+                           alignment: .centerLeft,
+                           minimumSize: .zero,
+                           padding: .zero,
+                           onPressed: readOnly || onChanged == null
+                               ? null
+                               : () {
+                                   state.didChange(item);
+                                   onChanged(item);
+                                 },
+                           child: buttonChild,
+                         );
+
+                         if (itemWidth != null) {
+                           return SizedBox(width: itemWidth, child: button);
+                         }
+                         return button;
+                       }).toList(),
                      );
-                   }).toList(),
+                   },
                  ),
                  if (hasError) ...[
                    const SizedBox(height: 4),

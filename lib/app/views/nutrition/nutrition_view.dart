@@ -8,6 +8,7 @@ import 'package:e_penting/app/utils/text_input_formatters/decimal_input_formatte
 import 'package:e_penting/app/views/nutrition/widgets/nutrition_step_card.dart';
 import 'package:e_penting/app/views/nutrition/widgets/nutrition_stepper.dart';
 import 'package:e_penting/app/widgets/base_formfield.dart';
+import 'package:e_penting/app/widgets/base_radiogroupfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,11 +33,9 @@ class _NutritionViewState extends State<NutritionView> {
   ];
 
   String? _selectedGender;
-  bool _isGenderNotValid = false;
   final _ageFormKey = GlobalKey<FormState>();
   final _monthAgeController = TextEditingController();
   String? _selectedMeasureType;
-  bool _isMeasureTypeNotValid = false;
   final _weightFormKey = GlobalKey<FormState>();
   final _weightController = TextEditingController();
   final _tallFormKey = GlobalKey<FormState>();
@@ -47,40 +46,26 @@ class _NutritionViewState extends State<NutritionView> {
       {
         'title': 'Jenis Kelamin',
         'subtitle': 'Pilih jenis kelamin balita anda',
-        'content': RadioGroup<String>(
-          groupValue: _selectedGender,
+        'content': BaseRadioGroupField(
+          initialValue: _selectedGender,
+          mandatory: true,
+          direction: .vertical,
+          items: Gender.filteredValues.map((e) {
+            return e.label;
+          }).toList(),
+          itemLabelBuilder: (value) => value,
           onChanged: (value) {
-            if (value == null) return;
-
             setState(() {
               _selectedGender = value;
             });
           },
-          child: Column(
-            children: [
-              ...Gender.filteredValues.map((e) {
-                return Row(
-                  children: [
-                    Radio<String>(
-                      value: e.label,
-                      activeColor: AppColors.blueColor,
-                      overlayColor: WidgetStatePropertyAll(
-                        AppColors.blueColor.withValues(alpha: 0.1),
-                      ),
-                    ),
-                    Flexible(child: Text(e.label)),
-                  ],
-                );
-              }),
-              if (_isGenderNotValid) ...[
-                const SizedBox(height: 4),
-                Text(
-                  'Silahkan pilih jenis kelamin balita',
-                  style: TextStyle(fontSize: 12, color: Colors.red.shade600),
-                ),
-              ],
-            ],
-          ),
+          validator: (value) {
+            if (value == null) {
+              return 'Silahkan pilih jenis kelamin';
+            }
+
+            return null;
+          },
         ),
       },
       {
@@ -106,40 +91,26 @@ class _NutritionViewState extends State<NutritionView> {
       {
         'title': 'Cara Pengukuran',
         'subtitle': 'Pilih cara pengukuran balita anda',
-        'content': RadioGroup<String>(
-          groupValue: _selectedMeasureType,
+        'content': BaseRadioGroupField(
+          initialValue: _selectedMeasureType,
+          mandatory: true,
+          direction: .vertical,
+          items: MeasurementType.filteredValues.map((e) {
+            return e.label;
+          }).toList(),
+          itemLabelBuilder: (value) => value,
           onChanged: (value) {
-            if (value == null) return;
-
             setState(() {
               _selectedMeasureType = value;
             });
           },
-          child: Column(
-            children: [
-              ...MeasurementType.filteredValues.map((e) {
-                return Row(
-                  children: [
-                    Radio<String>(
-                      value: e.label,
-                      activeColor: AppColors.blueColor,
-                      overlayColor: WidgetStatePropertyAll(
-                        AppColors.blueColor.withValues(alpha: 0.1),
-                      ),
-                    ),
-                    Flexible(child: Text(e.label)),
-                  ],
-                );
-              }),
-              if (_isMeasureTypeNotValid) ...[
-                const SizedBox(height: 4),
-                Text(
-                  'Silahkan pilih jenis pengukuran',
-                  style: TextStyle(fontSize: 12, color: Colors.red.shade600),
-                ),
-              ],
-            ],
-          ),
+          validator: (value) {
+            if (value == null) {
+              return 'Silahkan pilih cara pengukuran';
+            }
+
+            return null;
+          },
         ),
       },
       {
@@ -225,12 +196,7 @@ class _NutritionViewState extends State<NutritionView> {
     setState(() {
       if (isValid) {
         _currentStep++;
-        _isGenderNotValid = false;
-        _isMeasureTypeNotValid = false;
-      } else {
-        if (_currentStep == 0) _isGenderNotValid = true;
-        if (_currentStep == 2) _isMeasureTypeNotValid = true;
-      }
+      } else {}
     });
   }
 
@@ -249,11 +215,9 @@ class _NutritionViewState extends State<NutritionView> {
 
     Navigator.pop(context);
     _selectedGender = null;
-    _isGenderNotValid = false;
     _ageFormKey.currentState?.reset();
     _monthAgeController.clear();
     _selectedMeasureType = null;
-    _isMeasureTypeNotValid = false;
     _weightFormKey.currentState?.reset();
     _weightController.clear();
     _tallFormKey.currentState?.reset();
