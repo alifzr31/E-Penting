@@ -63,8 +63,10 @@ void main() async {
   // final firebaseRemote = di.sl<FirebaseRemote>();
   // await firebaseRemote.init();
 
-  initializeDateFormatting(AppStrings.indonesianLocale);
   Intl.defaultLocale = AppStrings.indonesianLocale;
+  await initializeDateFormatting(AppStrings.indonesianLocale);
+
+  await SystemChrome.setPreferredOrientations([.portraitUp, .portraitDown]);
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
