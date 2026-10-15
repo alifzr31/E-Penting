@@ -7,6 +7,7 @@ import 'package:e_penting/app/views/detail_guide/detail_guide_page.dart';
 import 'package:e_penting/app/views/edit_immunization/edit_immunization_page.dart';
 import 'package:e_penting/app/views/edit_measurement/edit_measurement_page.dart';
 import 'package:e_penting/app/views/edit_toddler/edit_toddler_page.dart';
+import 'package:e_penting/app/views/forbidden/forbidden_page.dart';
 import 'package:e_penting/app/views/login/login_page.dart';
 import 'package:e_penting/app/views/nutrition/nutrition_page.dart';
 import 'package:e_penting/app/views/onboard/onboard_page.dart';
@@ -22,6 +23,13 @@ class AppRouter {
           settings: settings,
           builder: (context) {
             return const SplashPage();
+          },
+        );
+      case RouteName.forbidden:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) {
+            return const ForbiddenPage();
           },
         );
       case RouteName.update:
