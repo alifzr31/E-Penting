@@ -77,6 +77,101 @@ UI Layer (Page/View) ──> Business Logic (Cubit) ──> Repository Layer ─
 
 ---
 
+## 🌐 Dokumentasi API Endpoint
+
+Komunikasi data dengan REST API dikelola secara terpusat melalui `DioClient` dengan autentikasi otomatis `Bearer <access_token>` melalui header:
+```http
+Authorization: Bearer <access_token>
+```
+
+<details>
+<summary><b>1. 🔐 Autentikasi & Sesi Pengguna</b></summary>
+<br>
+
+| Method | Endpoint | Parameter / Payload | Deskripsi & Fungsi |
+|:---:|:---|:---|:---|
+| `POST` | `/login` | **Body**: `username`, `password` | Autentikasi sesi kader atau orang tua balita |
+| `POST` | `/logout` | - | Mengakhiri sesi pengguna dan invalidasi token |
+
+</details>
+
+<details>
+<summary><b>2. 👶 Pendataan Balita</b></summary>
+<br>
+
+| Method | Endpoint | Parameter / Payload | Deskripsi & Fungsi |
+|:---:|:---|:---|:---|
+| `GET` | `/balita/latest-nik` | **Query**: `nik` | Data balita terkini (khusus role orang tua) |
+| `GET` | `/balita/latest` | - | Daftar balita terbaru yang terdaftar di posyandu |
+| `GET` | `/balita/list` | **Query**: `page`, `sorting` *(rentang usia)* | Daftar seluruh balita dengan pagination dan filter usia |
+| `GET` | `/balita/search` | **Query**: `name` | Pencarian data balita berdasarkan nama |
+| `GET` | `/balita/detail` | **Query**: `id` | Detail lengkap profil satu balita |
+| `GET` | `/balita/pindah/search` | **Query**: `name` | Pencarian balita untuk proses mutasi/pindah posyandu |
+| `POST` | `/balita/cek-nik` | **Body**: `nik` | Validasi ketersediaan atau duplikasi NIK balita di sistem |
+| `POST` | `/balita/create` | **Body**: *Payload data anak, orang tua, & domisili* | Mendaftarkan data balita baru |
+| `PATCH` | `/balita/pindah` | **Query**: `id_identitas` | Konfirmasi mutasi/pindah posyandu balita |
+| `PATCH` | `/balita` | **Query**: `id`<br>**Body**: *Payload pembaruan data balita* | Memperbarui informasi data profil balita |
+
+</details>
+
+<details>
+<summary><b>3. 📏 Pengukuran & Antropometri</b></summary>
+<br>
+
+| Method | Endpoint | Parameter / Payload | Deskripsi & Fungsi |
+|:---:|:---|:---|:---|
+| `GET` | `/penimbangan/history` | **Query**: `nik` | Riwayat lengkap catatan pengukuran berkala balita |
+| `GET` | `/penimbangan/chart/tinggi` | **Query**: `nik` | Koordinat titik data grafik pertumbuhan tinggi/panjang badan |
+| `GET` | `/penimbangan/chart/berat` | **Query**: `nik` | Koordinat titik data grafik pertumbuhan berat badan |
+| `GET` | `/penimbangan/latest` | - | Daftar pencatatan pengukuran terbaru di posyandu |
+| `GET` | `/penimbangan/list` | **Query**: `page`, `month`, `year` | Daftar penimbangan dengan pagination & filter bulan/tahun |
+| `GET` | `/penimbangan/search` | **Query**: `name` | Pencarian riwayat penimbangan berdasarkan nama balita |
+| `GET` | `/penimbangan/detail` | **Query**: `id_penimbangan` | Detail lengkap satu catatan penimbangan antropometri |
+| `POST` | `/penimbangan` | **Body**: *Payload data antropometri & gizi* | Input catatan penimbangan balita baru |
+| `PATCH` | `/penimbangan` | **Query**: `id_pengukuran`<br>**Body**: *Payload update* | Memperbarui catatan penimbangan balita |
+
+</details>
+
+<details>
+<summary><b>4. 💉 Pencatatan Imunisasi</b></summary>
+<br>
+
+| Method | Endpoint | Parameter / Payload | Deskripsi & Fungsi |
+|:---:|:---|:---|:---|
+| `GET` | `/imunisasi/history-nik` | **Query**: `nik` | Riwayat vaksin wajib yang telah diterima balita |
+| `GET` | `/imunisasi/latest` | - | Daftar catatan imunisasi terbaru di posyandu |
+| `GET` | `/imunisasi/list` | **Query**: `page`, `month`, `year` | Daftar imunisasi dengan pagination & filter bulan/tahun |
+| `GET` | `/imunisasi/search` | **Query**: `name` | Pencarian catatan imunisasi berdasarkan nama balita |
+| `GET` | `/imunisasi/detail` | **Query**: `id_imunisasi` | Detail satu catatan pemberian imunisasi |
+| `POST` | `/imunisasi` | **Body**: *Payload status boolean vaksin* | Mencatat riwayat imunisasi baru |
+| `PATCH` | `/imunisasi` | **Query**: `id_imunisasi`<br>**Body**: *Payload update* | Mengedit riwayat catatan imunisasi balita |
+
+</details>
+
+<details>
+<summary><b>5. 🥗 Klasifikasi Gizi & Stunting</b></summary>
+<br>
+
+| Method | Endpoint | Parameter / Payload | Deskripsi & Fungsi |
+|:---:|:---|:---|:---|
+| `GET` | `/classification` | **Query**: `umur_bulan`, `tinggi`, `cara_ukur`, `jenis_kelamin` | Menghitung klasifikasi status stunting tinggi/panjang badan |
+| `GET` | `/berat-badan` | **Query**: `umur_bulan`, `jenis_kelamin`, `berat` | Menghitung klasifikasi status berat badan balita |
+| `GET` | `/gizi` | **Query**: `umur_bulan`, `tinggi`, `berat`, `jenis_kelamin`, `cara_ukur` | Menghitung klasifikasi status gizi menyeluruh (BB/TB) |
+
+</details>
+
+<details>
+<summary><b>6. 📊 Statistik Dashboard</b></summary>
+<br>
+
+| Method | Endpoint | Parameter / Payload | Deskripsi & Fungsi |
+|:---:|:---|:---|:---|
+| `GET` | `/percentage` | - | Mengambil ringkasan persentase data stunting posyandu |
+
+</details>
+
+---
+
 ## 🚀 Memulai (Getting Started)
 
 ### Prasyarat
