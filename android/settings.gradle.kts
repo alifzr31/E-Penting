@@ -26,4 +26,17 @@ plugins {
     id("org.jetbrains.kotlin.android") version "2.4.20" apply false
 }
 
+gradle.beforeProject {
+    try {
+        val buildGradle = java.io.File(projectDir, "build.gradle")
+        if (buildGradle.exists() && buildGradle.canWrite()) {
+            val text = buildGradle.readText()
+            if (text.contains("proguard-android.txt")) {
+                buildGradle.writeText(text.replace("proguard-android.txt", "proguard-android-optimize.txt"))
+            }
+        }
+    } catch (_: Exception) {
+    }
+}
+
 include(":app")
