@@ -17,6 +17,7 @@ import 'package:e_penting/app/cubits/package_info/package_info_cubit.dart';
 import 'package:e_penting/app/cubits/selected_child/selected_child_cubit.dart';
 import 'package:e_penting/app/cubits/splash/splash_cubit.dart';
 import 'package:e_penting/app/cubits/stat/stat_cubit.dart';
+import 'package:e_penting/app/cubits/survey/survey_cubit.dart';
 import 'package:e_penting/app/cubits/toddler/toddler_cubit.dart';
 import 'package:e_penting/app/repositories/auth_repository.dart';
 import 'package:e_penting/app/repositories/immunization_repository.dart';
@@ -42,8 +43,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
 
-void setupServiceLocator(SharedPreferences sharedPreferences) {
+Future<void> setupServiceLocator({
+  SharedPreferences? mockSharedPreferences,
+}) async {
   sl.registerLazySingleton<AppRouter>(() => AppRouter());
+
+  final sharedPreferences =
+      mockSharedPreferences ?? await SharedPreferences.getInstance();
 
   sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
@@ -123,4 +129,6 @@ void setupServiceLocator(SharedPreferences sharedPreferences) {
   sl.registerLazySingleton<StatService>(() => StatService(sl()));
   sl.registerLazySingleton<StatRepository>(() => StatRepositoryImpl(sl()));
   sl.registerFactory<StatCubit>(() => StatCubit(sl()));
+
+  sl.registerFactory<SurveyCubit>(() => SurveyCubit(sharedPreferences));
 }
