@@ -53,7 +53,6 @@ dependencies:
   skeletonizer: ^3.0.0
   flutter_svg: ^2.3.0
   lottie: ^3.5.1
-  webview_flutter: ^4.14.1
   remix_icons_flutter: ^4.9.3+1
   flutter_typeahead: ^6.0.0
   easy_stepper: ^1.2.0
@@ -73,6 +72,7 @@ dependencies:
   url_launcher: ^6.3.3
   string_validator: ^1.2.0
   encrypt: ^5.0.3
+  flutter_inappwebview: ^6.1.5
 
 dev_dependencies:
   flutter_test:

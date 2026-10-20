@@ -88,9 +88,20 @@
 -keep class androidx.core.app.NotificationCompat** { *; }
 
 ##############################################
-## WebView (webview_flutter)
+## WebView (flutter_inappwebview)
 ##############################################
--keep class android.webkit.WebView { *; }
+-keep class com.pichillilorenzo.flutter_inappwebview_android.** { *; }
+-keep interface com.pichillilorenzo.flutter_inappwebview_android.** { *; }
+-dontwarn com.pichillilorenzo.flutter_inappwebview_android.**
+
+-keep class com.pichillilorenzo.flutter_inappwebview.** { *; }
+-keep interface com.pichillilorenzo.flutter_inappwebview.** { *; }
+-dontwarn com.pichillilorenzo.flutter_inappwebview.**
+
+-keep class androidx.webkit.** { *; }
+-dontwarn androidx.webkit.**
+
+-keep class android.webkit.** { *; }
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
 }
