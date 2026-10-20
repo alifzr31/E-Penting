@@ -1,4 +1,6 @@
+import 'package:e_penting/app/configs/router/route_name.dart';
 import 'package:e_penting/app/cubits/measurement/measurement_cubit.dart';
+import 'package:e_penting/app/cubits/survey/survey_cubit.dart';
 import 'package:e_penting/app/utils/enums/boolean.dart';
 import 'package:e_penting/app/utils/enums/measurement_type.dart';
 import 'package:e_penting/app/utils/extensions/date_time_extension.dart';
@@ -38,6 +40,28 @@ class _CreateMeasurementBodyState extends State<CreateMeasurementBody> {
   Boolean? _selectedMotherToddlerClass;
   Boolean? _selectedMbg;
 
+  Future<void> _checkRatingSurvey() async {
+    context.read<SurveyCubit>().checkHasRating();
+
+    final hasRating = context.read<SurveyCubit>().state;
+
+    if (!hasRating) {
+      Navigator.pop(context, true);
+      return;
+    }
+
+    final result = await Navigator.pushNamed(context, RouteName.survey);
+
+    if (result == null || !mounted) return;
+
+    final isSuccess = result as bool;
+
+    if (isSuccess) {
+      Navigator.pop(context, true);
+      return;
+    }
+  }
+
   @override
   void dispose() {
     _measurementDateController.dispose();
@@ -70,7 +94,7 @@ class _CreateMeasurementBodyState extends State<CreateMeasurementBody> {
               title: 'Tambah Pengukuran Berhasil',
               description: state.formResponseData?['message'],
             );
-            Navigator.pop(context, true);
+            _checkRatingSurvey();
           case .error:
             context.loaderOverlay.hide();
             showCustomToast(

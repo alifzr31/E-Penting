@@ -1,4 +1,6 @@
+import 'package:e_penting/app/configs/router/route_name.dart';
 import 'package:e_penting/app/cubits/auth/auth_cubit.dart' hide Status;
+import 'package:e_penting/app/cubits/survey/survey_cubit.dart';
 import 'package:e_penting/app/cubits/toddler/toddler_cubit.dart';
 import 'package:e_penting/app/models/profile.dart';
 import 'package:e_penting/app/models/toddler.dart';
@@ -133,6 +135,28 @@ class _EditToddlerBodyState extends State<EditToddlerBody> {
     setState(() {});
   }
 
+  Future<void> _checkRatingSurvey() async {
+    context.read<SurveyCubit>().checkHasRating();
+
+    final hasRating = context.read<SurveyCubit>().state;
+
+    if (!hasRating) {
+      Navigator.pop(context, true);
+      return;
+    }
+
+    final result = await Navigator.pushNamed(context, RouteName.survey);
+
+    if (result == null || !mounted) return;
+
+    final isSuccess = result as bool;
+
+    if (isSuccess) {
+      Navigator.pop(context, true);
+      return;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -180,7 +204,7 @@ class _EditToddlerBodyState extends State<EditToddlerBody> {
               title: 'Edit Balita Berhasil',
               description: state.formResponseData?['message'],
             );
-            Navigator.pop(context, true);
+            _checkRatingSurvey();
           case .error:
             context.loaderOverlay.hide();
             showCustomToast(

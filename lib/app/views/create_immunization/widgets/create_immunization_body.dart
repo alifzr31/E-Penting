@@ -1,4 +1,6 @@
+import 'package:e_penting/app/configs/router/route_name.dart';
 import 'package:e_penting/app/cubits/immunization/immunization_cubit.dart';
+import 'package:e_penting/app/cubits/survey/survey_cubit.dart';
 import 'package:e_penting/app/utils/enums/immunization_type.dart';
 import 'package:e_penting/app/utils/extensions/date_time_extension.dart';
 import 'package:e_penting/app/views/create_immunization/widgets/create_immunization_form.dart';
@@ -25,6 +27,28 @@ class _CreateImmunizationBodyState extends State<CreateImmunizationBody> {
   final _toddlerNikController = TextEditingController();
   final _toddlerBornDateController = TextEditingController();
   final List<ImmunizationType> _selectedImmunizationType = [];
+
+  Future<void> _checkRatingSurvey() async {
+    context.read<SurveyCubit>().checkHasRating();
+
+    final hasRating = context.read<SurveyCubit>().state;
+
+    if (!hasRating) {
+      Navigator.pop(context, true);
+      return;
+    }
+
+    final result = await Navigator.pushNamed(context, RouteName.survey);
+
+    if (result == null || !mounted) return;
+
+    final isSuccess = result as bool;
+
+    if (isSuccess) {
+      Navigator.pop(context, true);
+      return;
+    }
+  }
 
   @override
   void dispose() {
@@ -53,7 +77,7 @@ class _CreateImmunizationBodyState extends State<CreateImmunizationBody> {
               title: 'Tambah Imunisasi Berhasil',
               description: state.formResponseData?['message'],
             );
-            Navigator.pop(context, true);
+            _checkRatingSurvey();
           case .error:
             context.loaderOverlay.hide();
             showCustomToast(
