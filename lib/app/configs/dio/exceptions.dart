@@ -84,13 +84,13 @@ class BadCertException extends DioException {
 class RequestCancelledException implements Exception {}
 
 class AppException extends Equatable implements Exception {
-  final String message;
+  final String errorMessage;
 
-  const AppException(this.message);
-
-  @override
-  List<Object> get props => [message];
+  const AppException(this.errorMessage);
 
   @override
-  String toString() => message;
+  List<Object> get props => [errorMessage];
+
+  @override
+  String toString() => errorMessage;
 }
