@@ -4,6 +4,7 @@ class AppStrings {
   static const String profileData = 'profile_data';
   static const String userData = 'user_data';
   static const String biometricEnabled = 'biometric_enabled';
+  static const String lastSurveyDate = 'last_survey_date';
   static const String assetsImages = 'assets/images';
   static const String assetsIcons = 'assets/icons';
   static const String assetsLotties = 'assets/lotties';
