@@ -13,4 +13,5 @@ class RouteName {
   static const String editImmunization = '/edit_immunization';
   static const String createToddler = '/create_toddler';
   static const String editToddler = '/edit_toddler';
+  static const String survey = '/survey';
 }

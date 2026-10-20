@@ -12,6 +12,7 @@ import 'package:e_penting/app/views/login/login_page.dart';
 import 'package:e_penting/app/views/nutrition/nutrition_page.dart';
 import 'package:e_penting/app/views/onboard/onboard_page.dart';
 import 'package:e_penting/app/views/splash/splash_page.dart';
+import 'package:e_penting/app/views/survey/survey_page.dart';
 import 'package:e_penting/app/views/update/update_page.dart';
 import 'package:flutter/material.dart';
 
@@ -122,6 +123,13 @@ class AppRouter {
           settings: settings,
           builder: (context) {
             return EditToddlerPage(toddlerId: toddlerId);
+          },
+        );
+      case RouteName.survey:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) {
+            return const SurveyPage();
           },
         );
       default:
