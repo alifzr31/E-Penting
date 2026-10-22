@@ -197,7 +197,7 @@ class _EditMeasurementBodyState extends State<EditMeasurementBody> {
             showCustomToast(
               context,
               type: .success,
-              title: 'Tambah Pengukuran Berhasil',
+              title: 'Edit Pengukuran Berhasil',
               description: state.formResponseData?['message'],
             );
             _checkRatingSurvey();
