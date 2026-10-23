@@ -8,8 +8,8 @@ class FirebaseRemote {
 
   static const _kDefault = {
     'ssl_pinning_actived': true,
-    'latest_version': '3.2.7',
-    'latest_build_number': 35,
+    'latest_version': '3.0.0',
+    'latest_build_number': 39,
     'mandatory_update': true,
     'update_description': 'Perbaikan bugs dan optimalisasi performa aplikasi.',
     'base_api_url': 'https://e-penting.bandung.go.id/api/v1',
