@@ -23,10 +23,10 @@ class MeasurementGraph extends StatelessWidget {
       return FlSpot(entry.key.toDouble(), entry.value);
     }).toList();
 
-    final double maxTinggi = datas.isNotEmpty
+    final double maxHeight = datas.isNotEmpty
         ? datas.reduce((curr, next) => curr > next ? curr : next)
         : 120.0;
-    final double dinamisMaxY = ((maxTinggi / 10).ceil() * 10) + 20;
+    final double dynamicMaxY = ((maxHeight / 10).ceil() * 10) + 40;
 
     final double chartWidth = chartSpots.isNotEmpty
         ? chartSpots.length * 60.0
@@ -46,6 +46,10 @@ class MeasurementGraph extends StatelessWidget {
                 touchTooltipData: LineTouchTooltipData(
                   getTooltipColor: (touchedSpot) => AppColors.orangeColor,
                   tooltipBorderRadius: .circular(8),
+                  fitInsideHorizontally: true,
+                  fitInsideVertically: true,
+                  tooltipPadding: const .symmetric(horizontal: 12, vertical: 8),
+                  tooltipMargin: 12,
                   getTooltipItems: (List<LineBarSpot> touchedSpots) {
                     return touchedSpots.map((spot) {
                       final int xIndex = spot.x.toInt();
@@ -56,7 +60,7 @@ class MeasurementGraph extends StatelessWidget {
                         '${spot.y} $unitData\n',
                         const TextStyle(
                           color: Colors.white,
-                          fontWeight: .w500,
+                          fontWeight: .w600,
                           fontSize: 14,
                         ),
                         children: [
@@ -166,7 +170,7 @@ class MeasurementGraph extends StatelessWidget {
               borderData: FlBorderData(show: false),
               maxX: (chartSpots.length - 1).toDouble() + 0.2,
               minY: 0,
-              maxY: dinamisMaxY,
+              maxY: dynamicMaxY,
               lineBarsData: [
                 LineChartBarData(
                   spots: chartSpots,
