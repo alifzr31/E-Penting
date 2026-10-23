@@ -57,7 +57,7 @@ class _SurveyViewState extends State<SurveyView> {
       onPopInvokedWithResult: (didPop, result) {
         if (didPop || !_isSubmitted) return;
 
-        Navigator.pop(context, true);
+        Navigator.pop(context);
       },
       child: Scaffold(
         appBar: AppBar(automaticallyImplyLeading: _isSubmitted),
