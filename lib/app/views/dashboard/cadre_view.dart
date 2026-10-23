@@ -1,5 +1,7 @@
 import 'dart:io' show exit;
 
+import 'package:e_penting/app/configs/router/route_name.dart';
+import 'package:e_penting/app/cubits/survey/survey_cubit.dart';
 import 'package:e_penting/app/views/dashboard/widgets/cadre/cadre_bottom_nav.dart';
 import 'package:e_penting/app/views/dashboard/widgets/cadre/cadre_home.dart';
 import 'package:e_penting/app/views/dashboard/widgets/cadre/cadre_immunization.dart';
@@ -8,6 +10,7 @@ import 'package:e_penting/app/views/dashboard/widgets/cadre/cadre_toddler.dart';
 import 'package:e_penting/app/views/dashboard/widgets/dashboard_end_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show SystemNavigator;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CadreView extends StatefulWidget {
   const new({super.key});
@@ -23,6 +26,24 @@ class _CadreViewState extends State<CadreView> {
   void _onTabChange(int index) {
     setState(() {
       _currentTab = index;
+    });
+  }
+
+  Future<void> _checkRatingSurvey() async {
+    context.read<SurveyCubit>().checkHasRating();
+
+    final hasRating = context.read<SurveyCubit>().state;
+
+    if (hasRating || !mounted) return;
+
+    await Navigator.pushNamed(context, RouteName.survey);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkRatingSurvey();
     });
   }
 

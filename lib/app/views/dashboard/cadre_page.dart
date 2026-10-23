@@ -3,6 +3,7 @@ import 'package:e_penting/app/cubits/dashboard/dashboard_cubit.dart';
 import 'package:e_penting/app/cubits/immunization/immunization_cubit.dart';
 import 'package:e_penting/app/cubits/measurement/measurement_cubit.dart';
 import 'package:e_penting/app/cubits/stat/stat_cubit.dart';
+import 'package:e_penting/app/cubits/survey/survey_cubit.dart';
 import 'package:e_penting/app/cubits/toddler/toddler_cubit.dart';
 import 'package:e_penting/app/views/dashboard/cadre_view.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class CadrePage extends StatelessWidget {
         BlocProvider(create: (context) => sl<MeasurementCubit>()),
         BlocProvider(create: (context) => sl<ImmunizationCubit>()),
         BlocProvider(create: (context) => sl<ToddlerCubit>()),
+        BlocProvider(create: (context) => sl<SurveyCubit>()),
       ],
       child: const CadreView(),
     );
