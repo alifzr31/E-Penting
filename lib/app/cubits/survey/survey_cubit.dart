@@ -23,7 +23,7 @@ class SurveyCubit extends Cubit<bool> {
 
     if (isClosed) return;
 
-    emit(difference < 7);
+    emit(difference < 1);
   }
 
   void markHasRating() async {
