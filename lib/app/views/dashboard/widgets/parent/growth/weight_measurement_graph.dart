@@ -19,20 +19,27 @@ class WeightMeasurementGraph extends StatelessWidget {
       builder: (context, state) {
         switch (state.weightMeasurementGraphNikStatus) {
           case .error:
-            return BaseHandleState(
-              handleType: .error,
-              errorMessageSize: 14,
-              labelButtonSize: 14,
-              iconButtonSize: 18,
-              errorMessage:
-                  state.weightMeasurementGraphNikErrorMessage ?? 'dnjaskn',
-              onRefetch: () {
-                final selectedChild = context.read<SelectedChildCubit>().state;
+            return Padding(
+              padding: const .all(16),
+              child: BaseHandleState(
+                handleType: .error,
+                errorMessageSize: 14,
+                labelButtonSize: 14,
+                iconButtonSize: 18,
+                errorMessage:
+                    state.weightMeasurementGraphNikErrorMessage ?? 'dnjaskn',
+                onRefetch: () {
+                  final selectedChild = context
+                      .read<SelectedChildCubit>()
+                      .state;
 
-                context
-                    .read<MeasurementCubit>()
-                    .refetchWeightMeasurementGraphNik(nik: selectedChild?.nik);
-              },
+                  context
+                      .read<MeasurementCubit>()
+                      .refetchWeightMeasurementGraphNik(
+                        nik: selectedChild?.nik,
+                      );
+                },
+              ),
             );
           case .success:
             final isEmpty =
@@ -41,24 +48,27 @@ class WeightMeasurementGraph extends StatelessWidget {
                 (state.weightMeasurementGraphNik?.datas?.isEmpty ?? false);
 
             return isEmpty
-                ? BaseHandleState(
-                    handleType: .empty,
-                    errorMessageSize: 14,
-                    labelButtonSize: 14,
-                    iconButtonSize: 18,
-                    errorMessage:
-                        state.weightMeasurementGraphNikErrorMessage ?? '',
-                    onRefetch: () {
-                      final selectedChild = context
-                          .read<SelectedChildCubit>()
-                          .state;
+                ? Padding(
+                    padding: const .all(16),
+                    child: BaseHandleState(
+                      handleType: .empty,
+                      errorMessageSize: 14,
+                      labelButtonSize: 14,
+                      iconButtonSize: 18,
+                      errorMessage:
+                          state.weightMeasurementGraphNikErrorMessage ?? '',
+                      onRefetch: () {
+                        final selectedChild = context
+                            .read<SelectedChildCubit>()
+                            .state;
 
-                      context
-                          .read<MeasurementCubit>()
-                          .refetchWeightMeasurementGraphNik(
-                            nik: selectedChild?.nik,
-                          );
-                    },
+                        context
+                            .read<MeasurementCubit>()
+                            .refetchWeightMeasurementGraphNik(
+                              nik: selectedChild?.nik,
+                            );
+                      },
+                    ),
                   )
                 : MeasurementGraph(
                     intervalData: 5,
