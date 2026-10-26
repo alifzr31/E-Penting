@@ -1,4 +1,5 @@
 import 'package:e_penting/app/configs/router/route_name.dart';
+import 'package:e_penting/app/views/activation/activation_page.dart';
 import 'package:e_penting/app/views/create_immunization/create_immunization_page.dart';
 import 'package:e_penting/app/views/create_measurement/create_measurement_page.dart';
 import 'package:e_penting/app/views/create_toddler/create_toddler_page.dart';
@@ -52,6 +53,13 @@ class AppRouter {
           settings: settings,
           builder: (context) {
             return const LoginPage();
+          },
+        );
+      case RouteName.activation:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) {
+            return const ActivationPage();
           },
         );
       case RouteName.nutrition:

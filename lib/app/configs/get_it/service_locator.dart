@@ -5,6 +5,7 @@ import 'package:e_penting/app/configs/firebase/firebase_remote.dart';
 import 'package:e_penting/app/configs/local_notification/local_notification.dart';
 import 'package:e_penting/app/configs/router/app_router.dart';
 import 'package:e_penting/app/configs/secure_storage/secure_storage.dart';
+import 'package:e_penting/app/cubits/activation/activation_cubit.dart';
 import 'package:e_penting/app/cubits/auth/auth_cubit.dart';
 import 'package:e_penting/app/cubits/biometric/biometric_cubit.dart';
 import 'package:e_penting/app/cubits/dashboard/dashboard_cubit.dart';
@@ -19,6 +20,7 @@ import 'package:e_penting/app/cubits/splash/splash_cubit.dart';
 import 'package:e_penting/app/cubits/stat/stat_cubit.dart';
 import 'package:e_penting/app/cubits/survey/survey_cubit.dart';
 import 'package:e_penting/app/cubits/toddler/toddler_cubit.dart';
+import 'package:e_penting/app/repositories/activation_repository.dart';
 import 'package:e_penting/app/repositories/auth_repository.dart';
 import 'package:e_penting/app/repositories/immunization_repository.dart';
 import 'package:e_penting/app/repositories/login_repository.dart';
@@ -27,6 +29,7 @@ import 'package:e_penting/app/repositories/nutrition_repository.dart';
 import 'package:e_penting/app/repositories/stat_repository.dart';
 import 'package:e_penting/app/repositories/storage_repository.dart';
 import 'package:e_penting/app/repositories/toddler_repository.dart';
+import 'package:e_penting/app/services/activation_service.dart';
 import 'package:e_penting/app/services/auth_service.dart';
 import 'package:e_penting/app/services/immunization_service.dart';
 import 'package:e_penting/app/services/login_service.dart';
@@ -95,6 +98,12 @@ Future<void> setupServiceLocator({
   sl.registerLazySingleton<LoginService>(() => LoginService(sl()));
   sl.registerLazySingleton<LoginRepository>(() => LoginRepositoryImpl(sl()));
   sl.registerFactory<LoginCubit>(() => LoginCubit(sl(), sl()));
+
+  sl.registerLazySingleton<ActivationService>(() => ActivationService(sl()));
+  sl.registerLazySingleton<ActivationRepository>(
+    () => ActivationRepositoryImpl(sl()),
+  );
+  sl.registerFactory<ActivationCubit>(() => ActivationCubit(sl()));
 
   sl.registerLazySingleton<NutritionService>(() => NutritionService(sl()));
   sl.registerLazySingleton<NutritionRepository>(

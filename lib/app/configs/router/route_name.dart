@@ -4,6 +4,7 @@ class RouteName {
   static const String update = '/update';
   static const String onboard = '/onboard';
   static const String login = '/login';
+  static const String activation = '/activation';
   static const String nutrition = '/nutrition';
   static const String dashboard = '/dashboard';
   static const String detailGuide = '/detail_guide';
