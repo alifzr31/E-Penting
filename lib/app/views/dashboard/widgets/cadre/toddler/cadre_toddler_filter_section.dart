@@ -60,7 +60,9 @@ class CadreToddlerFilterSection extends StatelessWidget {
                   ),
                 ),
               ),
-              if (index != rangeMonthAge.length) ...[const SizedBox(width: 8)],
+              if (index != (rangeMonthAge.length - 1)) ...[
+                const SizedBox(width: 8),
+              ],
             ],
           );
         }),
