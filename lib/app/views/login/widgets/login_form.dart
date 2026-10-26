@@ -137,12 +137,7 @@ class LoginForm extends StatelessWidget {
                       icon: RemixIcon.shieldCheckLine,
                       label: 'Aktivasi Akun',
                       onPressed: () {
-                        showCustomToast(
-                          context,
-                          type: .info,
-                          title: 'Informasi',
-                          description: 'Mohon maaf saat ini fitur aktivasi akun masih dalam tahap pengembangan.',
-                        );
+                        Navigator.pushNamed(context, RouteName.activation);
                       },
                     ),
                   ),
