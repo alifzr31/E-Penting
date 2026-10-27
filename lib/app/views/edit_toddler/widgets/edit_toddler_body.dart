@@ -180,7 +180,7 @@ class _EditToddlerBodyState extends State<EditToddlerBody> {
               title: 'Edit Balita Berhasil',
               description: state.formResponseData?['message'],
             );
-
+            Navigator.pop(context, true);
           case .error:
             context.loaderOverlay.hide();
             showCustomToast(

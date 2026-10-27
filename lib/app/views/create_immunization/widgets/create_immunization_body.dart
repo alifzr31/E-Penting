@@ -53,7 +53,7 @@ class _CreateImmunizationBodyState extends State<CreateImmunizationBody> {
               title: 'Tambah Imunisasi Berhasil',
               description: state.formResponseData?['message'],
             );
-
+            Navigator.pop(context, true);
           case .error:
             context.loaderOverlay.hide();
             showCustomToast(

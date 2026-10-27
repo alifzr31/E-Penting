@@ -176,7 +176,7 @@ class _EditImmunizationBodyState extends State<EditImmunizationBody> {
               title: 'Edit Imunisasi Berhasil',
               description: state.formResponseData?['message'],
             );
-
+            Navigator.pop(context, true);
           case .error:
             context.loaderOverlay.hide();
             showCustomToast(

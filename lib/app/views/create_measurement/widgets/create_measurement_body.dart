@@ -70,7 +70,7 @@ class _CreateMeasurementBodyState extends State<CreateMeasurementBody> {
               title: 'Tambah Pengukuran Berhasil',
               description: state.formResponseData?['message'],
             );
-
+            Navigator.pop(context, true);
           case .error:
             context.loaderOverlay.hide();
             showCustomToast(

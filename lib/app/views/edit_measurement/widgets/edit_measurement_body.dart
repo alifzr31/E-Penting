@@ -176,7 +176,7 @@ class _EditMeasurementBodyState extends State<EditMeasurementBody> {
               title: 'Edit Pengukuran Berhasil',
               description: state.formResponseData?['message'],
             );
-
+            Navigator.pop(context, true);
           case .error:
             context.loaderOverlay.hide();
             showCustomToast(

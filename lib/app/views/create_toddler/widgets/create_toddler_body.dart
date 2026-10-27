@@ -249,7 +249,7 @@ class _CreateToddlerBodyState extends State<CreateToddlerBody> {
                   title: 'Tambah Balita Berhasil',
                   description: state.formResponseData?['message'],
                 );
-
+                Navigator.pop(context, true);
               case .error:
                 context.loaderOverlay.hide();
                 showCustomToast(
