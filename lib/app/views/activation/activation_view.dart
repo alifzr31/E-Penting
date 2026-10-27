@@ -53,7 +53,7 @@ class ActivationView extends StatelessWidget {
                               padding: .all(4),
                               child: Icon(
                                 RemixIcon.arrowLeftLine,
-                                size: 24,
+                                size: 22,
                                 color: Colors.black,
                               ),
                             ),
