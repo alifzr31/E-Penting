@@ -38,7 +38,7 @@ class CadreToddlerHeaderSection extends StatelessWidget {
                   alignment: .centerLeft,
                   child: Text(
                     'Kelola Data\nBalita',
-                    style: TextStyle(fontSize: 16, fontWeight: .w600),
+                    style: TextStyle(fontSize: 18, fontWeight: .w600),
                   ),
                 ),
                 const SizedBox(height: 10),
