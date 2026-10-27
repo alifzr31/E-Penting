@@ -8,6 +8,7 @@ import 'package:e_penting/app/views/dashboard/widgets/cadre/cadre_immunization.d
 import 'package:e_penting/app/views/dashboard/widgets/cadre/cadre_measurement.dart';
 import 'package:e_penting/app/views/dashboard/widgets/cadre/cadre_toddler.dart';
 import 'package:e_penting/app/views/dashboard/widgets/dashboard_end_drawer.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show SystemNavigator;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,9 +43,11 @@ class _CadreViewState extends State<CadreView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkRatingSurvey();
-    });
+    if (kReleaseMode) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _checkRatingSurvey();
+      });
+    }
   }
 
   @override
