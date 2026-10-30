@@ -6,6 +6,7 @@
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/Version-3.0.0%2B39-orange" alt="Version">
   <img src="https://img.shields.io/badge/Flutter-3.24%2B-02569B?logo=flutter&logoColor=white" alt="Flutter">
   <img src="https://img.shields.io/badge/Dart-3.13%2B-0175C2?logo=dart&logoColor=white" alt="Dart">
   <img src="https://img.shields.io/badge/State%20Management-BLoC%20%2F%20Cubit-blue" alt="BLoC">
@@ -29,11 +30,13 @@ Aplikasi menyediakan dua jenis akses berdasarkan peran pengguna:
 
 1. **Kader Posyandu** (Login via *Username & Password*)
    - Pendaftaran dan pembaruan data balita di wilayah kerja posyandu.
-   - Pencatatan pengukuran rutin (Berat Badan, Tinggi/Panjang Badan, Cara Ukur, Lingkar Kepala/Lengan).
+   - Pencatatan pengukuran rutin (Berat Badan, Tinggi/Panjang Badan, Cara Ukur, Lingkar Kepala/Lengan, Vit A, Pitting Edema, Kelas Ibu Balita, dan MBG).
    - Pencatatan jadwal dan riwayat pemberian imunisasi/vitamin (Buku KIA Digital).
    - Melihat ringkasan statistik dan rekapitulasi gizi balita posyandu.
+   - Pengisian survei kepuasan layanan berkala berbasis platform SPBE digital Kota Bandung.
 
 2. **Orang Tua Balita** (Login via *NIK 16 Digit & Password*)
+   - Aktivasi akun mandiri via NIK orang tua untuk inisialisasi login pertama kali.
    - Memantau grafik pertumbuhan tinggi dan berat badan anak terhadap kurva standar WHO/Kemenkes.
    - Melihat klasifikasi status stunting anak secara otomatis (*Normal, Pendek, Sangat Pendek, Tinggi*).
    - Melihat riwayat penimbangan dan jadwal imunisasi yang sudah/belum diterima.
@@ -44,10 +47,14 @@ Aplikasi menyediakan dua jenis akses berdasarkan peran pengguna:
 ## ✨ Fitur Utama
 
 - 📊 **Kalkulator & Klasifikasi Stunting Otomatis**: Menghitung status gizi secara instan berdasarkan umur bulan, jenis kelamin, tinggi badan, dan metode pengukuran (terlentang / berdiri).
-- 📈 **Grafik Tumbuh Kembang (Growth Chart)**: Visualisasi visual riwayat pengukuran berkala anak.
+- 📈 **Grafik Tumbuh Kembang (Growth Chart)**: Visualisasi riwayat pengukuran berkala anak dengan sistem *smart inset fitting* agar tooltip tidak terpotong.
 - 💉 **Buku KIA Digital & Imunisasi**: Jadwal pemberian vaksin wajib balita terstruktur berdasarkan kelompok usia bulan.
+- 📖 **Buku KIA Interaktif & Panduan Pertumbuhan**: Panduan digital pencegahan stunting interaktif dengan gesture *pinch-to-zoom*, *pan*, dan animasi matriks.
+- 🔑 **Aktivasi Akun Mandiri Orang Tua**: Verifikasi NIK orang tua dan aktivasi akun instan langsung dari aplikasi tanpa registrasi manual.
+- 📝 **Survei Kepuasan Layanan SPBE**: Integrasi kuesioner evaluasi posyandu terintegrasi sistem SPBE Kota Bandung via WebView dengan deteksi otomatis status pengisian.
 - 🔐 **Dual Storage & Keamanan Biometrik**: Autentikasi biometrik terlindungi oleh hardware-backed Keystore (*Android Keystore & iOS Keychain*) dengan penanganan *graceful fallback*.
 - 🛡️ **SSL Pinning**: Komunikasi data ke REST API diamankan dengan certificate pinning SHA-256 fingerprint.
+- 🚫 **Role Guard & Halaman Forbidden**: Proteksi halaman antarmuka terhadap sesi atau hak akses yang tidak sah.
 - 🔔 **Notifikasi Terintegrasi**: Push notification (FCM) untuk pengingat jadwal posyandu serta notifikasi lokal.
 - 🔄 **In-App Force Update**: Pengecekan versi minimum aplikasi via Firebase Remote Config untuk memastikan pengguna selalu memakai versi terbaru yang aman.
 
@@ -68,12 +75,42 @@ UI Layer (Page/View) ──> Business Logic (Cubit) ──> Repository Layer ─
 - **Storage & Security**:
   - [`flutter_secure_storage`](https://pub.dev/packages/flutter_secure_storage) (Token JWT & data profil terenkripsi)
   - [`biometric_storage`](https://pub.dev/packages/biometric_storage) & [`local_auth`](https://pub.dev/packages/local_auth) (Hardware-backed biometric)
-  - [`shared_preferences`](https://pub.dev/packages/shared_preferences) (Status onboarding)
+  - [`shared_preferences`](https://pub.dev/packages/shared_preferences) (Status onboarding & timestamp survei)
   - [`encrypt`](https://pub.dev/packages/encrypt) & [`crypto`](https://pub.dev/packages/crypto)
 - **Firebase Suite**: [`firebase_core`](https://pub.dev/packages/firebase_core), [`firebase_messaging`](https://pub.dev/packages/firebase_messaging), [`firebase_remote_config`](https://pub.dev/packages/firebase_remote_config)
 - **Notifikasi Lokal**: [`flutter_local_notifications`](https://pub.dev/packages/flutter_local_notifications)
-- **UI Components**: [`fl_chart`](https://pub.dev/packages/fl_chart), [`skeletonizer`](https://pub.dev/packages/skeletonizer), [`toastification`](https://pub.dev/packages/toastification), [`loader_overlay`](https://pub.dev/packages/loader_overlay), [`remix_icons_flutter`](https://pub.dev/packages/remix_icons_flutter)
+- **Webview**: [`flutter_inappwebview`](https://pub.dev/packages/flutter_inappwebview)
+- **UI Components**: [`fl_chart`](https://pub.dev/packages/fl_chart), [`skeletonizer`](https://pub.dev/packages/skeletonizer), [`toastification`](https://pub.dev/packages/toastification), [`loader_overlay`](https://pub.dev/packages/loader_overlay), [`remix_icons_flutter`](https://pub.dev/packages/remix_icons_flutter), [`easy_stepper`](https://pub.dev/packages/easy_stepper), [`dropdown_button2`](https://pub.dev/packages/dropdown_button2)
 - **Environment**: [`envied`](https://pub.dev/packages/envied)
+
+---
+
+## 🗺️ Alur Navigasi & Daftar Rute Halaman
+
+<details>
+<summary><b>Lihat Seluruh Daftar Rute Aplikasi (16 Routes)</b></summary>
+<br>
+
+| Konstanta Rute | Path URL | Argumen / Parameter | Deskripsi & Fungsi Halaman |
+|:---|:---|:---|:---|
+| `RouteName.splash` | `/` | `-` | Splash screen, inisialisasi Firebase Remote Config, & auto-login |
+| `RouteName.forbidden` | `/forbidden` | `-` | Layar penolakan akses jika hak akses pengguna tidak sah |
+| `RouteName.update` | `/update` | `-` | Layar wajib pembaruan aplikasi jika versi terpasang usang |
+| `RouteName.onboard` | `/onboard` | `-` | Slider carousel pengenalan aplikasi (muncul pada instalasi pertama) |
+| `RouteName.login` | `/login` | `-` | Form autentikasi Kader (Username) & Orang Tua Balita (NIK) |
+| `RouteName.activation` | `/activation` | `-` | Form aktivasi akun mandiri via NIK orang tua balita |
+| `RouteName.nutrition` | `/nutrition` | `-` | Kalkulator mandiri status gizi dan klasifikasi stunting balita |
+| `RouteName.dashboard` | `/dashboard` | `-` | Beranda utama aplikasi (grafik, rekapitulasi data, & menu utama) |
+| `RouteName.detailGuide` | `/detail_guide` | `imageName: String?` | Panduan digital Buku KIA interaktif dengan gesture zoom/pan |
+| `RouteName.createToddler` | `/create_toddler` | `-` | Pendaftaran balita baru / konfirmasi balita pindahan posyandu |
+| `RouteName.editToddler` | `/edit_toddler` | `toddlerId: int` | Form pembaruan profil data balita |
+| `RouteName.createMeasurement` | `/create_measurement` | `-` | Form pencatatan penimbangan & antropometri balita baru |
+| `RouteName.editMeasurement` | `/edit_measurement` | `measurementId: int` | Form edit catatan penimbangan balita |
+| `RouteName.createImmunization` | `/create_immunization` | `-` | Form pencatatan riwayat imunisasi balita baru |
+| `RouteName.editImmunization` | `/edit_immunization` | `immunizationId: int` | Form edit riwayat imunisasi balita |
+| `RouteName.survey` | `/survey` | `-` | Modul WebView survei kepuasan layanan posyandu digital (SPBE) |
+
+</details>
 
 ---
 
@@ -127,8 +164,8 @@ Authorization: Bearer <access_token>
 | `GET` | `/penimbangan/list` | **Query**: `page`, `month`, `year` | Daftar penimbangan dengan pagination & filter bulan/tahun |
 | `GET` | `/penimbangan/search` | **Query**: `name` | Pencarian riwayat penimbangan berdasarkan nama balita |
 | `GET` | `/penimbangan/detail` | **Query**: `id_penimbangan` | Detail lengkap satu catatan penimbangan antropometri |
-| `POST` | `/penimbangan` | **Body**: *Payload data antropometri & gizi* | Input catatan penimbangan balita baru |
-| `PATCH` | `/penimbangan` | **Query**: `id_pengukuran`<br>**Body**: *Payload update* | Memperbarui catatan penimbangan balita |
+| `POST` | `/penimbangan` | **Body**: *Payload data antropometri, gizi, vitamin A, pitting edema, kelas ibu balita, & MBG* | Input catatan penimbangan balita baru |
+| `PATCH` | `/penimbangan` | **Query**: `id_pengukuran`<br>**Body**: *Payload update data penimbangan* | Memperbarui catatan penimbangan balita |
 
 </details>
 
@@ -170,14 +207,25 @@ Authorization: Bearer <access_token>
 
 </details>
 
+<details>
+<summary><b>7. 🔑 Aktivasi Akun Orang Tua</b></summary>
+<br>
+
+| Method | Endpoint | Parameter / Payload | Deskripsi & Fungsi |
+|:---:|:---|:---|:---|
+| `POST` | `/orangtua/check` | **Body**: `nik_orangtua` | Cek validasi, status aktif, dan verifikasi NIK orang tua di sistem |
+| `POST` | `/orangtua/activate` | **Body**: `nik_orangtua` | Mengaktifkan akun orang tua agar dapat login dengan kredensial default |
+
+</details>
+
 ---
 
 ## 🚀 Memulai (Getting Started)
 
 ### Prasyarat
-- Flutter SDK `^3.13.2` atau lebih baru
+- Flutter SDK `^3.24.0` atau lebih baru
 - Dart SDK `^3.13.2`
-- Android Studio / VS Code dengan Flutter extension
+- Android Studio / VS Code dengan ekstensi Flutter & Dart
 - JDK 17 (untuk Android build)
 
 ### 1. Clone Repositori
