@@ -306,4 +306,6 @@ lib/
 
 ## 🏛️ Hak Cipta & Pengembang
 
-Dikembangkan dan dikelola untuk **Pemerintah Kota Bandung** guna mendukung program kesehatan nasional pencegahan stunting pada balita.
+Dikembangkan dan dikelola oleh [**Alif ZR**](https://github.com/alifzr31) untuk **Pemerintah Kota Bandung** guna mendukung program kesehatan nasional pencegahan stunting pada balita.
+
+Copyright © 2026 [**Alif ZR**](https://github.com/alifzr31). All rights reserved.
