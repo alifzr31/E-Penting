@@ -32,7 +32,7 @@
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:restoreAnyVersion="false"
-        android:enableOnBackInvokedCallback="true"
+        android:enableOnBackInvokedCallback="false"
         android:requestLegacyExternalStorage="false"
         tools:targetApi="33">
 
