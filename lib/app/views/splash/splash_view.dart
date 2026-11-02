@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:e_penting/app/configs/router/route_name.dart';
 import 'package:e_penting/app/cubits/package_info/package_info_cubit.dart'
     hide Status;
@@ -7,6 +9,7 @@ import 'package:e_penting/app/utils/consts/app_strings.dart';
 import 'package:e_penting/app/widgets/base_button.dart';
 import 'package:e_penting/app/widgets/show_customtoast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show SystemNavigator;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remix_icons_flutter/remixicon_ids.dart';
@@ -27,7 +30,7 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SplashCubit, SplashState>(
+    return BlocConsumer<SplashCubit, SplashState>(
       listenWhen: (previous, current) {
         final targetChanged =
             previous.target != current.target && current.target != .none;
@@ -81,85 +84,96 @@ class _SplashViewState extends State<SplashView> {
             break;
         }
       },
-      child: PopScope(
-        canPop: false,
-        child: Scaffold(
-          body: SafeArea(
-            child: Padding(
-              padding: const .all(16),
-              child: BlocBuilder<PackageInfoCubit, PackageInfoState>(
-                builder: (context, state) {
-                  return Stack(
-                    children: [
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: .center,
-                          children: [
-                            SvgPicture.asset(
-                              '${AppStrings.assetsImages}/logo2.svg',
-                              width: 130,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              state.appName ?? '',
-                              textAlign: .center,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: .w600,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            const Text(
-                              'Elektronik\nPendataan Stunting',
-                              textAlign: .center,
-                              style: TextStyle(fontSize: 14, fontWeight: .w500),
-                            ),
-                            const SizedBox(height: 30),
-                            BlocBuilder<SplashCubit, SplashState>(
-                              builder: (context, splashState) {
-                                if (splashState.isBiometricCancelled) {
-                                  return BaseButtonIcon(
-                                    icon: RemixIcon.fingerprint2Line,
-                                    label: 'Masuk',
-                                    onPressed: () async {
-                                      context
-                                          .read<SplashCubit>()
-                                          .authenticateBiometric();
-                                    },
-                                  );
-                                }
+      builder: (context, splashState) {
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) async {
+            if (didPop ||
+                !splashState.isBiometricCancelled ||
+                !context.mounted) {
+              return;
+            }
 
-                                return const CircularProgressIndicator(
+            await SystemNavigator.pop();
+            exit(0);
+          },
+          child: Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: const .all(16),
+                child: BlocBuilder<PackageInfoCubit, PackageInfoState>(
+                  builder: (context, state) {
+                    return Stack(
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisAlignment: .center,
+                            children: [
+                              SvgPicture.asset(
+                                '${AppStrings.assetsImages}/logo2.svg',
+                                width: 130,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                state.appName ?? '',
+                                textAlign: .center,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: .w600,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              const Text(
+                                'Elektronik\nPendataan Stunting',
+                                textAlign: .center,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: .w500,
+                                ),
+                              ),
+                              const SizedBox(height: 30),
+                              if (splashState.isBiometricCancelled) ...[
+                                BaseButtonIcon(
+                                  icon: RemixIcon.fingerprint2Line,
+                                  label: 'Masuk',
+                                  onPressed: () async {
+                                    context
+                                        .read<SplashCubit>()
+                                        .authenticateBiometric();
+                                  },
+                                ),
+                              ] else ...[
+                                const CircularProgressIndicator(
                                   color: AppColors.orangeColor,
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Text(
-                          state.appVersion != null
-                              ? 'Versi ${state.appVersion} (${state.appBuildNumber})'
-                              : '',
-                          textAlign: .center,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey.shade600,
+                                ),
+                              ],
+                            ],
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                },
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Text(
+                            state.appVersion != null
+                                ? 'Versi ${state.appVersion} (${state.appBuildNumber})'
+                                : '',
+                            textAlign: .center,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
