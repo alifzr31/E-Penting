@@ -49,6 +49,9 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  // BYPASS SSL/TLS
+  // HttpOverrides.global = CustomHttpOverrides();
+
   final firebaseNotification = di.sl<FirebaseNotification>();
   final localNotification = di.sl<LocalNotification>();
 
@@ -93,16 +96,19 @@ class MyApp extends StatelessWidget {
         overlayHeight: context.deviceHeight,
         overlayWidth: context.deviceWidth,
         overlayWidgetBuilder: (progress) {
-          return Center(
-            child: Container(
-              padding: const .all(2),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: .circle,
-              ),
-              child: Lottie.asset(
-                '${AppStrings.assetsLotties}/loader.json',
-                width: 70,
+          return PopScope(
+            canPop: false,
+            child: Center(
+              child: Container(
+                padding: const .all(2),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: .circle,
+                ),
+                child: Lottie.asset(
+                  '${AppStrings.assetsLotties}/loader.json',
+                  width: 70,
+                ),
               ),
             ),
           );
