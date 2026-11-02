@@ -3,12 +3,8 @@ import 'dart:convert';
 import 'package:biometric_storage/biometric_storage.dart';
 import 'package:bloc/bloc.dart';
 import 'package:e_penting/app/configs/firebase/firebase_remote.dart';
-import 'package:e_penting/app/cubits/auth/auth_cubit.dart' hide Status;
-import 'package:e_penting/app/cubits/package_info/package_info_cubit.dart'
-    hide Status;
-import 'package:e_penting/app/cubits/package_info/package_info_cubit.dart'
-    as package_info
-    show Status;
+import 'package:e_penting/app/cubits/auth/auth_cubit.dart';
+import 'package:e_penting/app/cubits/package_info/package_info_cubit.dart';
 import 'package:e_penting/app/repositories/storage_repository.dart';
 import 'package:e_penting/app/utils/consts/app_strings.dart';
 import 'package:equatable/equatable.dart';
@@ -34,13 +30,11 @@ class SplashCubit extends Cubit<SplashState> {
     emit(state.copyWith(status: .loading));
 
     try {
-      if (_packageInfoCubit.state.status != package_info.Status.success) {
+      if (_packageInfoCubit.state.status != .success) {
         try {
           await _packageInfoCubit.stream
               .firstWhere(
-                (state) =>
-                    state.status == package_info.Status.success ||
-                    state.status == package_info.Status.error,
+                (state) => state.status == .success || state.status == .error,
               )
               .timeout(const Duration(seconds: 3));
         } catch (_) {}
