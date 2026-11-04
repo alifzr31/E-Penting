@@ -21,7 +21,9 @@ class DioClient {
     _dio = Dio();
 
     // BASE API URL ENV
-    _dio.options.baseUrl = AppEnv.baseApiUrl;
+    _dio.options.baseUrl = kDebugMode
+        ? AppEnv.staggingBaseApiUrl
+        : AppEnv.prodBaseApiUrl;
     // BASE API URL REMOTE CONFIG
     // _dio.options.baseUrl = _firebaseRemote.baseApiUrl;
     _dio.options.connectTimeout = const Duration(minutes: 3);
@@ -43,7 +45,7 @@ class DioClient {
 
         if (kDebugMode || !sslPinningActived) return true;
 
-        final validHost = Uri.parse(AppEnv.baseUrl).host;
+        final validHost = Uri.parse(AppEnv.prodBaseUrl).host;
 
         if (host != validHost) {
           return false;
