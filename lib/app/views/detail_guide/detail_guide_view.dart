@@ -1,6 +1,7 @@
 import 'package:e_penting/app/utils/app_env.dart';
 import 'package:e_penting/app/widgets/base_handlestate.dart';
 import 'package:e_penting/app/widgets/base_skeletonizer.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
 class DetailGuideView extends StatefulWidget {
@@ -50,8 +51,10 @@ class _DetailGuideViewState extends State<DetailGuideView>
     super.dispose();
   }
 
+  String get baseUrl =>
+      kDebugMode ? AppEnv.staggingBaseUrl : AppEnv.prodBaseUrl;
   String get title => 'Usia ${widget.imageName?.replaceAll('.jpg', '')}';
-  String get imageUrl => '${AppEnv.baseUrl}/images/kia/${widget.imageName}';
+  String get imageUrl => '$baseUrl/images/kia/${widget.imageName}';
 
   @override
   Widget build(BuildContext context) {
