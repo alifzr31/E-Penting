@@ -169,7 +169,7 @@ class CadreHomeLatestToddlerSection extends StatelessWidget {
                                 final result = await Navigator.pushNamed(
                                   context,
                                   RouteName.editToddler,
-                                  arguments: state.toddlers[index].id,
+                                  arguments: toddler.id,
                                 );
 
                                 if (!context.mounted || result == null) {

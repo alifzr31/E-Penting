@@ -79,6 +79,8 @@ class ToddlerRepositoryImpl implements ToddlerRepository {
   Future<ToddlerLatestNik?> fetchToodlerLatestNik({String? nik}) async {
     try {
       return await _service.fetchToodlerLatestNik(nik: nik);
+    } on RequestCancelledException {
+      rethrow;
     } catch (e) {
       final errorMessage = DioHelper.errorHandlingApiMessage(e);
 
