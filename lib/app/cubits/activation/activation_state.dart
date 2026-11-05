@@ -1,6 +1,6 @@
 part of 'activation_cubit.dart';
 
-enum Status { initial, loading, success, error }
+enum Status { initial, loading, success, notFound, error }
 
 class ActivationState extends Equatable {
   final Status checkStatus;

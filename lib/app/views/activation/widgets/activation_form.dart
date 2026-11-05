@@ -106,6 +106,14 @@ class _ActivationFormState extends State<ActivationForm> {
                     state.checkResponseData?['data']['nama_orang_tua'];
                 setState(() {});
                 break;
+              case .notFound:
+                context.loaderOverlay.hide();
+                showCustomToast(
+                  context,
+                  type: .warning,
+                  title: state.checkErrorMessage,
+                );
+                break;
               case .error:
                 context.loaderOverlay.hide();
                 showCustomToast(
@@ -175,6 +183,10 @@ class _ActivationFormState extends State<ActivationForm> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Silahkan masukkan NIK Orang Tua';
+                    } else {
+                      if (value.length != 16) {
+                        return 'NIK orang tua harus berjumlah 16 digit';
+                      }
                     }
 
                     return null;

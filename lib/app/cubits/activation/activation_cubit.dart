@@ -40,9 +40,20 @@ class ActivationCubit extends Cubit<ActivationState> {
     } catch (e) {
       if (isClosed) return;
 
-      emit(
-        state.copyWith(checkStatus: .error, checkErrorMessage: e.toString()),
-      );
+      final errorMessage = e.toString();
+
+      if (errorMessage.contains('tidak ditemukan')) {
+        emit(
+          state.copyWith(
+            checkStatus: .notFound,
+            checkErrorMessage: errorMessage,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(checkStatus: .error, checkErrorMessage: errorMessage),
+        );
+      }
     }
   }
 
