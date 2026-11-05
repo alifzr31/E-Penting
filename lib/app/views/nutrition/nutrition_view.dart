@@ -32,9 +32,11 @@ class _NutritionViewState extends State<NutritionView> {
     'Panjang\nBalita',
   ];
 
+  final _genderFormKey = GlobalKey<FormState>();
   String? _selectedGender;
   final _ageFormKey = GlobalKey<FormState>();
   final _monthAgeController = TextEditingController();
+  final _measureFormKey = GlobalKey<FormState>();
   String? _selectedMeasureType;
   final _weightFormKey = GlobalKey<FormState>();
   final _weightController = TextEditingController();
@@ -46,26 +48,29 @@ class _NutritionViewState extends State<NutritionView> {
       {
         'title': 'Jenis Kelamin',
         'subtitle': 'Pilih jenis kelamin balita anda',
-        'content': BaseRadioGroupField(
-          initialValue: _selectedGender,
-          mandatory: true,
-          direction: .vertical,
-          items: Gender.filteredValues.map((e) {
-            return e.label;
-          }).toList(),
-          itemLabelBuilder: (value) => value,
-          onChanged: (value) {
-            setState(() {
-              _selectedGender = value;
-            });
-          },
-          validator: (value) {
-            if (value == null) {
-              return 'Silahkan pilih jenis kelamin';
-            }
+        'content': Form(
+          key: _genderFormKey,
+          child: BaseRadioGroupField(
+            initialValue: _selectedGender,
+            mandatory: true,
+            direction: .vertical,
+            items: Gender.filteredValues.map((e) {
+              return e.label;
+            }).toList(),
+            itemLabelBuilder: (value) => value,
+            onChanged: (value) {
+              setState(() {
+                _selectedGender = value;
+              });
+            },
+            validator: (value) {
+              if (value == null) {
+                return 'Silahkan pilih jenis kelamin';
+              }
 
-            return null;
-          },
+              return null;
+            },
+          ),
         ),
       },
       {
@@ -91,26 +96,29 @@ class _NutritionViewState extends State<NutritionView> {
       {
         'title': 'Cara Pengukuran',
         'subtitle': 'Pilih cara pengukuran balita anda',
-        'content': BaseRadioGroupField(
-          initialValue: _selectedMeasureType,
-          mandatory: true,
-          direction: .vertical,
-          items: MeasurementType.filteredValues.map((e) {
-            return e.label;
-          }).toList(),
-          itemLabelBuilder: (value) => value,
-          onChanged: (value) {
-            setState(() {
-              _selectedMeasureType = value;
-            });
-          },
-          validator: (value) {
-            if (value == null) {
-              return 'Silahkan pilih cara pengukuran';
-            }
+        'content': Form(
+          key: _measureFormKey,
+          child: BaseRadioGroupField(
+            initialValue: _selectedMeasureType,
+            mandatory: true,
+            direction: .vertical,
+            items: MeasurementType.filteredValues.map((e) {
+              return e.label;
+            }).toList(),
+            itemLabelBuilder: (value) => value,
+            onChanged: (value) {
+              setState(() {
+                _selectedMeasureType = value;
+              });
+            },
+            validator: (value) {
+              if (value == null) {
+                return 'Silahkan pilih cara pengukuran';
+              }
 
-            return null;
-          },
+              return null;
+            },
+          ),
         ),
       },
       {
@@ -169,13 +177,13 @@ class _NutritionViewState extends State<NutritionView> {
 
     switch (_currentStep) {
       case 0:
-        isValid = _selectedGender != null;
+        isValid = _genderFormKey.currentState?.validate() ?? false;
         break;
       case 1:
         isValid = _ageFormKey.currentState?.validate() ?? false;
         break;
       case 2:
-        isValid = _selectedMeasureType != null;
+        isValid = _measureFormKey.currentState?.validate() ?? false;
         break;
       case 3:
         isValid = _weightFormKey.currentState?.validate() ?? false;
