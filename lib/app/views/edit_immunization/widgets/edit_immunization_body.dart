@@ -45,15 +45,18 @@ class _EditImmunizationBodyState extends State<EditImmunizationBody> {
 
           switch (immunizationDetailStatus) {
             case .error:
+              context.loaderOverlay.hide();
               showCustomToast(
                 context,
                 type: .error,
-                title: 'Ambil Data Balita Gagal',
+                title: 'Ambil Data Imunisasi Gagal',
                 description:
                     immunizationCubit.state.immunizationDetailErrorMessage,
               );
+              Navigator.pop(context);
               return;
             case .success:
+              context.loaderOverlay.hide();
               final immunizationDetail =
                   immunizationCubit.state.immunizationDetail;
 
@@ -61,8 +64,6 @@ class _EditImmunizationBodyState extends State<EditImmunizationBody> {
             default:
               return;
           }
-
-          context.loaderOverlay.hide();
         });
   }
 

@@ -75,22 +75,23 @@ class _EditToddlerBodyState extends State<EditToddlerBody> {
 
       switch (toddlerDetailStatus) {
         case .error:
+          context.loaderOverlay.hide();
           showCustomToast(
             context,
             type: .error,
             title: 'Ambil Data Balita Gagal',
             description: toddlerCubit.state.toddlerDetailErrorMessage,
           );
+          Navigator.pop(context);
           return;
         case .success:
+          context.loaderOverlay.hide();
           final toddlerDetail = toddlerCubit.state.toddlerDetail;
 
           _onFillingFormField(toddlerDetail, userProfile);
         default:
           return;
       }
-
-      context.loaderOverlay.hide();
     });
   }
 

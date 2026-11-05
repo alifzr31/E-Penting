@@ -57,15 +57,18 @@ class _EditMeasurementBodyState extends State<EditMeasurementBody> {
 
           switch (measurementDetailStatus) {
             case .error:
+              context.loaderOverlay.hide();
               showCustomToast(
                 context,
                 type: .error,
-                title: 'Ambil Data Balita Gagal',
+                title: 'Ambil Data Pengukuran Gagal',
                 description:
                     measurementCubit.state.measurementDetailErrorMessage,
               );
+              Navigator.pop(context);
               return;
             case .success:
+              context.loaderOverlay.hide();
               final measurementDetail =
                   measurementCubit.state.measurementDetail;
 
@@ -73,8 +76,6 @@ class _EditMeasurementBodyState extends State<EditMeasurementBody> {
             default:
               return;
           }
-
-          context.loaderOverlay.hide();
         });
   }
 
