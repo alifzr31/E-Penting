@@ -246,14 +246,14 @@ class SplashCubit extends Cubit<SplashState> {
             status: .success,
             isBiometricCancelled: true,
             isBiometricPromptActive: false,
-            errorMessage: 'Gagal memindai sidik jari, silahkan coba ketuk tombol Masuk kembali.',
+            errorMessage: 'Gagal memindai sidik jari, silahkan coba lagi.',
           ),
         );
         return;
       }
 
       final fatalMsg =
-          'Keamanan biometrik perangkat telah diubah atau tidak valid, silahkan masuk kembali dengan akun Anda.';
+          'Keamanan biometrik perangkat telah diubah atau tidak valid, silahkan masuk kembali dengan akun anda.';
       await _authCubit.forceLogout(errorMessage: fatalMsg);
 
       if (isClosed) return;
