@@ -46,111 +46,117 @@ class CadreHomeLatestToddlerSection extends StatelessWidget {
             builder: (context, state) {
               switch (state.latestToddlerStatus) {
                 case .error:
-                  return Row(
-                    mainAxisSize: .min,
-                    mainAxisAlignment: .center,
-                    children: [
-                      Lottie.asset('${AppStrings.assetsLotties}/error.json'),
-                      const SizedBox(width: 8),
-                      Flexible(
-                        child: Column(
-                          mainAxisAlignment: .center,
-                          children: [
-                            Text(
-                              state.latestToddlerErrorMessage ?? '',
-                              textAlign: .center,
-                              maxLines: 2,
-                              overflow: .ellipsis,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: .w500,
+                  return Padding(
+                    padding: const .symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisSize: .min,
+                      mainAxisAlignment: .center,
+                      children: [
+                        Lottie.asset('${AppStrings.assetsLotties}/error.json'),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: .center,
+                            children: [
+                              Text(
+                                state.latestToddlerErrorMessage ?? '',
+                                textAlign: .center,
+                                maxLines: 2,
+                                overflow: .ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: .w500,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            CupertinoButton(
-                              minimumSize: .zero,
-                              padding: .zero,
-                              onPressed: () {
-                                context
-                                    .read<ToddlerCubit>()
-                                    .refetchLatestToddlers();
-                              },
-                              foregroundColor: AppColors.blueColor,
-                              child: const Row(
-                                mainAxisAlignment: .center,
-                                children: [
-                                  Icon(RemixIcon.refreshLine, size: 16),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    'Muat Ulang',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: .w500,
-                                      fontFamily: 'Poppins',
+                              const SizedBox(height: 4),
+                              CupertinoButton(
+                                minimumSize: .zero,
+                                padding: .zero,
+                                onPressed: () {
+                                  context
+                                      .read<ToddlerCubit>()
+                                      .refetchLatestToddlers();
+                                },
+                                foregroundColor: AppColors.blueColor,
+                                child: const Row(
+                                  mainAxisAlignment: .center,
+                                  children: [
+                                    Icon(RemixIcon.refreshLine, size: 16),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      'Muat Ulang',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: .w500,
+                                        fontFamily: 'Poppins',
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   );
                 case .success:
                   return state.latestToddlers.isEmpty
-                      ? Row(
-                          mainAxisSize: .min,
-                          mainAxisAlignment: .center,
-                          children: [
-                            Lottie.asset(
-                              '${AppStrings.assetsLotties}/error.json',
-                            ),
-                            const SizedBox(width: 8),
-                            Flexible(
-                              child: Column(
-                                mainAxisAlignment: .center,
-                                children: [
-                                  const Text(
-                                    'Belum ada data balita :(',
-                                    textAlign: .center,
-                                    maxLines: 2,
-                                    overflow: .ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: .w500,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  CupertinoButton(
-                                    minimumSize: .zero,
-                                    padding: .zero,
-                                    onPressed: () {
-                                      context
-                                          .read<ToddlerCubit>()
-                                          .refetchLatestToddlers();
-                                    },
-                                    foregroundColor: AppColors.blueColor,
-                                    child: const Row(
-                                      mainAxisAlignment: .center,
-                                      children: [
-                                        Icon(RemixIcon.refreshLine, size: 16),
-                                        SizedBox(width: 4),
-                                        Text(
-                                          'Muat Ulang',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: .w500,
-                                            fontFamily: 'Poppins',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                      ? Padding(
+                          padding: const .symmetric(horizontal: 16),
+                          child: Row(
+                            mainAxisSize: .min,
+                            mainAxisAlignment: .center,
+                            children: [
+                              Lottie.asset(
+                                '${AppStrings.assetsLotties}/error.json',
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 8),
+                              Flexible(
+                                child: Column(
+                                  mainAxisAlignment: .center,
+                                  children: [
+                                    const Text(
+                                      'Belum ada data balita :(',
+                                      textAlign: .center,
+                                      maxLines: 2,
+                                      overflow: .ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: .w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    CupertinoButton(
+                                      minimumSize: .zero,
+                                      padding: .zero,
+                                      onPressed: () {
+                                        context
+                                            .read<ToddlerCubit>()
+                                            .refetchLatestToddlers();
+                                      },
+                                      foregroundColor: AppColors.blueColor,
+                                      child: const Row(
+                                        mainAxisAlignment: .center,
+                                        children: [
+                                          Icon(RemixIcon.refreshLine, size: 16),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            'Muat Ulang',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: .w500,
+                                              fontFamily: 'Poppins',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         )
                       : ListView.builder(
                           scrollDirection: .horizontal,
